@@ -1,3 +1,6 @@
 [submodule "hoedown"]
 	path = hoedown
 	url = git@github.com:hoedown/hoedown.git
+[submodule "libhoedown"]
+	path = libhoedown
+	url = git@github.com:hoedown/hoedown.git

@@ -5,18 +5,6 @@ use hoedown::renderer::Render;
 use hoedown::renderer::html;
 use hoedown::buffer::Buffer;
 
-// TODO: move this to doc test for html module
-#[test]
-fn test_html_renderer() {
-    let input = Buffer::from_str("EMPHASIZE");
-    let mut output = Buffer::new(64us);
-    let mut html_renderer = html::Html::new(html::Flags::empty(), 99);
-
-    html_renderer.emphasis(&mut output, &input);
-
-    assert_eq!(output.as_str().unwrap(), "<em>EMPHASIZE</em>");
-}
-
 #[test]
 fn test_render_inline() {
     let doc = Markdown::new("some _emphasis_ required".as_bytes());
