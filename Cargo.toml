@@ -1,0 +1,19 @@
+[package]
+
+name = "hoedown"
+version = "0.0.1"
+authors = ["Jorge Israel Peña <jorge.israel.p@gmail.com>"]
+build = "build.rs"
+description = "bindings for the Hoedown markdown processor"
+repository = "https://github.com/blaenk/hoedown"
+license = "BSD-3-Clause"
+
+[dependencies]
+bitflags = "*"
+
+[dev-dependencies]
+glob = "*"
+
+[build-dependencies]
+regex = "*"
+regex_macros = "*"
