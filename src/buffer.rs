@@ -87,26 +87,40 @@ impl Buffer {
     /// Get a slice of the buffer's contents
     pub fn as_slice<'a>(&'a self) -> &'a [u8] {
         unsafe {
-            let data = &((*self.buffer.0).data as *const u8);
+            let data = (*self.buffer.0).data as *const u8;
             let size = (*self.buffer.0).size as usize;
 
-            mem::transmute(slice::from_raw_buf(data, size))
+            mem::transmute(slice::from_raw_parts(data, size))
         }
     }
 
     /// Get a mutable slice of the buffer's contents
     pub fn as_mut_slice<'a>(&'a mut self) -> &'a mut [u8] {
         unsafe {
-            let data = &(*self.buffer.0).data;
+            let data = (*self.buffer.0).data;
             let size = (*self.buffer.0).size as usize;
 
-            slice::from_raw_mut_buf(data, size)
+            slice::from_raw_parts_mut(data, size)
         }
     }
 
     /// Attempt to get a string from the buffer's contents
     pub fn as_str<'a>(&'a self) -> Result<&str, str::Utf8Error> {
         str::from_utf8(self.as_slice())
+    }
+}
+
+unsafe impl Sync for Buffer {}
+unsafe impl Send for Buffer {}
+
+impl Clone for Buffer {
+    fn clone(&self) -> Buffer {
+        // create a buffer with the same unit size
+        let unit = unsafe { (*self.buffer.0).unit };
+        let mut buffer = Buffer::new(unit as usize);
+        // pipe this one's contents into it
+        buffer.pipe(self);
+        buffer
     }
 }
 

@@ -112,8 +112,8 @@ struct html_toc_data {
 pub struct hoedown_buffer {
     pub data: *mut u8,
     pub size: size_t,
-    asize: size_t,
-    unit: size_t,
+    pub asize: size_t,
+    pub unit: size_t,
 }
 
 #[allow(non_camel_case_types)]
