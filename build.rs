@@ -9,7 +9,7 @@
 #![allow(dead_code)]
 
 extern crate regex;
-#[plugin]
+#[plugin] #[no_link]
 extern crate regex_macros;
 
 use std::str::FromStr;
