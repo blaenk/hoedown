@@ -1,26 +1,27 @@
 #![feature(plugin)]
-#![feature(os)]
 #![feature(path)]
 #![feature(io)]
 #![feature(collections)]
 #![feature(core)]
+#![feature(env)]
 
 #![allow(unused_must_use)]
 #![allow(dead_code)]
 
+#![plugin(regex_macros)]
+
 extern crate regex;
-#[plugin] #[no_link]
 extern crate regex_macros;
 
 use std::str::FromStr;
 use std::old_io::process::Command;
 use std::old_io::{fs, BufferedReader, File};
 use std::fmt;
-use std::os;
+use std::env;
 
 fn main() {
-  let root_dir = Path::new(os::getenv("CARGO_MANIFEST_DIR").unwrap());
-  let out_dir = Path::new(os::getenv("OUT_DIR").unwrap());
+  let root_dir = Path::new(env::var_string("CARGO_MANIFEST_DIR").unwrap());
+  let out_dir = Path::new(env::var_string("OUT_DIR").unwrap());
 
   Command::new("make")
     .arg("-C").arg("libhoedown")
