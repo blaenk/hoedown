@@ -24,6 +24,6 @@ echo '<meta http-equiv=refresh content=0;url=hoedown/index.html>' > index.html
 touch .
 
 git add -A .
-git ci -m "rebuilding docs from ${rev}"
+git commit -m "rebuilding docs from ${rev}"
 git push -q upstream HEAD:gh-pages
 
