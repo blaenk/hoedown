@@ -20,8 +20,8 @@ use std::fmt;
 use std::env;
 
 fn main() {
-  let root_dir = Path::new(env::var_string("CARGO_MANIFEST_DIR").unwrap());
-  let out_dir = Path::new(env::var_string("OUT_DIR").unwrap());
+  let root_dir = Path::new(env::var("CARGO_MANIFEST_DIR").unwrap());
+  let out_dir = Path::new(env::var("OUT_DIR").unwrap());
 
   Command::new("make")
     .arg("-C").arg("libhoedown")
