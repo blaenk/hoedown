@@ -6,6 +6,8 @@ set -o errexit -o nounset
 
 rev=$(git rev-parse --short HEAD)
 
+cargo doc --verbose
+
 cd target/doc
 
 git init
