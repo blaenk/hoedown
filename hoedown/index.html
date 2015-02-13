@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `hoedown` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, hoedown">
+
+    <title>hoedown - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'></p>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>hoedown</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
+            <a id="collapse-all" href="#">[-]
+            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-0' href='../src/hoedown/lib.rs.html#1-209'>[src]</a></span></h1>
+<div class='docblock'><p>This crate provides bindings for the <a href="https://github.com/hoedown/hoedown">hoedown</a> markdown processing library.
+ It has a <code>Markdown</code> type which stores markdown text in a <code>Buffer</code>. The
+ markdown can then be rendered with any renderer that implements the <code>Render</code>
+ trait. The library comes with an <code>Html</code> renderer by default.</p>
+<pre id='rust-example-rendered' class='rust '>
+<span class='kw'>let</span> <span class='ident'>doc</span> <span class='op'>=</span> <span class='ident'>Markdown</span>::<span class='ident'>new</span>(<span class='string'>&quot;some _emphasis_ required&quot;</span>.<span class='ident'>as_bytes</span>());
+<span class='kw'>let</span> <span class='ident'>html</span> <span class='op'>=</span> <span class='ident'>Html</span>::<span class='ident'>new</span>(<span class='ident'>html</span>::<span class='ident'>Flags</span>::<span class='ident'>empty</span>(), <span class='number'>0</span>);
+
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(
+    <span class='ident'>doc</span>.<span class='ident'>render_to_buffer</span>(<span class='ident'>html</span>).<span class='ident'>as_str</span>().<span class='ident'>unwrap</span>(),
+    <span class='string'>&quot;&lt;p&gt;some &lt;em&gt;emphasis&lt;/em&gt; required&lt;/p&gt;\n&quot;</span>);
+</pre>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='mod' href='buffer/index.html'
+                               title='hoedown::buffer'>buffer</a></td>
+                        <td class='docblock short'><p>Markdown buffers</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='mod' href='renderer/index.html'
+                               title='hoedown::renderer'>renderer</a></td>
+                        <td class='docblock short'><p>Contains Render behavior and stock renderers</p>
+</td>
+                    </tr>
+                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Extension.html'
+                               title='hoedown::Extension'>Extension</a></td>
+                        <td class='docblock short'><p>Constants for the various Hoedown extensions</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Markdown.html'
+                               title='hoedown::Markdown'>Markdown</a></td>
+                        <td class='docblock short'><p>Markdown document</p>
+</td>
+                    </tr>
+                </table><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
+<table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.AUTOLINK.html'
+                               title='hoedown::AUTOLINK'>AUTOLINK</a></td>
+                        <td class='docblock short'><p>Automatically link URLs and emails</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.DISABLE_INDENTED_CODE.html'
+                               title='hoedown::DISABLE_INDENTED_CODE'>DISABLE_INDENTED_CODE</a></td>
+                        <td class='docblock short'><p>Ignore indented code blocks</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.FENCED_CODE.html'
+                               title='hoedown::FENCED_CODE'>FENCED_CODE</a></td>
+                        <td class='docblock short'><p>Process fenced code</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.FOOTNOTES.html'
+                               title='hoedown::FOOTNOTES'>FOOTNOTES</a></td>
+                        <td class='docblock short'><p>Process footnotes</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.HIGHLIGHT.html'
+                               title='hoedown::HIGHLIGHT'>HIGHLIGHT</a></td>
+                        <td class='docblock short'><p>Process highlight syntax</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.MATH.html'
+                               title='hoedown::MATH'>MATH</a></td>
+                        <td class='docblock short'><p>Process math syntax</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.MATH_EXPLICIT.html'
+                               title='hoedown::MATH_EXPLICIT'>MATH_EXPLICIT</a></td>
+                        <td class='docblock short'><p>Process the single dollar math syntax.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.NO_INTRA_EMPHASIS.html'
+                               title='hoedown::NO_INTRA_EMPHASIS'>NO_INTRA_EMPHASIS</a></td>
+                        <td class='docblock short'><p>Don&#39;t parse emphasis inside of words</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.QUOTE.html'
+                               title='hoedown::QUOTE'>QUOTE</a></td>
+                        <td class='docblock short'><p>Render quotes differently</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SPACE_HEADERS.html'
+                               title='hoedown::SPACE_HEADERS'>SPACE_HEADERS</a></td>
+                        <td class='docblock short'><p>Process ATX header syntax</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.STRIKETHROUGH.html'
+                               title='hoedown::STRIKETHROUGH'>STRIKETHROUGH</a></td>
+                        <td class='docblock short'><p>Enable strikethrough syntax</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SUPERSCRIPT.html'
+                               title='hoedown::SUPERSCRIPT'>SUPERSCRIPT</a></td>
+                        <td class='docblock short'><p>Process superscript syntax</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.TABLES.html'
+                               title='hoedown::TABLES'>TABLES</a></td>
+                        <td class='docblock short'><p>Process table syntax</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.UNDERLINE.html'
+                               title='hoedown::UNDERLINE'>UNDERLINE</a></td>
+                        <td class='docblock short'><p>Perform an underline instead of emphasis</p>
+</td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "hoedown";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>

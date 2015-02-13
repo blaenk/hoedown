@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Markdown` struct in crate `hoedown`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Markdown">
+
+    <title>hoedown::Markdown - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='index.html'>hoedown</a></p><div class='block mod'><h2>Modules</h2><a class='mod ' href='buffer/index.html' title='Markdown buffers'>buffer</a><a class='mod ' href='renderer/index.html' title='Contains Render behavior and stock renderers'>renderer</a></div><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Extension.html' title='Constants for the various Hoedown extensions'>Extension</a><a class='struct current' href='struct.Markdown.html' title='Markdown document'>Markdown</a></div>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>hoedown</a>::<wbr><a class='struct' href=''>Markdown</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]
+            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-14066' href='../src/hoedown/lib.rs.html#116-120'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Markdown {
+    // some fields omitted
+}</pre><div class='docblock'><p>Markdown document</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.new' class='fnname'>new</a>&lt;R&gt;(reader: R) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a> <span class='where'>where R: <a class='trait' href='http://doc.rust-lang.org/nightly/std/old_io/trait.Reader.html' title='std::old_io::Reader'>Reader</a></span></code></h4>
+<div class='docblock'><p>Construct a markdown document from a given Reader</p>
+
+<p>By default it enables no Hoedown extensions and sets the maximum
+block depth to parse at 16. This may be changed with the <code>with_extensions</code>
+and <code>with_max_nesting</code> builder methods.</p>
+
+<p>Note that <code>Buffer</code> also implements <code>Reader</code>, so it can be used with this
+method.</p>
+</div><h4 id='method.from_str' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.from_str' class='fnname'>from_str</a>(s: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
+<div class='docblock'><p>Construct a markdown document from a string</p>
+</div><h4 id='method.with_extensions' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.with_extensions' class='fnname'>with_extensions</a>(self, extensions: <a class='struct' href='../hoedown/struct.Extension.html' title='hoedown::Extension'>Extension</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
+<div class='docblock'><p>Builder method to specify Hoedown extensions</p>
+</div><h4 id='method.with_max_nesting' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.with_max_nesting' class='fnname'>with_max_nesting</a>(self, max_nesting: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
+<div class='docblock'><p>Builder method to specify the maximum block depth to parse</p>
+</div><h4 id='method.render_into_buffer' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.render_into_buffer' class='fnname'>render_into_buffer</a>&lt;R&gt;(&amp;self, renderer: R, output: &amp;mut <a class='struct' href='../hoedown/buffer/struct.Buffer.html' title='hoedown::buffer::Buffer'>Buffer</a>) <span class='where'>where R: <a class='trait' href='../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></h4>
+<div class='docblock'><p>Render the document into the given buffer</p>
+</div><h4 id='method.render_to_buffer' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.render_to_buffer' class='fnname'>render_to_buffer</a>&lt;R&gt;(&amp;self, renderer: R) -&gt; <a class='struct' href='../hoedown/buffer/struct.Buffer.html' title='hoedown::buffer::Buffer'>Buffer</a> <span class='where'>where R: <a class='trait' href='../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></h4>
+<div class='docblock'><p>Render the document to a buffer that is returned</p>
+</div><h4 id='method.render' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.render' class='fnname'>render</a>&lt;R, W&gt;(&amp;self, renderer: R, writer: &amp;mut W) -&gt; <a class='type' href='http://doc.rust-lang.org/nightly/std/old_io/type.IoResult.html' title='std::old_io::IoResult'>IoResult</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt; <span class='where'>where R: <a class='trait' href='../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a>, W: <a class='trait' href='http://doc.rust-lang.org/nightly/std/old_io/trait.Writer.html' title='std::old_io::Writer'>Writer</a></span></code></h4>
+<div class='docblock'><p>Render the document to a given Writer</p>
+</div><h4 id='method.render_inline_into_buffer' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.render_inline_into_buffer' class='fnname'>render_inline_into_buffer</a>&lt;R&gt;(&amp;self, renderer: R, output: &amp;mut <a class='struct' href='../hoedown/buffer/struct.Buffer.html' title='hoedown::buffer::Buffer'>Buffer</a>) <span class='where'>where R: <a class='trait' href='../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></h4>
+<div class='docblock'><p>Render the document as inline into the given buffer</p>
+</div><h4 id='method.render_inline_to_buffer' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.render_inline_to_buffer' class='fnname'>render_inline_to_buffer</a>&lt;R&gt;(&amp;self, renderer: R) -&gt; <a class='struct' href='../hoedown/buffer/struct.Buffer.html' title='hoedown::buffer::Buffer'>Buffer</a> <span class='where'>where R: <a class='trait' href='../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></h4>
+<div class='docblock'><p>Render the document as inline to a buffer that is returned</p>
+</div><h4 id='method.render_inline' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.render_inline' class='fnname'>render_inline</a>&lt;R, W&gt;(&amp;self, renderer: R, writer: &amp;mut W) -&gt; <a class='type' href='http://doc.rust-lang.org/nightly/std/old_io/type.IoResult.html' title='std::old_io::IoResult'>IoResult</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt; <span class='where'>where R: <a class='trait' href='../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a>, W: <a class='trait' href='http://doc.rust-lang.org/nightly/std/old_io/trait.Writer.html' title='std::old_io::Writer'>Writer</a></span></code></h4>
+<div class='docblock'><p>Render the document as inline to a given Writer</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "hoedown";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>

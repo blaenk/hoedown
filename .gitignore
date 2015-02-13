@@ -1,5 +1,0 @@
-/target
-/Cargo.lock
-.gdb_history
-.gdb_log
-watch_docs.sh
