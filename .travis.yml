@@ -1,8 +1,10 @@
 language: rust
 before_install:
   - sudo apt-get install -qq tidy
-before_script: chmod +x .travis/publish.sh
-after_success: .travis/publish.sh
+after_success:
+  - bash .travis/publish_crate.sh
+  - bash .travis/publish_docs.sh
 env:
   global:
-  - secure: aMa/57dF/c2D3l+mqaTf9BRboWifYUra6Pq2zwtHZaaBbUavZqljhjBg+CxtT7SBUovXkVJSF0PfiLFh8E9nPQ/cDd9xUBR9gyZm4ZrQ8MI95hI86YofDPdQg99j8aI6dz5n6tXWucPsIWvgI7GtaOlSGC5PegOQe5j5/aSQPp4=
+  - secure: "aMa/57dF/c2D3l+mqaTf9BRboWifYUra6Pq2zwtHZaaBbUavZqljhjBg+CxtT7SBUovXkVJSF0PfiLFh8E9nPQ/cDd9xUBR9gyZm4ZrQ8MI95hI86YofDPdQg99j8aI6dz5n6tXWucPsIWvgI7GtaOlSGC5PegOQe5j5/aSQPp4="
+  - secure: "HZysawu3Zx0aEs81U8wyGJ5U05sMv97TWOoPVGV2qygTNCD6FoXdqzmOy920LpUV+QZufpg5oHxaqSbt7/my79MpexyRSFpSuQV6N6a3WuMyc3ZcuhliTZwDFGCIrSudkBOr2u5hfkUrw6SJKQyUKsuNBk9UAl/zwHKtK+WWE1A="
