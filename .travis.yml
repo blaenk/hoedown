@@ -1,6 +1,6 @@
 language: rust
-before_script: chmod +x .travis/after_success.sh
-after_success: .travis/after_success.sh
+before_script: chmod +x .travis/publish.sh
+after_success: .travis/publish.sh
 env:
   global:
   - secure: aMa/57dF/c2D3l+mqaTf9BRboWifYUra6Pq2zwtHZaaBbUavZqljhjBg+CxtT7SBUovXkVJSF0PfiLFh8E9nPQ/cDd9xUBR9gyZm4ZrQ8MI95hI86YofDPdQg99j8aI6dz5n6tXWucPsIWvgI7GtaOlSGC5PegOQe5j5/aSQPp4=
