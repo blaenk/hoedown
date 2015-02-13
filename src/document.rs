@@ -38,7 +38,7 @@ impl Document {
     pub fn render(&self, output: &mut Buffer, input: &[u8]) {
         unsafe {
             hoedown_document_render(
-                self.document.0,
+                self.document.ptr,
                 output.get_mut(),
                 input.as_ptr(),
                 input.len() as size_t
@@ -50,7 +50,7 @@ impl Document {
     pub fn render_inline(&self, output: &mut Buffer, input: &[u8]) {
         unsafe {
             hoedown_document_render_inline(
-                self.document.0,
+                self.document.ptr,
                 output.get_mut(),
                 input.as_ptr(),
                 input.len() as size_t
@@ -61,7 +61,7 @@ impl Document {
 
 impl Drop for Document {
     fn drop(&mut self) {
-        unsafe { hoedown_document_free(self.document.0); }
+        unsafe { hoedown_document_free(self.document.ptr); }
     }
 }
 
