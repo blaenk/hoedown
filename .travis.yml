@@ -1,4 +1,6 @@
 language: rust
+before_install:
+  - sudo apt-get install -qq tidy
 before_script: chmod +x .travis/publish.sh
 after_success: .travis/publish.sh
 env:
