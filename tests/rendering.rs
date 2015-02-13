@@ -1,7 +1,6 @@
 extern crate hoedown;
 
 use hoedown::Markdown;
-use hoedown::renderer::Render;
 use hoedown::renderer::html;
 
 #[test]
