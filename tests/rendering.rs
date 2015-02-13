@@ -3,7 +3,6 @@ extern crate hoedown;
 use hoedown::Markdown;
 use hoedown::renderer::Render;
 use hoedown::renderer::html;
-use hoedown::buffer::Buffer;
 
 #[test]
 fn test_render_inline() {
