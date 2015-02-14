@@ -10,7 +10,7 @@ if cargo publish; then
   echo "Published new version on crates.io"
 
   echo "Creating new git tag"
-  version=$(cat Cargo.toml | sed -ne 's/version = "\(.*\)"/\1/p')
+  version=$(cat Cargo.toml | awk -F'"' '/version/{print $2}')
 
   git config user.name "Jorge Israel Peña"
   git config user.email "jorge.israel.p@gmail.com"
