@@ -25,5 +25,5 @@ touch .
 
 git add -A .
 git commit -m "rebuilding docs from ${rev}"
-git push -q upstream HEAD:gh-pages
+git push upstream HEAD:gh-pages
 
