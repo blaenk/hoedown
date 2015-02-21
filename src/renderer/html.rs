@@ -84,7 +84,7 @@ impl Html {
         };
 
         Html {
-            renderer: Unique(renderer),
+            renderer: unsafe { Unique::new(renderer) },
         }
     }
 
@@ -101,240 +101,240 @@ impl Html {
         };
 
         Html {
-            renderer: Unique(renderer),
+            renderer: unsafe { Unique::new(renderer) },
         }
     }
 
     /// Get a reference to the underlying hoedown renderer
     pub fn get(&self) -> &hoedown_renderer {
-        unsafe { &*self.renderer.ptr }
+        unsafe { self.renderer.get() }
     }
 
     /// Get a mutable reference to the underlying hoedown renderer
     pub fn get_mut(&mut self) -> &mut hoedown_renderer {
-        unsafe { &mut *self.renderer.ptr }
+        unsafe { self.renderer.get_mut() }
     }
 }
 
 impl Render for Html {
     unsafe fn to_hoedown(&mut self) -> hoedown_renderer {
-        *self.renderer.ptr
+        *self.renderer.get()
     }
 
     fn code_block(&mut self, ob: &mut Buffer, text: &Buffer, lang: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).blockcode.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().blockcode.unwrap() };
         func(ob.get_mut(), text.get(), lang.get(), data);
     }
 
     fn quote_block(&mut self, ob: &mut Buffer, content: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).blockquote.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().blockquote.unwrap() };
         func(ob.get_mut(), content.get(), data);
     }
 
     fn header(&mut self, ob: &mut Buffer, content: &Buffer, level: i32) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).header.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().header.unwrap() };
         func(ob.get_mut(), content.get(), level, data);
     }
 
     fn horizontal_rule(&mut self, ob: &mut Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).hrule.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().hrule.unwrap() };
         func(ob.get_mut(), data);
     }
 
     fn list(&mut self, ob: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).list.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().list.unwrap() };
         func(ob.get_mut(), content.get(), flags, data);
     }
 
     fn list_item(&mut self, ob: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).listitem.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().listitem.unwrap() };
         func(ob.get_mut(), content.get(), flags, data);
     }
 
     fn paragraph(&mut self, ob: &mut Buffer, content: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).paragraph.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().paragraph.unwrap() };
         func(ob.get_mut(), content.get(), data);
     }
 
     fn table(&mut self, ob: &mut Buffer, content: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).table.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().table.unwrap() };
         func(ob.get_mut(), content.get(), data);
     }
 
     fn table_header(&mut self, ob: &mut Buffer, content: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).table_header.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().table_header.unwrap() };
         func(ob.get_mut(), content.get(), data);
     }
 
     fn table_body(&mut self, ob: &mut Buffer, content: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).table_body.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().table_body.unwrap() };
         func(ob.get_mut(), content.get(), data);
     }
 
     fn table_row(&mut self, ob: &mut Buffer, content: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).table_row.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().table_row.unwrap() };
         func(ob.get_mut(), content.get(), data);
     }
 
     fn table_cell(&mut self, ob: &mut Buffer, content: &Buffer, flags: ::renderer::Table) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).table_cell.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().table_cell.unwrap() };
         func(ob.get_mut(), content.get(), flags, data);
     }
 
     fn footnotes(&mut self, ob: &mut Buffer, content: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).footnotes.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().footnotes.unwrap() };
         func(ob.get_mut(), content.get(), data);
     }
 
     fn footnote_definition(&mut self, ob: &mut Buffer, content: &Buffer, num: u32) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).footnote_def.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().footnote_def.unwrap() };
         func(ob.get_mut(), content.get(), num as u32, data);
     }
 
     fn html_block(&mut self, ob: &mut Buffer, text: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).blockhtml.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().blockhtml.unwrap() };
         func(ob.get_mut(), text.get(), data);
     }
 
     fn autolink(&mut self, ob: &mut Buffer, link: &Buffer, ty: ::renderer::AutoLink) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).autolink.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().autolink.unwrap() };
         func(ob.get_mut(), link.get(), ty, data) != 0
     }
 
     fn code_span(&mut self, ob: &mut Buffer, text: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).codespan.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().codespan.unwrap() };
         func(ob.get_mut(), text.get(), data) != 0
     }
 
     fn double_emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).double_emphasis.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().double_emphasis.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).emphasis.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().emphasis.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn underline(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).underline.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().underline.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn highlight(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).highlight.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().highlight.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn quote_span(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).quote.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().quote.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn image(&mut self, ob: &mut Buffer, link: &Buffer, title: &Buffer, alt: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).image.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().image.unwrap() };
         func(ob.get_mut(), link.get(), title.get(), alt.get(), data) != 0
     }
 
     fn line_break(&mut self, ob: &mut Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).linebreak.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().linebreak.unwrap() };
         func(ob.get_mut(), data) != 0
     }
 
     fn link(&mut self, ob: &mut Buffer, content: &Buffer, link: &Buffer, title: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).link.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().link.unwrap() };
         func(ob.get_mut(), content.get(), link.get(), title.get(), data) != 0
     }
 
     fn triple_emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).triple_emphasis.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().triple_emphasis.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn strikethrough(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).strikethrough.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().strikethrough.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn superscript(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).superscript.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().superscript.unwrap() };
         func(ob.get_mut(), content.get(), data) != 0
     }
 
     fn footnote_reference(&mut self, ob: &mut Buffer, num: u32) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).footnote_ref.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().footnote_ref.unwrap() };
         func(ob.get_mut(), num as u32, data) != 0
     }
 
     fn math(&mut self, ob: &mut Buffer, text: &Buffer, displaymode: i32) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).math.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().math.unwrap() };
         func(ob.get_mut(), text.get(), displaymode, data) != 0
     }
 
     fn html_span(&mut self, ob: &mut Buffer, text: &Buffer) -> bool {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).raw_html.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().raw_html.unwrap() };
         func(ob.get_mut(), text.get(), data) != 0
     }
 
     fn entity(&mut self, ob: &mut Buffer, text: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).entity.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().entity.unwrap() };
         func(ob.get_mut(), text.get(), data);
     }
 
     fn normal_text(&mut self, ob: &mut Buffer, text: &Buffer) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).normal_text.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().normal_text.unwrap() };
         func(ob.get_mut(), text.get(), data);
     }
 
     fn before_render(&mut self, ob: &mut Buffer, inline_render: bool) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).doc_header.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().doc_header.unwrap() };
         func(ob.get_mut(), inline_render as i32, data);
     }
 
     fn after_render(&mut self, ob: &mut Buffer, inline_render: bool) {
-        let data = self.renderer.ptr as *mut c_void;
-        let func = unsafe { (*self.renderer.ptr).doc_footer.unwrap() };
+        let data = *self.renderer as *mut c_void;
+        let func = unsafe { self.renderer.get().doc_footer.unwrap() };
         func(ob.get_mut(), inline_render as i32, data);
     }
 }
 
 impl Drop for Html {
     fn drop(&mut self) {
-        unsafe { hoedown_html_renderer_free(self.renderer.ptr); }
+        unsafe { hoedown_html_renderer_free(*self.renderer); }
     }
 }
 

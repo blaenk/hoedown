@@ -19,8 +19,6 @@
 #![feature(core)]
 #![feature(libc)]
 #![feature(io)]
-// TODO: this should go inside bitflags!
-#![feature(hash)]
 
 extern crate libc;
 
@@ -32,6 +30,8 @@ pub mod buffer;
 pub mod renderer;
 mod document;
 mod wrappers;
+
+use std::io::{self, Write, Read};
 
 bitflags! {
     #[doc="Constants for the various Hoedown extensions"]
@@ -128,10 +128,11 @@ impl Markdown {
     ///
     /// Note that `Buffer` also implements `Reader`, so it can be used with this
     /// method.
-    pub fn new<R>(mut reader: R) -> Markdown where R: Reader {
-        let contents = reader.read_to_end().unwrap();
+    pub fn new<R>(mut reader: R) -> Markdown where R: Read {
+        let mut contents = Vec::new();
+        reader.read_to_end(&mut contents).unwrap();
         let mut buffer = buffer::Buffer::new(64);
-        buffer.write_all(contents.as_slice()).unwrap();
+        buffer.write_all(&contents).unwrap();
 
         Markdown {
             contents: buffer,
@@ -177,9 +178,9 @@ impl Markdown {
         output
     }
 
-    /// Render the document to a given Writer
-    pub fn render<R, W>(&self, renderer: R, writer: &mut W) -> ::std::old_io::IoResult<()>
-    where R: renderer::Render, W: Writer {
+    /// Render the document to a given Write
+    pub fn render<R, W>(&self, renderer: R, writer: &mut W) -> io::Result<()>
+    where R: renderer::Render, W: Write {
         let output = self.render_to_buffer(renderer);
         writer.write_all(output.as_slice())
     }
@@ -200,9 +201,9 @@ impl Markdown {
         output
     }
 
-    /// Render the document as inline to a given Writer
-    pub fn render_inline<R, W>(&self, renderer: R, writer: &mut W) -> ::std::old_io::IoResult<()>
-    where R: renderer::Render, W: Writer {
+    /// Render the document as inline to a given Write
+    pub fn render_inline<R, W>(&self, renderer: R, writer: &mut W) -> io::Result<()>
+    where R: renderer::Render, W: Write {
         let output = self.render_inline_to_buffer(renderer);
         writer.write_all(output.as_slice())
     }

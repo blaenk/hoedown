@@ -3,6 +3,8 @@
 use buffer::Buffer;
 use super::Render;
 
+use std::io::Write;
+
 mod types {
     use buffer::Buffer;
 
@@ -52,6 +54,7 @@ mod types {
 /// Handlers are passed to this type in the form of closures.
 ///
 ///``` rust
+///# use std::io::Write;
 ///# use hoedown::Markdown;
 ///# use hoedown::renderer::closures::Closures;
 ///# use hoedown::buffer::Buffer;
@@ -62,9 +65,9 @@ mod types {
 ///});
 ///
 ///closures.on_emphasis(|output: &mut Buffer, content: &Buffer| -> bool {
-///    output.write_str("~~");
+///    output.write("~~".as_bytes());
 ///    output.pipe(content);
-///    output.write_str("~~");
+///    output.write("~~".as_bytes());
 ///    true
 ///});
 ///
@@ -164,7 +167,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.code_block {
             func(output, text, lang);
         } else {
-            output.write_str("MISSING CODE_BLOCK HANDLER\n").unwrap();
+            output.write("MISSING CODE_BLOCK HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -172,7 +175,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.quote_block {
             func(output, content);
         } else {
-            output.write_str("MISSING quote_block HANDLER\n").unwrap();
+            output.write("MISSING quote_block HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -180,7 +183,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.header {
             func(output, content, level);
         } else {
-            output.write_str("MISSING HEADER HANDLER\n").unwrap();
+            output.write("MISSING HEADER HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -188,7 +191,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.horizontal_rule {
             func(output);
         } else {
-            output.write_str("MISSING HORIZONTAL_RULE HANDLER\n").unwrap();
+            output.write("MISSING HORIZONTAL_RULE HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -196,7 +199,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.list {
             func(output, content, flags);
         } else {
-            output.write_str("MISSING LIST HANDLER\n").unwrap();
+            output.write("MISSING LIST HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -204,7 +207,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.list_item {
             func(output, content, flags);
         } else {
-            output.write_str("MISSING list_item HANDLER\n").unwrap();
+            output.write("MISSING list_item HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -212,7 +215,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.paragraph {
             func(output, content);
         } else {
-            output.write_str("MISSING PARAGRAPH HANDLER\n").unwrap();
+            output.write("MISSING PARAGRAPH HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -220,7 +223,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table {
             func(output, content);
         } else {
-            output.write_str("MISSING TABLE HANDLER\n").unwrap();
+            output.write("MISSING TABLE HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -228,7 +231,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_header {
             func(output, content);
         } else {
-            output.write_str("MISSING TABLE_HEADER HANDLER\n").unwrap();
+            output.write("MISSING TABLE_HEADER HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -236,7 +239,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_body {
             func(output, content);
         } else {
-            output.write_str("MISSING TABLE_BODY HANDLER\n").unwrap();
+            output.write("MISSING TABLE_BODY HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -244,7 +247,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_row {
             func(output, content);
         } else {
-            output.write_str("MISSING TABLE_ROW HANDLER\n").unwrap();
+            output.write("MISSING TABLE_ROW HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -252,7 +255,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_cell {
             func(output, content, flags);
         } else {
-            output.write_str("MISSING TABLE_CELL HANDLER\n").unwrap();
+            output.write("MISSING TABLE_CELL HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -260,7 +263,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.footnotes {
             func(output, content);
         } else {
-            output.write_str("MISSING FOOTNOTES HANDLER\n").unwrap();
+            output.write("MISSING FOOTNOTES HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -268,7 +271,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.footnote_definition {
             func(output, content, num as u32);
         } else {
-            output.write_str("MISSING FOOTNOTE_DEFINITION HANDLER\n").unwrap();
+            output.write("MISSING FOOTNOTE_DEFINITION HANDLER\n".as_bytes()).unwrap();
         }
     }
 
@@ -276,7 +279,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.html_block {
             func(output, text);
         } else {
-            output.write_str("MISSING html_block HANDLER\n").unwrap();
+            output.write("MISSING html_block HANDLER\n".as_bytes()).unwrap();
         }
     }
 

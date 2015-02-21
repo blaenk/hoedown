@@ -1,14 +1,18 @@
 #![feature(io)]
-#![feature(path)]
+#![feature(old_io)]
+#![feature(old_path)]
 #![feature(core)]
+#![feature(fs)]
 
 extern crate hoedown;
 extern crate glob;
 
 use std::result::Result;
-use std::old_io::fs::File;
+use std::fs::File;
 use std::old_io::Command;
 use glob::glob;
+
+use std::io::Read;
 
 use hoedown::Markdown;
 use hoedown::renderer::html;
@@ -39,7 +43,9 @@ fn test_markdown() {
         let html = html::Html::new(html::Flags::empty(), 0);
 
         let target = source.with_extension("html");
-        let target_contents = File::open(&target).read_to_string().unwrap();
+        let mut target_contents = String::new();
+
+        File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
         let output = doc.render_to_buffer(html);
 
@@ -57,7 +63,9 @@ fn test_math() {
     let html = html::Html::new(html::Flags::empty(), 0);
 
     let target = source.with_extension("html");
-    let target_contents = File::open(&target).read_to_string().unwrap();
+    let mut target_contents = String::new();
+
+    File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
     let output = doc.render_to_buffer(html);
 
@@ -74,7 +82,9 @@ fn test_toc() {
     let renderer = html::Html::toc(3);
 
     let target = source.with_extension("html");
-    let target_contents = File::open(&target).read_to_string().unwrap();
+    let mut target_contents = String::new();
+
+    File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
     let output = doc.render_to_buffer(renderer);
 

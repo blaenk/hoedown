@@ -6,6 +6,8 @@ use hoedown::Markdown;
 use hoedown::renderer::{self, Render};
 use hoedown::buffer::Buffer;
 
+use std::io::Write;
+
 struct BlockRenderer;
 
 impl Render for BlockRenderer {
@@ -17,63 +19,63 @@ impl Render for BlockRenderer {
         let s = format!("[CODE_BLOCK language={}] {}",
                         language.as_str().unwrap(),
                         input.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn html_block(&mut self, output: &mut Buffer, input: &Buffer) {
         let s = format!("[HTML_BLOCK] {}", input.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn quote_block(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("[QUOTE_BLOCK] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn header(&mut self, output: &mut Buffer, input: &Buffer, level: i32) {
         let s = format!("[HEADER level={}] {}", level, input.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn horizontal_rule(&mut self, output: &mut Buffer) {
-        output.write_str("[HORIZONTAL_RULE]").unwrap();
+        output.write("[HORIZONTAL_RULE]".as_bytes()).unwrap();
     }
 
     fn list(&mut self, output: &mut Buffer, input: &Buffer, list_flags: renderer::list::List) {
         let is_ordered = list_flags.intersects(renderer::list::ORDERED);
         let s = format!("[LIST ordered={}]\n{}", is_ordered, input.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn list_item(&mut self, output: &mut Buffer, input: &Buffer, list_flags: renderer::list::List) {
         let is_ordered = list_flags.intersects(renderer::list::ORDERED);
         let s = format!("[LISTITEM ordered={}] {}", is_ordered, input.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn table(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("[TABLE]\n{}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn table_header(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("[TABLE_HEADER]{}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn table_body(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("\n[TABLE_BODY]{}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn table_row(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("\n[TABLE_ROW]\n{}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, _flags: renderer::Table) {
         let s = format!("[TABLE_CELL text={}]", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 }
 
@@ -85,11 +87,11 @@ impl Render for DocRenderer {
     }
 
     fn before_render(&mut self, output: &mut Buffer, _inline_render: bool) {
-        output.write_str("One.\n").unwrap();
+        output.write("One.\n".as_bytes()).unwrap();
     }
 
     fn after_render(&mut self, output: &mut Buffer, _inline_render: bool) {
-        output.write_str("\nFive.").unwrap();
+        output.write("\nFive.".as_bytes()).unwrap();
     }
 }
 
@@ -102,17 +104,17 @@ impl Render for FootnotesRenderer {
 
     fn footnotes(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("[FOOTNOTES]\n{}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn footnote_definition(&mut self, output: &mut Buffer, content: &Buffer, number: u32) {
         let s = format!("[FOOTNOTE_DEFINITION #{}] {}", number, content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn footnote_reference(&mut self, output: &mut Buffer, number: u32) -> bool {
         let s = format!("[FOOTNOTE_REFERENCE #{}]", number);
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 }
@@ -126,12 +128,12 @@ impl Render for LowLevelRenderer {
 
     fn entity(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("[ENTITY] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 
     fn normal_text(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("[NORMAL_TEXT] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 }
 struct ParagraphRenderer;
@@ -139,7 +141,7 @@ struct ParagraphRenderer;
 impl Render for ParagraphRenderer {
     fn paragraph(&mut self, output: &mut Buffer, content: &Buffer) {
         let s = format!("[PARAGRAPH] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
     }
 }
 
@@ -151,37 +153,37 @@ impl Render for SpanRenderer {
     }
 
     fn line_break(&mut self, output: &mut Buffer) -> bool {
-        output.write_str("[LINE_BREAK]").unwrap();
+        output.write("[LINE_BREAK]".as_bytes()).unwrap();
         true
     }
 
     fn autolink(&mut self, output: &mut Buffer, content: &Buffer, link_type: renderer::AutoLink) -> bool {
         let s = format!("[AUTOLINK type={:?}] {}", link_type, content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn code_span(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[CODE_SPAN] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn double_emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[DOUBLE_EMPHASIS] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[EMPHASIS] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn highlight(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[HIGHLIGHT] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
@@ -190,7 +192,7 @@ impl Render for SpanRenderer {
                         link.as_str().unwrap(),
                         title.as_str().unwrap(),
                         alt.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
@@ -199,37 +201,37 @@ impl Render for SpanRenderer {
                         link.as_str().unwrap(),
                         title.as_str().unwrap(),
                         content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn quote_span(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[QUOTE] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn html_span(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[HTML_SPAN] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn strikethrough(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[STRIKETHROUGH] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn superscript(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[SUPERSCRIPT] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 
     fn triple_emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[TRIPLE_EMPHASIS] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 }
@@ -243,7 +245,7 @@ impl Render for UnderlineRenderer {
 
     fn underline(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
         let s = format!("[UNDERLINE] {}", content.as_str().unwrap());
-        output.write_str(&s).unwrap();
+        output.write(s.as_bytes()).unwrap();
         true
     }
 }
