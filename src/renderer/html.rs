@@ -51,11 +51,12 @@ bitflags! {
 /// documentation example.
 ///
 ///``` rust
+///# #![feature(io)]
 ///# use hoedown::renderer::html::{Html, Flags};
 ///# use hoedown::renderer::Render;
 ///# use hoedown::buffer::Buffer;
 ///let input = Buffer::from_str("EMPHASIZE");
-///let mut output = Buffer::new(64us);
+///let mut output = Buffer::new(64usize);
 ///let mut html_renderer = Html::new(Flags::empty(), 0);
 ///
 ///html_renderer.emphasis(&mut output, &input);

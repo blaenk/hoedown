@@ -1,7 +1,7 @@
 #![feature(io)]
-#![feature(old_io)]
 #![feature(old_path)]
 #![feature(core)]
+#![feature(process)]
 #![feature(fs)]
 
 extern crate hoedown;
@@ -9,27 +9,30 @@ extern crate glob;
 
 use std::result::Result;
 use std::fs::File;
-use std::old_io::Command;
+use std::process::{Command, Stdio};
 use glob::glob;
 
-use std::io::Read;
+use std::io::{Read, Write};
 
 use hoedown::Markdown;
 use hoedown::renderer::html;
 
 fn tidy(input: &str) -> String {
-    let mut process = Command::new("tidy")
-                      .arg("--show-body-only").arg("1")
-                      .arg("--quiet").arg("1")
-                      .arg("--show-warnings").arg("0")
-                      .arg("-utf8")
-                      .spawn()
-                      .unwrap();
+    let mut process =
+        Command::new("tidy")
+        .arg("--show-body-only").arg("1")
+        .arg("--quiet").arg("1")
+        .arg("--show-warnings").arg("0")
+        .arg("-utf8")
+        .stdin(Stdio::capture())
+        .stdout(Stdio::capture())
+        .spawn()
+        .unwrap();
 
-    process.stdin.as_mut().unwrap().write_str(input).unwrap();
+    process.stdin.as_mut().unwrap().write(input.as_bytes()).unwrap();
 
     let output = process.wait_with_output().unwrap();
-    String::from_utf8(output.output).unwrap()
+    String::from_utf8(output.stdout).unwrap()
 }
 
 #[test]

@@ -54,6 +54,7 @@ mod types {
 /// Handlers are passed to this type in the form of closures.
 ///
 ///``` rust
+///# #![feature(io)]
 ///# use std::io::Write;
 ///# use hoedown::Markdown;
 ///# use hoedown::renderer::closures::Closures;
@@ -65,9 +66,9 @@ mod types {
 ///});
 ///
 ///closures.on_emphasis(|output: &mut Buffer, content: &Buffer| -> bool {
-///    output.write("~~".as_bytes());
+///    output.write("~~".as_bytes()).unwrap();
 ///    output.pipe(content);
-///    output.write("~~".as_bytes());
+///    output.write("~~".as_bytes()).unwrap();
 ///    true
 ///});
 ///
