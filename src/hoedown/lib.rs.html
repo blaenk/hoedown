@@ -250,6 +250,7 @@
 <span id="208">208</span>
 <span id="209">209</span>
 <span id="210">210</span>
+<span id="211">211</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! This crate provides bindings for the [hoedown] markdown processing library.</span>
 <span class='doccomment'>//! It has a `Markdown` type which stores markdown text in a `Buffer`. The</span>
@@ -272,8 +273,6 @@
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>core</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>libc</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>io</span>)]</span>
-<span class='comment'>// TODO: this should go inside bitflags!</span>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>hash</span>)]</span>
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>libc</span>;
 
@@ -285,6 +284,8 @@
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>renderer</span>;
 <span class='kw'>mod</span> <span class='ident'>document</span>;
 <span class='kw'>mod</span> <span class='ident'>wrappers</span>;
+
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::{<span class='self'>self</span>, <span class='ident'>Write</span>, <span class='ident'>Read</span>};
 
 <span class='macro'>bitflags</span><span class='macro'>!</span> {
     <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Constants for the various Hoedown extensions&quot;</span>]</span>
@@ -381,10 +382,11 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Note that `Buffer` also implements `Reader`, so it can be used with this</span>
     <span class='doccomment'>/// method.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='kw-2'>mut</span> <span class='ident'>reader</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Markdown</span> <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>Reader</span> {
-        <span class='kw'>let</span> <span class='ident'>contents</span> <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>read_to_end</span>().<span class='ident'>unwrap</span>();
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='kw-2'>mut</span> <span class='ident'>reader</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Markdown</span> <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>Read</span> {
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>contents</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
+        <span class='ident'>reader</span>.<span class='ident'>read_to_end</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>contents</span>).<span class='ident'>unwrap</span>();
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>buffer</span> <span class='op'>=</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>::<span class='ident'>new</span>(<span class='number'>64</span>);
-        <span class='ident'>buffer</span>.<span class='ident'>write_all</span>(<span class='ident'>contents</span>.<span class='ident'>as_slice</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>buffer</span>.<span class='ident'>write_all</span>(<span class='kw-2'>&amp;</span><span class='ident'>contents</span>).<span class='ident'>unwrap</span>();
 
         <span class='ident'>Markdown</span> {
             <span class='ident'>contents</span>: <span class='ident'>buffer</span>,
@@ -430,9 +432,9 @@
         <span class='ident'>output</span>
     }
 
-    <span class='doccomment'>/// Render the document to a given Writer</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>render</span><span class='op'>&lt;</span><span class='ident'>R</span>, <span class='ident'>W</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>renderer</span>: <span class='ident'>R</span>, <span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>W</span>) <span class='op'>-&gt;</span> ::<span class='ident'>std</span>::<span class='ident'>old_io</span>::<span class='ident'>IoResult</span><span class='op'>&lt;</span>()<span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>renderer</span>::<span class='ident'>Render</span>, <span class='ident'>W</span>: <span class='ident'>Writer</span> {
+    <span class='doccomment'>/// Render the document to a given Write</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>render</span><span class='op'>&lt;</span><span class='ident'>R</span>, <span class='ident'>W</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>renderer</span>: <span class='ident'>R</span>, <span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>W</span>) <span class='op'>-&gt;</span> <span class='ident'>io</span>::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span>()<span class='op'>&gt;</span>
+    <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>renderer</span>::<span class='ident'>Render</span>, <span class='ident'>W</span>: <span class='ident'>Write</span> {
         <span class='kw'>let</span> <span class='ident'>output</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>render_to_buffer</span>(<span class='ident'>renderer</span>);
         <span class='ident'>writer</span>.<span class='ident'>write_all</span>(<span class='ident'>output</span>.<span class='ident'>as_slice</span>())
     }
@@ -453,9 +455,9 @@
         <span class='ident'>output</span>
     }
 
-    <span class='doccomment'>/// Render the document as inline to a given Writer</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>render_inline</span><span class='op'>&lt;</span><span class='ident'>R</span>, <span class='ident'>W</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>renderer</span>: <span class='ident'>R</span>, <span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>W</span>) <span class='op'>-&gt;</span> ::<span class='ident'>std</span>::<span class='ident'>old_io</span>::<span class='ident'>IoResult</span><span class='op'>&lt;</span>()<span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>renderer</span>::<span class='ident'>Render</span>, <span class='ident'>W</span>: <span class='ident'>Writer</span> {
+    <span class='doccomment'>/// Render the document as inline to a given Write</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>render_inline</span><span class='op'>&lt;</span><span class='ident'>R</span>, <span class='ident'>W</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>renderer</span>: <span class='ident'>R</span>, <span class='ident'>writer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>W</span>) <span class='op'>-&gt;</span> <span class='ident'>io</span>::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span>()<span class='op'>&gt;</span>
+    <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>renderer</span>::<span class='ident'>Render</span>, <span class='ident'>W</span>: <span class='ident'>Write</span> {
         <span class='kw'>let</span> <span class='ident'>output</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>render_inline_to_buffer</span>(<span class='ident'>renderer</span>);
         <span class='ident'>writer</span>.<span class='ident'>write_all</span>(<span class='ident'>output</span>.<span class='ident'>as_slice</span>())
     }

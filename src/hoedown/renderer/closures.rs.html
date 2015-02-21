@@ -656,11 +656,16 @@
 <span id="614">614</span>
 <span id="615">615</span>
 <span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Contains the Closures renderer</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>non_camel_case_types</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>Render</span>;
+
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Write</span>;
 
 <span class='kw'>mod</span> <span class='ident'>types</span> {
     <span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
@@ -711,6 +716,7 @@
 <span class='doccomment'>/// Handlers are passed to this type in the form of closures.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///``` rust</span>
+<span class='doccomment'>///# use std::io::Write;</span>
 <span class='doccomment'>///# use hoedown::Markdown;</span>
 <span class='doccomment'>///# use hoedown::renderer::closures::Closures;</span>
 <span class='doccomment'>///# use hoedown::buffer::Buffer;</span>
@@ -721,9 +727,9 @@
 <span class='doccomment'>///});</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///closures.on_emphasis(|output: &amp;mut Buffer, content: &amp;Buffer| -&gt; bool {</span>
-<span class='doccomment'>///    output.write_str(&quot;~~&quot;);</span>
+<span class='doccomment'>///    output.write(&quot;~~&quot;.as_bytes());</span>
 <span class='doccomment'>///    output.pipe(content);</span>
-<span class='doccomment'>///    output.write_str(&quot;~~&quot;);</span>
+<span class='doccomment'>///    output.write(&quot;~~&quot;.as_bytes());</span>
 <span class='doccomment'>///    true</span>
 <span class='doccomment'>///});</span>
 <span class='doccomment'>///</span>
@@ -823,7 +829,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>code_block</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>, <span class='ident'>lang</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING CODE_BLOCK HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING CODE_BLOCK HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -831,7 +837,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>quote_block</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING quote_block HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING quote_block HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -839,7 +845,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>header</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>level</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING HEADER HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING HEADER HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -847,7 +853,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>horizontal_rule</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING HORIZONTAL_RULE HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING HORIZONTAL_RULE HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -855,7 +861,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>list</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING LIST HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING LIST HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -863,7 +869,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>list_item</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING list_item HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING list_item HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -871,7 +877,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>paragraph</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING PARAGRAPH HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING PARAGRAPH HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -879,7 +885,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING TABLE HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -887,7 +893,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_header</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING TABLE_HEADER HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_HEADER HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -895,7 +901,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_body</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING TABLE_BODY HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_BODY HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -903,7 +909,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_row</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING TABLE_ROW HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_ROW HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -911,7 +917,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_cell</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING TABLE_CELL HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_CELL HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -919,7 +925,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>footnotes</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING FOOTNOTES HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING FOOTNOTES HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -927,7 +933,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>footnote_definition</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>num</span> <span class='kw'>as</span> <span class='ident'>u32</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING FOOTNOTE_DEFINITION HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING FOOTNOTE_DEFINITION HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
@@ -935,7 +941,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>html_block</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write_str</span>(<span class='string'>&quot;MISSING html_block HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING html_block HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
     }
 
