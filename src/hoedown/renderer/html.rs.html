@@ -380,6 +380,7 @@
 <span id="338">338</span>
 <span id="339">339</span>
 <span id="340">340</span>
+<span id="341">341</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Contains the html renderer and utilities</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ptr</span>::<span class='ident'>Unique</span>;
@@ -434,11 +435,12 @@
 <span class='doccomment'>/// documentation example.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///``` rust</span>
+<span class='doccomment'>///# #![feature(io)]</span>
 <span class='doccomment'>///# use hoedown::renderer::html::{Html, Flags};</span>
 <span class='doccomment'>///# use hoedown::renderer::Render;</span>
 <span class='doccomment'>///# use hoedown::buffer::Buffer;</span>
 <span class='doccomment'>///let input = Buffer::from_str(&quot;EMPHASIZE&quot;);</span>
-<span class='doccomment'>///let mut output = Buffer::new(64us);</span>
+<span class='doccomment'>///let mut output = Buffer::new(64usize);</span>
 <span class='doccomment'>///let mut html_renderer = Html::new(Flags::empty(), 0);</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///html_renderer.emphasis(&amp;mut output, &amp;input);</span>

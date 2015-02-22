@@ -659,6 +659,7 @@
 <span id="617">617</span>
 <span id="618">618</span>
 <span id="619">619</span>
+<span id="620">620</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Contains the Closures renderer</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>non_camel_case_types</span>)]</span>
@@ -716,6 +717,7 @@
 <span class='doccomment'>/// Handlers are passed to this type in the form of closures.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///``` rust</span>
+<span class='doccomment'>///# #![feature(io)]</span>
 <span class='doccomment'>///# use std::io::Write;</span>
 <span class='doccomment'>///# use hoedown::Markdown;</span>
 <span class='doccomment'>///# use hoedown::renderer::closures::Closures;</span>
@@ -727,9 +729,9 @@
 <span class='doccomment'>///});</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///closures.on_emphasis(|output: &amp;mut Buffer, content: &amp;Buffer| -&gt; bool {</span>
-<span class='doccomment'>///    output.write(&quot;~~&quot;.as_bytes());</span>
+<span class='doccomment'>///    output.write(&quot;~~&quot;.as_bytes()).unwrap();</span>
 <span class='doccomment'>///    output.pipe(content);</span>
-<span class='doccomment'>///    output.write(&quot;~~&quot;.as_bytes());</span>
+<span class='doccomment'>///    output.write(&quot;~~&quot;.as_bytes()).unwrap();</span>
 <span class='doccomment'>///    true</span>
 <span class='doccomment'>///});</span>
 <span class='doccomment'>///</span>
