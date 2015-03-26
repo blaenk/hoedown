@@ -933,7 +933,7 @@
 
     <span class='kw'>fn</span> <span class='ident'>footnote_definition</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>num</span>: <span class='ident'>u32</span>) {
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>footnote_definition</span> {
-            <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>num</span> <span class='kw'>as</span> <span class='ident'>u32</span>);
+            <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>num</span>);
         } <span class='kw'>else</span> {
             <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING FOOTNOTE_DEFINITION HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
         }
@@ -1053,7 +1053,7 @@
 
     <span class='kw'>fn</span> <span class='ident'>footnote_reference</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>num</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>footnote_reference</span> {
-            <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>num</span> <span class='kw'>as</span> <span class='ident'>u32</span>)
+            <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>num</span>)
         } <span class='kw'>else</span> {
             <span class='boolval'>false</span>
         }
