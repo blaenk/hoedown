@@ -1,6 +1,6 @@
 //! Contains the html renderer and utilities
 use std::ptr::Unique;
-use libc::{c_void, c_int};
+use libc::c_void;
 
 use buffer::Buffer;
 use ffi::{
@@ -81,7 +81,7 @@ impl Html {
     /// to the `toc` method.
     pub fn new(flags: Flags, nesting_level: i32) -> Html {
         let renderer = unsafe {
-            hoedown_html_renderer_new(flags.bits(), nesting_level as c_int)
+            hoedown_html_renderer_new(flags.bits(), nesting_level)
         };
 
         Html {
@@ -98,7 +98,7 @@ impl Html {
     /// same value for the `nesting_level` parameter.
     pub fn toc(nesting_level: i32) -> Html {
         let renderer = unsafe {
-           hoedown_html_toc_renderer_new(nesting_level as c_int)
+           hoedown_html_toc_renderer_new(nesting_level)
         };
 
         Html {
@@ -203,7 +203,7 @@ impl Render for Html {
     fn footnote_definition(&mut self, ob: &mut Buffer, content: &Buffer, num: u32) {
         let data = *self.renderer as *mut c_void;
         let func = unsafe { self.renderer.get().footnote_def.unwrap() };
-        func(ob.get_mut(), content.get(), num as u32, data);
+        func(ob.get_mut(), content.get(), num, data);
     }
 
     fn html_block(&mut self, ob: &mut Buffer, text: &Buffer) {
@@ -293,7 +293,7 @@ impl Render for Html {
     fn footnote_reference(&mut self, ob: &mut Buffer, num: u32) -> bool {
         let data = *self.renderer as *mut c_void;
         let func = unsafe { self.renderer.get().footnote_ref.unwrap() };
-        func(ob.get_mut(), num as u32, data) != 0
+        func(ob.get_mut(), num, data) != 0
     }
 
     fn math(&mut self, ob: &mut Buffer, text: &Buffer, displaymode: i32) -> bool {

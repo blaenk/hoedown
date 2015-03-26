@@ -1,8 +1,4 @@
-#![feature(io)]
-#![feature(old_path)]
-#![feature(core)]
-#![feature(process)]
-#![feature(fs)]
+#![feature(convert)]
 
 extern crate hoedown;
 extern crate glob;
@@ -11,6 +7,8 @@ use std::result::Result;
 use std::fs::File;
 use std::process::{Command, Stdio};
 use glob::glob;
+
+use std::path::PathBuf;
 
 use std::io::{Read, Write};
 
@@ -24,8 +22,8 @@ fn tidy(input: &str) -> String {
         .arg("--quiet").arg("1")
         .arg("--show-warnings").arg("0")
         .arg("-utf8")
-        .stdin(Stdio::capture())
-        .stdout(Stdio::capture())
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
         .spawn()
         .unwrap();
 
@@ -40,8 +38,8 @@ fn test_markdown() {
     for source in
         glob("libhoedown/test/MarkdownTest_1.0.3/Tests/*.text").unwrap()
         .filter_map(Result::ok)
-        .chain(Some(Path::new("libhoedown/test/Tests/Escape character.text")).into_iter())
-        .chain(Some(Path::new("tests/fixtures/unicode.txt")).into_iter()) {
+        .chain(Some(PathBuf::from("libhoedown/test/Tests/Escape character.text")).into_iter())
+        .chain(Some(PathBuf::from("tests/fixtures/unicode.txt")).into_iter()) {
         let doc = Markdown::new(File::open(&source).unwrap());
         let html = html::Html::new(html::Flags::empty(), 0);
 
@@ -53,7 +51,7 @@ fn test_markdown() {
         let output = doc.render_to_buffer(html);
 
         let rendered_tidy = tidy(output.as_str().unwrap());
-        let target_tidy = tidy(target_contents.as_slice());
+        let target_tidy = tidy(&target_contents[..]);
 
         assert_eq!(rendered_tidy, target_tidy);
     }
@@ -61,7 +59,7 @@ fn test_markdown() {
 
 #[test]
 fn test_math() {
-    let source = Path::new("libhoedown/test/Tests/Math.text");
+    let source = PathBuf::from("libhoedown/test/Tests/Math.text");
     let doc = Markdown::new(File::open(&source).unwrap()).with_extensions(hoedown::MATH);
     let html = html::Html::new(html::Flags::empty(), 0);
 
@@ -73,14 +71,14 @@ fn test_math() {
     let output = doc.render_to_buffer(html);
 
     let rendered_tidy = tidy(output.as_str().unwrap());
-    let target_tidy = tidy(target_contents.as_slice());
+    let target_tidy = tidy(&target_contents[..]);
 
     assert_eq!(rendered_tidy, target_tidy);
 }
 
 #[test]
 fn test_toc() {
-    let source = Path::new("libhoedown/test/Tests/Formatting in Table of Contents.text");
+    let source = PathBuf::from("libhoedown/test/Tests/Formatting in Table of Contents.text");
     let doc = Markdown::new(File::open(&source).unwrap());
     let renderer = html::Html::toc(3);
 

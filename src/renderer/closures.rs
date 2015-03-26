@@ -270,7 +270,7 @@ impl<'a> Render for Closures<'a> {
 
     fn footnote_definition(&mut self, output: &mut Buffer, content: &Buffer, num: u32) {
         if let Some(ref mut func) = self.footnote_definition {
-            func(output, content, num as u32);
+            func(output, content, num);
         } else {
             output.write("MISSING FOOTNOTE_DEFINITION HANDLER\n".as_bytes()).unwrap();
         }
@@ -390,7 +390,7 @@ impl<'a> Render for Closures<'a> {
 
     fn footnote_reference(&mut self, output: &mut Buffer, num: u32) -> bool {
         if let Some(ref mut func) = self.footnote_reference {
-            func(output, num as u32)
+            func(output, num)
         } else {
             false
         }

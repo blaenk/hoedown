@@ -17,7 +17,6 @@
 //!```
 
 #![feature(core)]
-#![feature(io)]
 #![feature(unique)]
 
 extern crate libc;

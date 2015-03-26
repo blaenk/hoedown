@@ -87,7 +87,7 @@ impl Buffer {
     /// Get a slice of the buffer's contents
     pub fn as_slice<'a>(&'a self) -> &'a [u8] {
         unsafe {
-            let data = self.buffer.get().data as *const u8;
+            let data = self.buffer.get().data;
             let size = self.buffer.get().size as usize;
 
             mem::transmute(slice::from_raw_parts(data, size))

@@ -1,5 +1,3 @@
-#![feature(io)]
-
 extern crate hoedown;
 
 use hoedown::Markdown;
