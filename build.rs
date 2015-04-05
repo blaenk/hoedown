@@ -1,8 +1,4 @@
 #![feature(plugin)]
-#![feature(env)]
-#![feature(fs)]
-#![feature(path)]
-#![feature(process)]
 
 #![allow(unused_must_use)]
 #![allow(dead_code)]

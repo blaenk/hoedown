@@ -47,7 +47,6 @@ mod callbacks {
 }
 
 #[allow(raw_pointer_derive)]
-#[derive(Copy)]
 #[repr(C)]
 pub struct hoedown_renderer {
     pub opaque: *mut c_void,
@@ -88,6 +87,13 @@ pub struct hoedown_renderer {
     pub doc_footer: Option<callbacks::doc_footer>,
 }
 
+impl Copy for hoedown_renderer {}
+impl Clone for hoedown_renderer {
+    fn clone(&self) -> hoedown_renderer {
+        *self
+    }
+}
+
 #[allow(unused)]
 #[repr(C)]
 pub struct hoedown_html_renderer_state {
@@ -107,7 +113,7 @@ struct html_toc_data {
 }
 
 #[allow(raw_pointer_derive)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 #[repr(C)]
 pub struct hoedown_buffer {
     pub data: *mut u8,

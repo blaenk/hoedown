@@ -1,5 +1,3 @@
-#![feature(convert)]
-
 extern crate hoedown;
 extern crate glob;
 

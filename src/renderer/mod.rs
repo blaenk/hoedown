@@ -573,7 +573,7 @@ pub mod list {
 }
 
 /// The table alignment or position
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub enum Table {
     Left = 1,
     Right,
@@ -583,7 +583,7 @@ pub enum Table {
 }
 
 /// The type of an autolink candidate
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub enum AutoLink {
     Normal = 1,
     Email,
