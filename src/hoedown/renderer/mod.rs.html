@@ -1210,7 +1210,7 @@
 }
 
 <span class='doccomment'>/// The table alignment or position</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Copy</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Table</span> {
     <span class='ident'>Left</span> <span class='op'>=</span> <span class='number'>1</span>,
     <span class='ident'>Right</span>,
@@ -1220,7 +1220,7 @@
 }
 
 <span class='doccomment'>/// The type of an autolink candidate</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Copy</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>, <span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>AutoLink</span> {
     <span class='ident'>Normal</span> <span class='op'>=</span> <span class='number'>1</span>,
     <span class='ident'>Email</span>,

@@ -43,7 +43,7 @@
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>regex</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/regex/lib.rs.html#11-422'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/regex/lib.rs.html#11-421'>[src]</a></span></h1>
 <div class='docblock'><p>This crate provides a native implementation of regular expressions that is
 heavily based on RE2 both in syntax and in implementation. Notably,
 backreferences and arbitrary lookahead/lookbehind assertions are not
@@ -229,8 +229,8 @@ with the syntax supported by RE2.</p>
 [xyz]       A character class matching either x, y or z.
 [^xyz]      A character class matching any character except x, y and z.
 [a-z]       A character class matching any character in range a-z.
-\d          Perl character class ([0-9])
-\D          Negated Perl character class ([^0-9])
+\d          digit (\p{Nd})
+\D          not digit
 [:alpha:]   ASCII character class ([A-Za-z])
 [:^alpha:]  Negated ASCII character class ([^A-Za-z])
 \pN         One letter name Unicode character class
