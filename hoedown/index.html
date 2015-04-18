@@ -43,30 +43,22 @@
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>hoedown</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' class='srclink' href='../src/hoedown/lib.rs.html#1-208'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/hoedown/lib.rs.html#1-37'>[src]</a></span></h1>
 <div class='docblock'><p>This crate provides bindings for the <a href="https://github.com/hoedown/hoedown">hoedown</a> markdown processing library.
  It has a <code>Markdown</code> type which stores markdown text in a <code>Buffer</code>. The
  markdown can then be rendered with any renderer that implements the <code>Render</code>
  trait. The library comes with an <code>Html</code> renderer by default.</p>
 <pre id='rust-example-rendered' class='rust '>
-<span class='kw'>let</span> <span class='ident'>doc</span> <span class='op'>=</span> <span class='ident'>Markdown</span>::<span class='ident'>new</span>(<span class='string'>&quot;some _emphasis_ required&quot;</span>.<span class='ident'>as_bytes</span>());
+<span class='kw'>let</span> <span class='ident'>doc</span> <span class='op'>=</span> <span class='ident'>Markdown</span>::<span class='ident'>new</span>(<span class='string'>&quot;some _emphasis_ required&quot;</span>);
 <span class='kw'>let</span> <span class='ident'>html</span> <span class='op'>=</span> <span class='ident'>Html</span>::<span class='ident'>new</span>(<span class='ident'>html</span>::<span class='ident'>Flags</span>::<span class='ident'>empty</span>(), <span class='number'>0</span>);
 
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(
-    <span class='ident'>doc</span>.<span class='ident'>render_to_buffer</span>(<span class='ident'>html</span>).<span class='ident'>as_str</span>().<span class='ident'>unwrap</span>(),
+    <span class='ident'>doc</span>.<span class='ident'>render_to_buffer</span>(<span class='ident'>html</span>).<span class='ident'>to_str</span>().<span class='ident'>unwrap</span>(),
     <span class='string'>&quot;&lt;p&gt;some &lt;em&gt;emphasis&lt;/em&gt; required&lt;/p&gt;\n&quot;</span>);
 </pre>
-</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+</div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
+<table><tr><td><code>pub use renderer::<a class='trait' href='../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='buffer/index.html'
-                               title='hoedown::buffer'>buffer</a></td>
-                        <td class='docblock short'>
-                             <p>Markdown buffers</p>
-
-                        </td>
-                    </tr>
-                
                     <tr class=' module-item'>
                         <td><a class='mod' href='renderer/index.html'
                                title='hoedown::renderer'>renderer</a></td>
@@ -77,6 +69,15 @@
                     </tr>
                 </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Buffer.html'
+                               title='hoedown::Buffer'>Buffer</a></td>
+                        <td class='docblock short'>
+                             <p>Buffer for holding markdown contents</p>
+
+                        </td>
+                    </tr>
+                
                     <tr class=' module-item'>
                         <td><a class='struct' href='struct.Extension.html'
                                title='hoedown::Extension'>Extension</a></td>
@@ -136,7 +137,9 @@
                         <td><a class='constant' href='constant.HIGHLIGHT.html'
                                title='hoedown::HIGHLIGHT'>HIGHLIGHT</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Process highlight syntax
+e.g. <code>==highlight me==</code></p>
+
                         </td>
                     </tr>
                 
@@ -144,7 +147,9 @@
                         <td><a class='constant' href='constant.MATH.html'
                                title='hoedown::MATH'>MATH</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Process math syntax
+e.g. <code>$$x + y = z$$</code></p>
+
                         </td>
                     </tr>
                 
@@ -152,7 +157,9 @@
                         <td><a class='constant' href='constant.MATH_EXPLICIT.html'
                                title='hoedown::MATH_EXPLICIT'>MATH_EXPLICIT</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Process the single dollar math syntax.
+e.g. <code>$x + y = 3$</code></p>
+
                         </td>
                     </tr>
                 
@@ -160,7 +167,9 @@
                         <td><a class='constant' href='constant.NO_INTRA_EMPHASIS.html'
                                title='hoedown::NO_INTRA_EMPHASIS'>NO_INTRA_EMPHASIS</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Don&#39;t parse emphasis inside of words
+e.g. <code>foo_bar_baz</code> won&#39;t emphasize the &#39;bar&#39;</p>
+
                         </td>
                     </tr>
                 
@@ -168,7 +177,9 @@
                         <td><a class='constant' href='constant.QUOTE.html'
                                title='hoedown::QUOTE'>QUOTE</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Render quotes differently
+example, the html renderer may use the <code>&lt;q&gt;</code> tag</p>
+
                         </td>
                     </tr>
                 
@@ -176,7 +187,9 @@
                         <td><a class='constant' href='constant.SPACE_HEADERS.html'
                                title='hoedown::SPACE_HEADERS'>SPACE_HEADERS</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Process ATX header syntax
+e.g. <code># Topic</code></p>
+
                         </td>
                     </tr>
                 
@@ -184,7 +197,9 @@
                         <td><a class='constant' href='constant.STRIKETHROUGH.html'
                                title='hoedown::STRIKETHROUGH'>STRIKETHROUGH</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Enable strikethrough syntax
+e.g. <code>~~strike one~~</code></p>
+
                         </td>
                     </tr>
                 
@@ -192,7 +207,9 @@
                         <td><a class='constant' href='constant.SUPERSCRIPT.html'
                                title='hoedown::SUPERSCRIPT'>SUPERSCRIPT</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Process superscript syntax
+e.g. <code>2^3 = 8</code></p>
+
                         </td>
                     </tr>
                 

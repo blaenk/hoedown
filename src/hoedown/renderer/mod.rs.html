@@ -637,10 +637,11 @@
 </pre><pre class='rust '>
 <span class='doccomment'>//! Contains Render behavior and stock renderers</span>
 
-<span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
-<span class='kw'>use</span> <span class='ident'>wrappers</span>;
-<span class='kw'>use</span> <span class='ident'>ffi</span>::<span class='ident'>hoedown_renderer</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Write</span>;
+
+<span class='kw'>use</span> <span class='ident'>wrappers</span>;
+<span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
+<span class='kw'>use</span> <span class='ident'>ffi</span>::<span class='ident'>hoedown_renderer</span>;
 
 <span class='doccomment'>/// Represents render behavior</span>
 <span class='doccomment'>///</span>
@@ -666,9 +667,8 @@
 <span class='doccomment'>/// into a vector that can then be inspected after rendering.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///``` rust</span>
-<span class='doccomment'>///# use hoedown::Markdown;</span>
+<span class='doccomment'>///# use hoedown::{Markdown, Buffer};</span>
 <span class='doccomment'>///# use hoedown::renderer::{Render, html};</span>
-<span class='doccomment'>///# use hoedown::buffer::Buffer;</span>
 <span class='doccomment'>///struct EmphCollector {</span>
 <span class='doccomment'>///    // html renderer to delegate to</span>
 <span class='doccomment'>///    html: html::Html,</span>
@@ -694,14 +694,14 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>///    fn emphasis(&amp;mut self, ob: &amp;mut Buffer, content: &amp;Buffer) -&gt; bool {</span>
 <span class='doccomment'>///        // collect the emphasis element</span>
-<span class='doccomment'>///        self.emphs.push(content.as_str().unwrap().to_string());</span>
+<span class='doccomment'>///        self.emphs.push(content.to_str().unwrap().to_string());</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///        // delegate rendering the emphasis element to the html renderer</span>
 <span class='doccomment'>///        self.html.emphasis(ob, content)</span>
 <span class='doccomment'>///    }</span>
 <span class='doccomment'>///}</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>///let doc = Markdown::new(&quot;this _one_ that _two_ another _three_ pass it _around_&quot;.as_bytes());</span>
+<span class='doccomment'>///let doc = Markdown::new(&quot;this _one_ that _two_ another _three_ pass it _around_&quot;);</span>
 <span class='doccomment'>///let mut collector = EmphCollector::new();</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///let output = doc.render_to_buffer(&amp;mut collector);</span>
@@ -716,7 +716,7 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>///assert_eq!(</span>
 <span class='doccomment'>///    &quot;this &lt;em&gt;one&lt;/em&gt; that &lt;em&gt;two&lt;/em&gt; another &lt;em&gt;three&lt;/em&gt; pass it &lt;em&gt;around&lt;/em&gt;&quot;,</span>
-<span class='doccomment'>///    output.as_str().unwrap());</span>
+<span class='doccomment'>///    output.to_str().unwrap());</span>
 <span class='doccomment'>///```</span>
 
 <span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>unused_variables</span>)]</span>
@@ -794,49 +794,49 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Not run if the `DISABLE_INDENTED_CODE` extension is enabled.</span>
     <span class='kw'>fn</span> <span class='ident'>code_block</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>text</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>lang</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING CODE_BLOCK HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING CODE_BLOCK HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a block quote is encountered</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>quote_block</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING QUOTE_BLOCK HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING QUOTE_BLOCK HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a header is encountered</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>header</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>level</span>: <span class='ident'>i32</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING HEADER HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING HEADER HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a horizontal rule is encountered</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>horizontal_rule</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING HORIZONTAL_RULE HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING HORIZONTAL_RULE HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a list is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>list</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>flags</span>: ::<span class='ident'>renderer</span>::<span class='ident'>list</span>::<span class='ident'>List</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING LIST HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING LIST HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a list item is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>list_item</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>flags</span>: ::<span class='ident'>renderer</span>::<span class='ident'>list</span>::<span class='ident'>List</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING LIST_ITEM HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING LIST_ITEM HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a paragraph is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>paragraph</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING PARAGRAPH HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING PARAGRAPH HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a table is encountered.</span>
@@ -845,7 +845,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>table</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a table header is encountered.</span>
@@ -854,7 +854,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>table_header</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_HEADER HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_HEADER HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a table body is encountered.</span>
@@ -863,7 +863,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>table_body</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_BODY HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_BODY HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a table row is encountered.</span>
@@ -872,7 +872,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>table_row</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_ROW HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_ROW HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a table cell is encountered.</span>
@@ -881,7 +881,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>table_cell</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>flags</span>: ::<span class='ident'>renderer</span>::<span class='ident'>Table</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING TABLE_CELL HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_CELL HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when footnotes are encountered.</span>
@@ -890,7 +890,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>footnotes</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING FOOTNOTES HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING FOOTNOTES HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a footnote definition is encountered.</span>
@@ -899,14 +899,14 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>footnote_definition</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>num</span>: <span class='ident'>u32</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING FOOTNOTE_DEFINITION HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING FOOTNOTE_DEFINITION HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='doccomment'>/// Runs when a raw html block is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation outputs an error string.</span>
     <span class='kw'>fn</span> <span class='ident'>html_block</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>text</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
-        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>&quot;MISSING HTML_BLOCK HANDLER\n&quot;</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>unwrap</span>();
+        <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING HTML_BLOCK HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
     }
 
     <span class='comment'>// span-level: not registered = pass-through</span>
