@@ -235,6 +235,10 @@
 <span id="193">193</span>
 <span id="194">194</span>
 <span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Markdown buffers</span>
 
@@ -301,8 +305,12 @@
 
 <span class='kw'>impl</span> <span class='ident'>Drop</span> <span class='kw'>for</span> <span class='ident'>Buffer</span> {
     <span class='kw'>fn</span> <span class='ident'>drop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) {
-        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_owned</span> {
-            <span class='kw'>unsafe</span> { <span class='ident'>hoedown_buffer_free</span>(<span class='op'>*</span><span class='self'>self</span>.<span class='ident'>buffer</span>); }
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span><span class='self'>self</span>.<span class='ident'>buffer</span>.<span class='ident'>is_null</span>());
+
+        <span class='kw'>unsafe</span> {
+            <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_owned</span> <span class='op'>&amp;&amp;</span> <span class='self'>self</span>.<span class='ident'>buffer</span>.<span class='ident'>get</span>().<span class='ident'>unit</span> <span class='op'>!=</span> <span class='number'>0</span> {
+                <span class='ident'>hoedown_buffer_free</span>(<span class='op'>*</span><span class='self'>self</span>.<span class='ident'>buffer</span>);
+            }
         }
     }
 }
