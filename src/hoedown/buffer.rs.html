@@ -193,6 +193,11 @@
 <span id="151">151</span>
 <span id="152">152</span>
 <span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Markdown buffers</span>
 
@@ -240,11 +245,16 @@
     <span class='doccomment'>/// The returned buffer won&#39;t take ownership of the passed `hoedown_buffer`,</span>
     <span class='doccomment'>/// that is, the returned buffer won&#39;t free the underlying buffer</span>
     <span class='kw'>pub</span> <span class='kw'>unsafe</span> <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>buffer</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>hoedown_buffer</span>) <span class='op'>-&gt;</span> <span class='ident'>Buffer</span> {
-        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span><span class='ident'>buffer</span>.<span class='ident'>is_null</span>());
-
-        <span class='ident'>Buffer</span> {
-            <span class='ident'>buffer</span>: <span class='ident'>Unique</span>::<span class='ident'>new</span>(<span class='ident'>buffer</span>),
-            <span class='ident'>is_owned</span>: <span class='boolval'>false</span>,
+        <span class='comment'>// this is a simple workaround for hoedown using</span>
+        <span class='comment'>// NULL as an &#39;empty buffer&#39;, we just make an empty</span>
+        <span class='comment'>// buffer and point to it</span>
+        <span class='kw'>if</span> <span class='ident'>buffer</span>.<span class='ident'>is_null</span>() {
+            <span class='ident'>Buffer</span>::<span class='ident'>new</span>(<span class='number'>0</span>)
+        } <span class='kw'>else</span>{
+            <span class='ident'>Buffer</span> {
+                <span class='ident'>buffer</span>: <span class='ident'>Unique</span>::<span class='ident'>new</span>(<span class='ident'>buffer</span>),
+                <span class='ident'>is_owned</span>: <span class='boolval'>false</span>,
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors['hoedown'] = ["impl <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a> for <a class='struct' href='hoedown/buffer/struct.Buffer.html' title='hoedown::buffer::Buffer'>Buffer</a>",];
+implementors['regex'] = ["impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/str/trait.FromStr.html' title='core::str::FromStr'>FromStr</a> for <a class='enum' href='regex/enum.Regex.html' title='regex::Regex'>Regex</a>",];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);
