@@ -365,7 +365,7 @@
     <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>buffer</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>hoedown_buffer</span>) <span class='op'>-&gt;</span> <span class='ident'>Buffer</span> {
         <span class='comment'>// this is a simple workaround for hoedown using</span>
         <span class='comment'>// NULL as an &#39;empty buffer&#39;, we just make an empty</span>
-        <span class='comment'>// buffer and point to it</span>
+        <span class='comment'>// buffer and return that</span>
         <span class='kw'>if</span> <span class='ident'>buffer</span>.<span class='ident'>is_null</span>() {
             <span class='ident'>Buffer</span>::<span class='ident'>new</span>(<span class='number'>0</span>)
         } <span class='kw'>else</span>{
