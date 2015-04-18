@@ -127,7 +127,7 @@ impl From<*mut hoedown_buffer> for Buffer {
     fn from(buffer: *mut hoedown_buffer) -> Buffer {
         // this is a simple workaround for hoedown using
         // NULL as an 'empty buffer', we just make an empty
-        // buffer and point to it
+        // buffer and return that
         if buffer.is_null() {
             Buffer::new(0)
         } else{
