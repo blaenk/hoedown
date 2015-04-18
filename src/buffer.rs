@@ -104,7 +104,7 @@ impl Write for Buffer {
 }
 
 impl<'a> From<&'a [u8]> for Buffer {
-    /// Create a buffer from a string
+    /// Create a buffer from bytes
     fn from(s: &[u8]) -> Buffer {
         let mut buffer = Buffer::new(64);
         buffer.write(s).unwrap();
