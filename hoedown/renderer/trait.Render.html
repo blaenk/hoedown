@@ -45,7 +45,7 @@
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
         </span><a id='src-2317' class='srclink' href='../../src/hoedown/renderer/mod.rs.html#86-440'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Render: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
-    unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; hoedown_renderer { ... }
+    unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; <a class='struct' href='../../hoedown/ffi/struct.hoedown_renderer.html' title='hoedown::ffi::hoedown_renderer'>hoedown_renderer</a> { ... }
     fn <a href='#method.code_block' class='fnname'>code_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, lang: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.quote_block' class='fnname'>quote_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.header' class='fnname'>header</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, level: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) { ... }
@@ -169,7 +169,7 @@
 </div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
-        <h3 id='method.to_hoedown' class='method stab '><code>unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; hoedown_renderer</code></h3><div class='docblock'><p>Converts the type into an underlying <code>hoedown_renderer</code> structure.</p>
+        <h3 id='method.to_hoedown' class='method stab '><code>unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; <a class='struct' href='../../hoedown/ffi/struct.hoedown_renderer.html' title='hoedown::ffi::hoedown_renderer'>hoedown_renderer</a></code></h3><div class='docblock'><p>Converts the type into an underlying <code>hoedown_renderer</code> structure.</p>
 
 <p>The default implementation of this should suffice for the majority of implementations,
 unless you know what you&#39;re doing.</p>
@@ -333,7 +333,7 @@ or if no language was specified in a fenced codeblock.</p>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
     <li><code>impl <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for <a class='struct' href='../../hoedown/renderer/html/struct.Html.html' title='hoedown::renderer::html::Html'>Html</a></code></li>
-<li><code>impl&lt;'a&gt; <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for <a class='struct' href='../../hoedown/renderer/closures/struct.Closures.html' title='hoedown::renderer::closures::Closures'>Closures</a>&lt;'a&gt;</code></li>
+<li><code>impl&lt;'a, R&gt; <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for <a class='struct' href='../../hoedown/renderer/closures/struct.Closures.html' title='hoedown::renderer::closures::Closures'>Closures</a>&lt;'a, R&gt; <span class='where'>where R: <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></li>
 <li><code>impl&lt;'a, R&gt; <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for &amp;'a mut R <span class='where'>where R: <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></li>
 </ul><script type="text/javascript" async
                               src="../../implementors/hoedown/renderer/trait.Render.js">

@@ -659,13 +659,20 @@
 <span id="617">617</span>
 <span id="618">618</span>
 <span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Contains the Closures renderer</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>non_camel_case_types</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>Render</span>;
-
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Write</span>;
 
 <span class='kw'>mod</span> <span class='ident'>types</span> {
     <span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
@@ -712,19 +719,20 @@
 
 <span class='doccomment'>/// A renderer whose behavior is defined by closures.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// This renderer is meant for quick, one-off renderers.</span>
-<span class='doccomment'>/// Handlers are passed to this type in the form of closures.</span>
+<span class='doccomment'>/// This renderer wraps another renderer and enables its behavior</span>
+<span class='doccomment'>/// to be overridden using closures.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// This might be removed in the future since it&#39;s not possible to</span>
+<span class='doccomment'>/// access the base renderer from within a provided closure. The use</span>
+<span class='doccomment'>/// of the `Wrapper` trait and `wrap!` macro is encouraged instead.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///``` rust</span>
-<span class='doccomment'>///# #![feature(io)]</span>
 <span class='doccomment'>///# use std::io::Write;</span>
 <span class='doccomment'>///# use hoedown::{Markdown, Buffer};</span>
+<span class='doccomment'>///# use hoedown::renderer::html;</span>
 <span class='doccomment'>///# use hoedown::renderer::closures::Closures;</span>
-<span class='doccomment'>///let mut closures = Closures::new();</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>///closures.on_paragraph(|output: &amp;mut Buffer, content: &amp;Buffer| {</span>
-<span class='doccomment'>///    output.pipe(content);</span>
-<span class='doccomment'>///});</span>
+<span class='doccomment'>///let html = html::Html::new(html::Flags::empty(), 0);</span>
+<span class='doccomment'>///let mut closures = Closures::new(html);</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>///closures.on_emphasis(|output: &amp;mut Buffer, content: &amp;Buffer| -&gt; bool {</span>
 <span class='doccomment'>///    output.write(b&quot;~~&quot;).unwrap();</span>
@@ -736,9 +744,11 @@
 <span class='doccomment'>///let doc = Markdown::new(&quot;this _requires_ emphasis&quot;);</span>
 <span class='doccomment'>///let output = doc.render_to_buffer(closures);</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>///assert_eq!(output.to_str().unwrap(), &quot;this ~~requires~~ emphasis&quot;);</span>
+<span class='doccomment'>///assert_eq!(output.to_str().unwrap(), &quot;&lt;p&gt;this ~~requires~~ emphasis&lt;/p&gt;\n&quot;);</span>
 <span class='doccomment'>///```</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>Render</span> {
+    <span class='ident'>base</span>: <span class='ident'>R</span>,
+
     <span class='ident'>code_block</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>types</span>::<span class='ident'>code_block</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
     <span class='ident'>quote_block</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>types</span>::<span class='ident'>quote_block</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
     <span class='ident'>header</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>types</span>::<span class='ident'>header</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
@@ -779,9 +789,11 @@
     <span class='ident'>after_render</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>types</span>::<span class='ident'>after_render</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;&gt;</span>,
 }
 
-<span class='kw'>impl</span> <span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>() <span class='op'>-&gt;</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+<span class='kw'>impl</span> <span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>Render</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>renderer</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span> {
         <span class='ident'>Closures</span> {
+            <span class='ident'>base</span>: <span class='ident'>renderer</span>,
+
             <span class='ident'>code_block</span>: <span class='prelude-val'>None</span>,
             <span class='ident'>quote_block</span>: <span class='prelude-val'>None</span>,
             <span class='ident'>header</span>: <span class='prelude-val'>None</span>,
@@ -824,12 +836,13 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>Render</span> <span class='kw'>for</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span> <span class='ident'>Render</span> <span class='kw'>for</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span>
+<span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>Render</span> {
     <span class='kw'>fn</span> <span class='ident'>code_block</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>text</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>lang</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>code_block</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>, <span class='ident'>lang</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING CODE_BLOCK HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>code_block</span>(<span class='ident'>output</span>, <span class='ident'>text</span>, <span class='ident'>lang</span>);
         }
     }
 
@@ -837,7 +850,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>quote_block</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING quote_block HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>quote_block</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         }
     }
 
@@ -845,7 +858,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>header</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>level</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING HEADER HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>header</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>level</span>);
         }
     }
 
@@ -853,7 +866,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>horizontal_rule</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING HORIZONTAL_RULE HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>horizontal_rule</span>(<span class='ident'>output</span>);
         }
     }
 
@@ -861,7 +874,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>list</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING LIST HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>list</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         }
     }
 
@@ -869,7 +882,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>list_item</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING list_item HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>list_item</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         }
     }
 
@@ -877,7 +890,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>paragraph</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING PARAGRAPH HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>paragraph</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         }
     }
 
@@ -885,7 +898,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>table</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         }
     }
 
@@ -893,7 +906,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_header</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_HEADER HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>table_header</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         }
     }
 
@@ -901,7 +914,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_body</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_BODY HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>table_body</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         }
     }
 
@@ -909,7 +922,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_row</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_ROW HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>table_row</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         }
     }
 
@@ -917,7 +930,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>table_cell</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING TABLE_CELL HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>table_cell</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>flags</span>);
         }
     }
 
@@ -925,7 +938,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>footnotes</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING FOOTNOTES HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>footnotes</span>(<span class='ident'>output</span>, <span class='ident'>content</span>);
         }
     }
 
@@ -933,7 +946,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>footnote_definition</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>num</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING FOOTNOTE_DEFINITION HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>footnote_definition</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>num</span>);
         }
     }
 
@@ -941,7 +954,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>html_block</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>write</span>(<span class='string'>b&quot;MISSING html_block HANDLER\n&quot;</span>).<span class='ident'>unwrap</span>();
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>html_block</span>(<span class='ident'>output</span>, <span class='ident'>text</span>);
         }
     }
 
@@ -949,7 +962,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>autolink</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>link</span>, <span class='ident'>ty</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>autolink</span>(<span class='ident'>output</span>, <span class='ident'>link</span>, <span class='ident'>ty</span>)
         }
     }
 
@@ -957,7 +970,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>code_span</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>code_span</span>(<span class='ident'>output</span>, <span class='ident'>text</span>)
         }
     }
 
@@ -965,7 +978,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>double_emphasis</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>double_emphasis</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -973,7 +986,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>emphasis</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>emphasis</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -981,7 +994,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>underline</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>underline</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -989,7 +1002,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>highlight</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>highlight</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -997,7 +1010,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>quote</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>quote_span</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -1005,7 +1018,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>image</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>link</span>, <span class='ident'>title</span>, <span class='ident'>alt</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>image</span>(<span class='ident'>output</span>, <span class='ident'>link</span>, <span class='ident'>title</span>, <span class='ident'>alt</span>)
         }
     }
 
@@ -1013,7 +1026,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>line_break</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>line_break</span>(<span class='ident'>output</span>)
         }
     }
 
@@ -1021,7 +1034,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>link</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>link</span>, <span class='ident'>title</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>link</span>(<span class='ident'>output</span>, <span class='ident'>content</span>, <span class='ident'>link</span>, <span class='ident'>title</span>)
         }
     }
 
@@ -1029,7 +1042,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>triple_emphasis</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>triple_emphasis</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -1037,7 +1050,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>strikethrough</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>strikethrough</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -1045,7 +1058,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>superscript</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>superscript</span>(<span class='ident'>output</span>, <span class='ident'>content</span>)
         }
     }
 
@@ -1053,7 +1066,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>footnote_reference</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>num</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>footnote_reference</span>(<span class='ident'>output</span>, <span class='ident'>num</span>)
         }
     }
 
@@ -1061,7 +1074,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>math</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>, <span class='ident'>displaymode</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>math</span>(<span class='ident'>output</span>, <span class='ident'>text</span>, <span class='ident'>displaymode</span>)
         }
     }
 
@@ -1069,7 +1082,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>html_span</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>)
         } <span class='kw'>else</span> {
-            <span class='boolval'>false</span>
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>html_span</span>(<span class='ident'>output</span>, <span class='ident'>text</span>)
         }
     }
 
@@ -1077,7 +1090,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>entity</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>pipe</span>(<span class='ident'>text</span>);
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>entity</span>(<span class='ident'>output</span>, <span class='ident'>text</span>)
         }
     }
 
@@ -1085,7 +1098,7 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>normal_text</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>text</span>);
         } <span class='kw'>else</span> {
-            <span class='ident'>output</span>.<span class='ident'>pipe</span>(<span class='ident'>text</span>);
+            <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>normal_text</span>(<span class='ident'>output</span>, <span class='ident'>text</span>)
         }
     }
 
@@ -1093,16 +1106,21 @@
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>before_render</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>inline_render</span> <span class='kw'>as</span> <span class='ident'>i32</span>);
         }
+
+        <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>before_render</span>(<span class='ident'>output</span>, <span class='ident'>inline_render</span>);
     }
 
     <span class='kw'>fn</span> <span class='ident'>after_render</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>inline_render</span>: <span class='ident'>bool</span>) {
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>func</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>after_render</span> {
             <span class='ident'>func</span>(<span class='ident'>output</span>, <span class='ident'>inline_render</span> <span class='kw'>as</span> <span class='ident'>i32</span>);
         }
+
+        <span class='self'>self</span>.<span class='ident'>base</span>.<span class='ident'>after_render</span>(<span class='ident'>output</span>, <span class='ident'>inline_render</span>);
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span> <span class='ident'>Closures</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>R</span><span class='op'>&gt;</span>
+<span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>Render</span> {
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>on_code_block</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>closure</span>: <span class='ident'>F</span>)
     <span class='kw'>where</span> <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>), <span class='ident'>F</span>: <span class='lifetime'>&#39;a</span> {
         <span class='self'>self</span>.<span class='ident'>code_block</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>closure</span>));
