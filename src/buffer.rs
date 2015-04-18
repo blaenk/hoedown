@@ -63,8 +63,12 @@ impl Buffer {
 
 impl Drop for Buffer {
     fn drop(&mut self) {
-        if self.is_owned {
-            unsafe { hoedown_buffer_free(*self.buffer); }
+        assert!(!self.buffer.is_null());
+
+        unsafe {
+            if self.is_owned && self.buffer.get().unit != 0 {
+                hoedown_buffer_free(*self.buffer);
+            }
         }
     }
 }
