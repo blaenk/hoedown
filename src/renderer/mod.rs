@@ -279,7 +279,7 @@ pub trait Render: Sized {
     /// Only runs if the `AUTOLINK` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn autolink(&mut self, output: &mut Buffer, link: &Buffer, link_type: ::renderer::AutoLink) -> bool {
+    fn autolink(&mut self, output: &mut Buffer, link: &Buffer, link_type: AutoLink) -> bool {
         false
     }
 
@@ -457,10 +457,10 @@ impl<'a, R> Render for &'a mut R where R: Render {
     fn horizontal_rule(&mut self, output: &mut Buffer) {
         (**self).horizontal_rule(output)
     }
-    fn list(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
+    fn list(&mut self, output: &mut Buffer, content: &Buffer, flags: list::List) {
         (**self).list(output, content, flags)
     }
-    fn list_item(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
+    fn list_item(&mut self, output: &mut Buffer, content: &Buffer, flags: list::List) {
         (**self).list_item(output, content, flags)
     }
     fn paragraph(&mut self, output: &mut Buffer, content: &Buffer) {
@@ -478,7 +478,7 @@ impl<'a, R> Render for &'a mut R where R: Render {
     fn table_row(&mut self, output: &mut Buffer, content: &Buffer) {
         (**self).table_row(output, content)
     }
-    fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::Table) {
+    fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, flags: Table) {
         (**self).table_cell(output, content, flags)
     }
     fn footnotes(&mut self, output: &mut Buffer, content: &Buffer) {
@@ -492,7 +492,7 @@ impl<'a, R> Render for &'a mut R where R: Render {
     }
 
     // span-level: not registered = pass-through
-    fn autolink(&mut self, output: &mut Buffer, link: &Buffer, link_type: ::renderer::AutoLink) -> bool {
+    fn autolink(&mut self, output: &mut Buffer, link: &Buffer, link_type: AutoLink) -> bool {
         (**self).autolink(output, link, link_type)
     }
     fn code_span(&mut self, output: &mut Buffer, text: &Buffer) -> bool {
