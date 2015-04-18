@@ -44,11 +44,16 @@ impl Buffer {
     /// The returned buffer won't take ownership of the passed `hoedown_buffer`,
     /// that is, the returned buffer won't free the underlying buffer
     pub unsafe fn from(buffer: *mut hoedown_buffer) -> Buffer {
-        assert!(!buffer.is_null());
-
-        Buffer {
-            buffer: Unique::new(buffer),
-            is_owned: false,
+        // this is a simple workaround for hoedown using
+        // NULL as an 'empty buffer', we just make an empty
+        // buffer and point to it
+        if buffer.is_null() {
+            Buffer::new(0)
+        } else{
+            Buffer {
+                buffer: Unique::new(buffer),
+                is_owned: false,
+            }
         }
     }
 

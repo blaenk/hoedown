@@ -278,6 +278,13 @@ fn test_blockcode() {
 }
 
 #[test]
+fn test_blockcode_empty_lang() {
+    renderer_test!(BlockRenderer, hoedown::FENCED_CODE =>
+        "```\n$ :(){ :|:& };:\n```",
+        "[CODE_BLOCK language=] $ :(){ :|:& };:\n");
+}
+
+#[test]
 fn test_blockhtml() {
     renderer_test!(BlockRenderer =>
         "<p>Hi.</p>",
