@@ -5,12 +5,12 @@ use hoedown::renderer::html;
 
 #[test]
 fn test_render_inline() {
-    let doc = Markdown::new("some _emphasis_ required".as_bytes());
+    let doc = Markdown::new("some _emphasis_ required");
     let html = html::Html::new(html::Flags::empty(), 0);
 
     let res = doc.render_inline_to_buffer(html);
 
-    assert_eq!(res.as_str().unwrap(), "some <em>emphasis</em> required");
+    assert_eq!(res.to_str().unwrap(), "some <em>emphasis</em> required");
 }
 
 #[test]
@@ -31,11 +31,11 @@ heh
 
 # conclusion
 
-this".as_bytes());
+this");
 
     let res = doc.render_to_buffer(toc);
 
-    assert_eq!(res.as_str().unwrap(),
+    assert_eq!(res.to_str().unwrap(),
 "<ul>
 <li>
 <a href=\"#toc_0\">first</a>

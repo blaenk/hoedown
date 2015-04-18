@@ -1,16 +1,16 @@
 extern crate hoedown;
 
+use hoedown::Buffer;
 use hoedown::renderer::html;
-use hoedown::buffer::Buffer;
 
 macro_rules! smartypants_test {
     ($left:expr, $right:expr) => ({
-        let input = Buffer::from_str($left);
+        let input = Buffer::from($left);
         let mut output = Buffer::new(64);
 
         html::smartypants(&mut output, &input);
 
-        assert_eq!(output.as_str().unwrap(), $right);
+        assert_eq!(output.to_str().unwrap(), $right);
     });
 }
 

@@ -24,10 +24,10 @@ fn get_renderer<'a, R>(data: &'a *mut c_void) -> &'a mut R {
 
 macro_rules! buffers {
     ($out:ident, $($inp:ident),*) => ({
-        let out = unsafe { Buffer::from($out) };
+        let out = Buffer::from($out);
 
         $(
-            let $inp = unsafe { Buffer::from($inp as *mut _) };
+            let $inp = Buffer::from($inp as *mut _);
         )*
 
         (out, $($inp),*)
@@ -151,14 +151,14 @@ wrapper!(normal_text: (text));
 pub extern "C" fn doc_header<R>(ob: *mut hoedown_buffer, inline_render: c_int, data: *mut c_void)
 where R: Render {
     let renderer = get_renderer::<R>(&data);
-    let mut out = unsafe { Buffer::from(ob) };
+    let mut out = Buffer::from(ob);
     renderer.before_render(&mut out, inline_render != 0);
 }
 
 pub extern "C" fn doc_footer<R>(ob: *mut hoedown_buffer, inline_render: c_int, data: *mut c_void)
 where R: Render {
     let renderer = get_renderer::<R>(&data);
-    let mut out = unsafe { Buffer::from(ob) };
+    let mut out = Buffer::from(ob);
     renderer.after_render(&mut out, inline_render != 0);
 }
 

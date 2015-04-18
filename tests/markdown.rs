@@ -38,7 +38,7 @@ fn test_markdown() {
         .filter_map(Result::ok)
         .chain(Some(PathBuf::from("libhoedown/test/Tests/Escape character.text")).into_iter())
         .chain(Some(PathBuf::from("tests/fixtures/unicode.txt")).into_iter()) {
-        let doc = Markdown::new(File::open(&source).unwrap());
+        let doc = Markdown::read_from(File::open(&source).unwrap());
         let html = html::Html::new(html::Flags::empty(), 0);
 
         let target = source.with_extension("html");
@@ -48,7 +48,7 @@ fn test_markdown() {
 
         let output = doc.render_to_buffer(html);
 
-        let rendered_tidy = tidy(output.as_str().unwrap());
+        let rendered_tidy = tidy(output.to_str().unwrap());
         let target_tidy = tidy(&target_contents[..]);
 
         assert_eq!(rendered_tidy, target_tidy);
@@ -58,7 +58,7 @@ fn test_markdown() {
 #[test]
 fn test_math() {
     let source = PathBuf::from("libhoedown/test/Tests/Math.text");
-    let doc = Markdown::new(File::open(&source).unwrap()).with_extensions(hoedown::MATH);
+    let doc = Markdown::read_from(File::open(&source).unwrap()).extensions(hoedown::MATH);
     let html = html::Html::new(html::Flags::empty(), 0);
 
     let target = source.with_extension("html");
@@ -68,7 +68,7 @@ fn test_math() {
 
     let output = doc.render_to_buffer(html);
 
-    let rendered_tidy = tidy(output.as_str().unwrap());
+    let rendered_tidy = tidy(output.to_str().unwrap());
     let target_tidy = tidy(&target_contents[..]);
 
     assert_eq!(rendered_tidy, target_tidy);
@@ -77,7 +77,7 @@ fn test_math() {
 #[test]
 fn test_toc() {
     let source = PathBuf::from("libhoedown/test/Tests/Formatting in Table of Contents.text");
-    let doc = Markdown::new(File::open(&source).unwrap());
+    let doc = Markdown::read_from(File::open(&source).unwrap());
     let renderer = html::Html::toc(3);
 
     let target = source.with_extension("html");
@@ -87,7 +87,7 @@ fn test_toc() {
 
     let output = doc.render_to_buffer(renderer);
 
-    let rendered_tidy = tidy(output.as_str().unwrap());
+    let rendered_tidy = tidy(output.to_str().unwrap());
     let target_tidy = tidy(&target_contents);
 
     assert_eq!(rendered_tidy, target_tidy);

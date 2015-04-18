@@ -6,6 +6,7 @@ use std::slice;
 use std::mem;
 use std::ptr::Unique;
 use std::io::{self, Read, Write};
+use std::ops::{Deref, DerefMut};
 
 use ffi::{
     hoedown_buffer,
@@ -32,41 +33,6 @@ impl Buffer {
         }
     }
 
-    /// Create a buffer from a string
-    pub fn from_str(s: &str) -> Buffer {
-        let mut buffer = Buffer::new(64);
-        buffer.write(s.as_bytes()).unwrap();
-        buffer
-    }
-
-    /// Create a 'read-only' buffer from the given `hoedown_buffer`
-    ///
-    /// The returned buffer won't take ownership of the passed `hoedown_buffer`,
-    /// that is, the returned buffer won't free the underlying buffer
-    pub unsafe fn from(buffer: *mut hoedown_buffer) -> Buffer {
-        // this is a simple workaround for hoedown using
-        // NULL as an 'empty buffer', we just make an empty
-        // buffer and point to it
-        if buffer.is_null() {
-            Buffer::new(0)
-        } else{
-            Buffer {
-                buffer: Unique::new(buffer),
-                is_owned: false,
-            }
-        }
-    }
-
-    /// Get a reference to the underlying buffer
-    pub fn get<'a>(&'a self) -> &'a hoedown_buffer {
-        unsafe { self.buffer.get() }
-    }
-
-    /// Get a mutable reference to the underlying buffer
-    pub fn get_mut<'a>(&'a mut self) -> &'a mut hoedown_buffer {
-        unsafe { self.buffer.get_mut() }
-    }
-
     /// Check if the buffer is empty
     pub fn is_empty(&self) -> bool {
         self.len() == 0
@@ -89,29 +55,17 @@ impl Buffer {
         }
     }
 
-    /// Get a slice of the buffer's contents
-    pub fn as_slice<'a>(&'a self) -> &'a [u8] {
-        unsafe {
-            let data = self.buffer.get().data;
-            let size = self.buffer.get().size as usize;
-
-            mem::transmute(slice::from_raw_parts(data, size))
-        }
-    }
-
-    /// Get a mutable slice of the buffer's contents
-    pub fn as_mut_slice<'a>(&'a mut self) -> &'a mut [u8] {
-        unsafe {
-            let data = self.buffer.get().data;
-            let size = self.buffer.get().size as usize;
-
-            slice::from_raw_parts_mut(data, size)
-        }
-    }
-
     /// Attempt to get a string from the buffer's contents
-    pub fn as_str<'a>(&'a self) -> Result<&str, str::Utf8Error> {
-        str::from_utf8(self.as_slice())
+    pub fn to_str<'a>(&'a self) -> Result<&str, str::Utf8Error> {
+        str::from_utf8(self.as_ref())
+    }
+}
+
+impl Drop for Buffer {
+    fn drop(&mut self) {
+        if self.is_owned {
+            unsafe { hoedown_buffer_free(*self.buffer); }
+        }
     }
 }
 
@@ -131,7 +85,8 @@ impl Clone for Buffer {
 
 impl Read for Buffer {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        Read::read(&mut self.as_slice(), buf)
+        let mut buffer: &[u8] = self.as_ref();
+        Read::read(&mut buffer, buf)
     }
 }
 
@@ -148,11 +103,93 @@ impl Write for Buffer {
     }
 }
 
-impl Drop for Buffer {
-    fn drop(&mut self) {
-        if self.is_owned {
-            unsafe { hoedown_buffer_free(*self.buffer); }
+impl<'a> From<&'a [u8]> for Buffer {
+    /// Create a buffer from a string
+    fn from(s: &[u8]) -> Buffer {
+        let mut buffer = Buffer::new(64);
+        buffer.write(s).unwrap();
+        buffer
+    }
+}
+
+impl<'a> From<&'a str> for Buffer {
+    /// Create a buffer from a string
+    fn from(s: &str) -> Buffer {
+        Buffer::from(s.as_bytes())
+    }
+}
+
+impl From<*mut hoedown_buffer> for Buffer {
+    /// Create a 'read-only' buffer from the given `hoedown_buffer`
+    ///
+    /// The returned buffer won't take ownership of the passed `hoedown_buffer`,
+    /// that is, the returned buffer won't free the underlying buffer
+    fn from(buffer: *mut hoedown_buffer) -> Buffer {
+        // this is a simple workaround for hoedown using
+        // NULL as an 'empty buffer', we just make an empty
+        // buffer and point to it
+        if buffer.is_null() {
+            Buffer::new(0)
+        } else{
+            Buffer {
+                buffer: unsafe { Unique::new(buffer) },
+                is_owned: false,
+            }
         }
     }
 }
 
+/// Dereference to the underlying bytes.
+///
+/// This is to hook into the automatic dereference coercions system.
+impl Deref for Buffer {
+    type Target = [u8];
+
+    fn deref(&self) -> &[u8] {
+        self.as_ref()
+    }
+}
+
+impl DerefMut for Buffer {
+    fn deref_mut(&mut self) -> &mut [u8] {
+        self.as_mut()
+    }
+}
+
+impl AsRef<[u8]> for Buffer {
+    /// Get a slice of the buffer's contents
+    fn as_ref<'a>(&'a self) -> &'a [u8] {
+        unsafe {
+            let data = self.buffer.get().data;
+            let size = self.buffer.get().size as usize;
+
+            mem::transmute(slice::from_raw_parts(data, size))
+        }
+    }
+}
+
+impl AsMut<[u8]> for Buffer {
+    /// Get a mutable slice of the buffer's contents
+    fn as_mut<'a>(&'a mut self) -> &'a mut [u8] {
+        unsafe {
+            let data = self.buffer.get().data;
+            let size = self.buffer.get().size as usize;
+
+            slice::from_raw_parts_mut(data, size)
+        }
+    }
+}
+
+impl AsRef<hoedown_buffer> for Buffer {
+    /// Get a reference to the underlying buffer
+    fn as_ref<'a>(&'a self) -> &'a hoedown_buffer {
+        unsafe { self.buffer.get() }
+    }
+}
+
+impl AsMut<hoedown_buffer> for Buffer {
+    /// Get a mutable reference to the underlying buffer
+    fn as_mut<'a>(&'a mut self) -> &'a mut hoedown_buffer {
+        unsafe { self.buffer.get_mut() }
+    }
+}

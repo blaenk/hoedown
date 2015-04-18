@@ -5,10 +5,10 @@ use hoedown::renderer::html;
 
 macro_rules! extensions_test {
     ($extension:ident: $left:expr, $right:expr) => ({
-        let doc = Markdown::new($left.as_bytes()).with_extensions(hoedown::$extension);
+        let doc = Markdown::new($left).extensions(hoedown::$extension);
         let renderer = html::Html::new(html::Flags::empty(), 0);
 
-        assert_eq!(doc.render_to_buffer(renderer).as_str().unwrap(), $right);
+        assert_eq!(doc.render_to_buffer(renderer).to_str().unwrap(), $right);
     });
 }
 

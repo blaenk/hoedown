@@ -1,9 +1,10 @@
 //! Contains Render behavior and stock renderers
 
-use buffer::Buffer;
-use wrappers;
-use ffi::hoedown_renderer;
 use std::io::Write;
+
+use wrappers;
+use buffer::Buffer;
+use ffi::hoedown_renderer;
 
 /// Represents render behavior
 ///
@@ -29,9 +30,8 @@ use std::io::Write;
 /// into a vector that can then be inspected after rendering.
 ///
 ///``` rust
-///# use hoedown::Markdown;
+///# use hoedown::{Markdown, Buffer};
 ///# use hoedown::renderer::{Render, html};
-///# use hoedown::buffer::Buffer;
 ///struct EmphCollector {
 ///    // html renderer to delegate to
 ///    html: html::Html,
@@ -57,14 +57,14 @@ use std::io::Write;
 ///
 ///    fn emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
 ///        // collect the emphasis element
-///        self.emphs.push(content.as_str().unwrap().to_string());
+///        self.emphs.push(content.to_str().unwrap().to_string());
 ///
 ///        // delegate rendering the emphasis element to the html renderer
 ///        self.html.emphasis(ob, content)
 ///    }
 ///}
 ///
-///let doc = Markdown::new("this _one_ that _two_ another _three_ pass it _around_".as_bytes());
+///let doc = Markdown::new("this _one_ that _two_ another _three_ pass it _around_");
 ///let mut collector = EmphCollector::new();
 ///
 ///let output = doc.render_to_buffer(&mut collector);
@@ -79,7 +79,7 @@ use std::io::Write;
 ///
 ///assert_eq!(
 ///    "this <em>one</em> that <em>two</em> another <em>three</em> pass it <em>around</em>",
-///    output.as_str().unwrap());
+///    output.to_str().unwrap());
 ///```
 
 #[allow(unused_variables)]
@@ -157,49 +157,49 @@ pub trait Render: Sized {
     ///
     /// Not run if the `DISABLE_INDENTED_CODE` extension is enabled.
     fn code_block(&mut self, output: &mut Buffer, text: &Buffer, lang: &Buffer) {
-        output.write("MISSING CODE_BLOCK HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING CODE_BLOCK HANDLER\n").unwrap();
     }
 
     /// Runs when a block quote is encountered
     ///
     /// The default implementation outputs an error string.
     fn quote_block(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write("MISSING QUOTE_BLOCK HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING QUOTE_BLOCK HANDLER\n").unwrap();
     }
 
     /// Runs when a header is encountered
     ///
     /// The default implementation outputs an error string.
     fn header(&mut self, output: &mut Buffer, content: &Buffer, level: i32) {
-        output.write("MISSING HEADER HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING HEADER HANDLER\n").unwrap();
     }
 
     /// Runs when a horizontal rule is encountered
     ///
     /// The default implementation outputs an error string.
     fn horizontal_rule(&mut self, output: &mut Buffer) {
-        output.write("MISSING HORIZONTAL_RULE HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING HORIZONTAL_RULE HANDLER\n").unwrap();
     }
 
     /// Runs when a list is encountered.
     ///
     /// The default implementation outputs an error string.
     fn list(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
-        output.write("MISSING LIST HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING LIST HANDLER\n").unwrap();
     }
 
     /// Runs when a list item is encountered.
     ///
     /// The default implementation outputs an error string.
     fn list_item(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
-        output.write("MISSING LIST_ITEM HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING LIST_ITEM HANDLER\n").unwrap();
     }
 
     /// Runs when a paragraph is encountered.
     ///
     /// The default implementation outputs an error string.
     fn paragraph(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write("MISSING PARAGRAPH HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING PARAGRAPH HANDLER\n").unwrap();
     }
 
     /// Runs when a table is encountered.
@@ -208,7 +208,7 @@ pub trait Render: Sized {
     ///
     /// The default implementation outputs an error string.
     fn table(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write("MISSING TABLE HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING TABLE HANDLER\n").unwrap();
     }
 
     /// Runs when a table header is encountered.
@@ -217,7 +217,7 @@ pub trait Render: Sized {
     ///
     /// The default implementation outputs an error string.
     fn table_header(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write("MISSING TABLE_HEADER HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING TABLE_HEADER HANDLER\n").unwrap();
     }
 
     /// Runs when a table body is encountered.
@@ -226,7 +226,7 @@ pub trait Render: Sized {
     ///
     /// The default implementation outputs an error string.
     fn table_body(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write("MISSING TABLE_BODY HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING TABLE_BODY HANDLER\n").unwrap();
     }
 
     /// Runs when a table row is encountered.
@@ -235,7 +235,7 @@ pub trait Render: Sized {
     ///
     /// The default implementation outputs an error string.
     fn table_row(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write("MISSING TABLE_ROW HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING TABLE_ROW HANDLER\n").unwrap();
     }
 
     /// Runs when a table cell is encountered.
@@ -244,7 +244,7 @@ pub trait Render: Sized {
     ///
     /// The default implementation outputs an error string.
     fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::Table) {
-        output.write("MISSING TABLE_CELL HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING TABLE_CELL HANDLER\n").unwrap();
     }
 
     /// Runs when footnotes are encountered.
@@ -253,7 +253,7 @@ pub trait Render: Sized {
     ///
     /// The default implementation outputs an error string.
     fn footnotes(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write("MISSING FOOTNOTES HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING FOOTNOTES HANDLER\n").unwrap();
     }
 
     /// Runs when a footnote definition is encountered.
@@ -262,14 +262,14 @@ pub trait Render: Sized {
     ///
     /// The default implementation outputs an error string.
     fn footnote_definition(&mut self, output: &mut Buffer, content: &Buffer, num: u32) {
-        output.write("MISSING FOOTNOTE_DEFINITION HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING FOOTNOTE_DEFINITION HANDLER\n").unwrap();
     }
 
     /// Runs when a raw html block is encountered.
     ///
     /// The default implementation outputs an error string.
     fn html_block(&mut self, output: &mut Buffer, text: &Buffer) {
-        output.write("MISSING HTML_BLOCK HANDLER\n".as_bytes()).unwrap();
+        output.write(b"MISSING HTML_BLOCK HANDLER\n").unwrap();
     }
 
     // span-level: not registered = pass-through

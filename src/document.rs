@@ -1,6 +1,7 @@
 use libc::size_t;
 use std::ptr::Unique;
 
+use extensions::Extension;
 use buffer::Buffer;
 use ffi::{
     hoedown_document,
@@ -22,7 +23,7 @@ impl Document {
     /// `max_nesting` refers to the maximum block depth that should be parsed
     pub fn new(
         renderer: &hoedown_renderer,
-        extensions: ::Extension,
+        extensions: Extension,
         max_nesting: usize
     ) -> Document {
         let doc = unsafe {
@@ -39,7 +40,7 @@ impl Document {
         unsafe {
             hoedown_document_render(
                 *self.document,
-                output.get_mut(),
+                output.as_mut(),
                 input.as_ptr(),
                 input.len() as size_t
             );
@@ -51,7 +52,7 @@ impl Document {
         unsafe {
             hoedown_document_render_inline(
                 *self.document,
-                output.get_mut(),
+                output.as_mut(),
                 input.as_ptr(),
                 input.len() as size_t
             );
