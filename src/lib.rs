@@ -24,7 +24,7 @@ extern crate libc;
 extern crate bitflags;
 
 mod extensions;
-mod ffi;
+pub mod ffi;
 mod buffer;
 pub mod renderer;
 mod document;

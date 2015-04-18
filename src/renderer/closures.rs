@@ -3,8 +3,6 @@
 use buffer::Buffer;
 use super::Render;
 
-use std::io::Write;
-
 mod types {
     use buffer::Buffer;
 
@@ -50,19 +48,20 @@ mod types {
 
 /// A renderer whose behavior is defined by closures.
 ///
-/// This renderer is meant for quick, one-off renderers.
-/// Handlers are passed to this type in the form of closures.
+/// This renderer wraps another renderer and enables its behavior
+/// to be overridden using closures.
+///
+/// This might be removed in the future since it's not possible to
+/// access the base renderer from within a provided closure. The use
+/// of the `Wrapper` trait and `wrap!` macro is encouraged instead.
 ///
 ///``` rust
-///# #![feature(io)]
 ///# use std::io::Write;
 ///# use hoedown::{Markdown, Buffer};
+///# use hoedown::renderer::html;
 ///# use hoedown::renderer::closures::Closures;
-///let mut closures = Closures::new();
-///
-///closures.on_paragraph(|output: &mut Buffer, content: &Buffer| {
-///    output.pipe(content);
-///});
+///let html = html::Html::new(html::Flags::empty(), 0);
+///let mut closures = Closures::new(html);
 ///
 ///closures.on_emphasis(|output: &mut Buffer, content: &Buffer| -> bool {
 ///    output.write(b"~~").unwrap();
@@ -74,9 +73,11 @@ mod types {
 ///let doc = Markdown::new("this _requires_ emphasis");
 ///let output = doc.render_to_buffer(closures);
 ///
-///assert_eq!(output.to_str().unwrap(), "this ~~requires~~ emphasis");
+///assert_eq!(output.to_str().unwrap(), "<p>this ~~requires~~ emphasis</p>\n");
 ///```
-pub struct Closures<'a> {
+pub struct Closures<'a, R> where R: Render {
+    base: R,
+
     code_block: Option<types::code_block<'a>>,
     quote_block: Option<types::quote_block<'a>>,
     header: Option<types::header<'a>>,
@@ -117,9 +118,11 @@ pub struct Closures<'a> {
     after_render: Option<types::after_render<'a>>,
 }
 
-impl <'a> Closures<'a> {
-    pub fn new() -> Closures<'a> {
+impl <'a, R> Closures<'a, R> where R: Render {
+    pub fn new(renderer: R) -> Closures<'a, R> {
         Closures {
+            base: renderer,
+
             code_block: None,
             quote_block: None,
             header: None,
@@ -162,12 +165,13 @@ impl <'a> Closures<'a> {
     }
 }
 
-impl<'a> Render for Closures<'a> {
+impl<'a, R> Render for Closures<'a, R>
+where R: Render {
     fn code_block(&mut self, output: &mut Buffer, text: &Buffer, lang: &Buffer) {
         if let Some(ref mut func) = self.code_block {
             func(output, text, lang);
         } else {
-            output.write(b"MISSING CODE_BLOCK HANDLER\n").unwrap();
+            self.base.code_block(output, text, lang);
         }
     }
 
@@ -175,7 +179,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.quote_block {
             func(output, content);
         } else {
-            output.write(b"MISSING quote_block HANDLER\n").unwrap();
+            self.base.quote_block(output, content);
         }
     }
 
@@ -183,7 +187,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.header {
             func(output, content, level);
         } else {
-            output.write(b"MISSING HEADER HANDLER\n").unwrap();
+            self.base.header(output, content, level);
         }
     }
 
@@ -191,7 +195,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.horizontal_rule {
             func(output);
         } else {
-            output.write(b"MISSING HORIZONTAL_RULE HANDLER\n").unwrap();
+            self.base.horizontal_rule(output);
         }
     }
 
@@ -199,7 +203,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.list {
             func(output, content, flags);
         } else {
-            output.write(b"MISSING LIST HANDLER\n").unwrap();
+            self.base.list(output, content, flags);
         }
     }
 
@@ -207,7 +211,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.list_item {
             func(output, content, flags);
         } else {
-            output.write(b"MISSING list_item HANDLER\n").unwrap();
+            self.base.list_item(output, content, flags);
         }
     }
 
@@ -215,7 +219,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.paragraph {
             func(output, content);
         } else {
-            output.write(b"MISSING PARAGRAPH HANDLER\n").unwrap();
+            self.base.paragraph(output, content);
         }
     }
 
@@ -223,7 +227,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table {
             func(output, content);
         } else {
-            output.write(b"MISSING TABLE HANDLER\n").unwrap();
+            self.base.table(output, content);
         }
     }
 
@@ -231,7 +235,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_header {
             func(output, content);
         } else {
-            output.write(b"MISSING TABLE_HEADER HANDLER\n").unwrap();
+            self.base.table_header(output, content);
         }
     }
 
@@ -239,7 +243,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_body {
             func(output, content);
         } else {
-            output.write(b"MISSING TABLE_BODY HANDLER\n").unwrap();
+            self.base.table_body(output, content);
         }
     }
 
@@ -247,7 +251,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_row {
             func(output, content);
         } else {
-            output.write(b"MISSING TABLE_ROW HANDLER\n").unwrap();
+            self.base.table_row(output, content);
         }
     }
 
@@ -255,7 +259,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.table_cell {
             func(output, content, flags);
         } else {
-            output.write(b"MISSING TABLE_CELL HANDLER\n").unwrap();
+            self.base.table_cell(output, content, flags);
         }
     }
 
@@ -263,7 +267,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.footnotes {
             func(output, content);
         } else {
-            output.write(b"MISSING FOOTNOTES HANDLER\n").unwrap();
+            self.base.footnotes(output, content);
         }
     }
 
@@ -271,7 +275,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.footnote_definition {
             func(output, content, num);
         } else {
-            output.write(b"MISSING FOOTNOTE_DEFINITION HANDLER\n").unwrap();
+            self.base.footnote_definition(output, content, num);
         }
     }
 
@@ -279,7 +283,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.html_block {
             func(output, text);
         } else {
-            output.write(b"MISSING html_block HANDLER\n").unwrap();
+            self.base.html_block(output, text);
         }
     }
 
@@ -287,7 +291,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.autolink {
             func(output, link, ty)
         } else {
-            false
+            self.base.autolink(output, link, ty)
         }
     }
 
@@ -295,7 +299,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.code_span {
             func(output, text)
         } else {
-            false
+            self.base.code_span(output, text)
         }
     }
 
@@ -303,7 +307,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.double_emphasis {
             func(output, content)
         } else {
-            false
+            self.base.double_emphasis(output, content)
         }
     }
 
@@ -311,7 +315,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.emphasis {
             func(output, content)
         } else {
-            false
+            self.base.emphasis(output, content)
         }
     }
 
@@ -319,7 +323,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.underline {
             func(output, content)
         } else {
-            false
+            self.base.underline(output, content)
         }
     }
 
@@ -327,7 +331,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.highlight {
             func(output, content)
         } else {
-            false
+            self.base.highlight(output, content)
         }
     }
 
@@ -335,7 +339,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.quote {
             func(output, content)
         } else {
-            false
+            self.base.quote_span(output, content)
         }
     }
 
@@ -343,7 +347,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.image {
             func(output, link, title, alt)
         } else {
-            false
+            self.base.image(output, link, title, alt)
         }
     }
 
@@ -351,7 +355,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.line_break {
             func(output)
         } else {
-            false
+            self.base.line_break(output)
         }
     }
 
@@ -359,7 +363,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.link {
             func(output, content, link, title)
         } else {
-            false
+            self.base.link(output, content, link, title)
         }
     }
 
@@ -367,7 +371,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.triple_emphasis {
             func(output, content)
         } else {
-            false
+            self.base.triple_emphasis(output, content)
         }
     }
 
@@ -375,7 +379,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.strikethrough {
             func(output, content)
         } else {
-            false
+            self.base.strikethrough(output, content)
         }
     }
 
@@ -383,7 +387,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.superscript {
             func(output, content)
         } else {
-            false
+            self.base.superscript(output, content)
         }
     }
 
@@ -391,7 +395,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.footnote_reference {
             func(output, num)
         } else {
-            false
+            self.base.footnote_reference(output, num)
         }
     }
 
@@ -399,7 +403,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.math {
             func(output, text, displaymode)
         } else {
-            false
+            self.base.math(output, text, displaymode)
         }
     }
 
@@ -407,7 +411,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.html_span {
             func(output, text)
         } else {
-            false
+            self.base.html_span(output, text)
         }
     }
 
@@ -415,7 +419,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.entity {
             func(output, text);
         } else {
-            output.pipe(text);
+            self.base.entity(output, text)
         }
     }
 
@@ -423,7 +427,7 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.normal_text {
             func(output, text);
         } else {
-            output.pipe(text);
+            self.base.normal_text(output, text)
         }
     }
 
@@ -431,16 +435,21 @@ impl<'a> Render for Closures<'a> {
         if let Some(ref mut func) = self.before_render {
             func(output, inline_render as i32);
         }
+
+        self.base.before_render(output, inline_render);
     }
 
     fn after_render(&mut self, output: &mut Buffer, inline_render: bool) {
         if let Some(ref mut func) = self.after_render {
             func(output, inline_render as i32);
         }
+
+        self.base.after_render(output, inline_render);
     }
 }
 
-impl<'a> Closures<'a> {
+impl<'a, R> Closures<'a, R>
+where R: Render {
     pub fn on_code_block<F>(&mut self, closure: F)
     where F: FnMut(&mut Buffer, &Buffer, &Buffer), F: 'a {
         self.code_block = Some(Box::new(closure));

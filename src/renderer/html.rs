@@ -54,7 +54,6 @@ bitflags! {
 /// documentation example.
 ///
 ///``` rust
-///# #![feature(io)]
 ///# use hoedown::renderer::html::{Html, Flags};
 ///# use hoedown::{Buffer, Render};
 ///let input = Buffer::from("EMPHASIZE");
