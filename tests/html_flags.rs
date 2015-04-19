@@ -1,14 +1,14 @@
 extern crate hoedown;
 
-use hoedown::Markdown;
+use hoedown::{Markdown, Render};
 use hoedown::renderer::html;
 
 macro_rules! html_test {
     ($flag:ident: $left:expr, $right:expr) => ({
+        let mut html_renderer = html::Html::new(html::$flag, 0);
         let doc = Markdown::new($left);
-        let html_renderer = html::Html::new(html::$flag, 0);
 
-        let output = doc.render(html_renderer);
+        let output = html_renderer.render(&doc);
 
         assert_eq!(output.to_str().unwrap(), $right);
     });

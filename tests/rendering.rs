@@ -1,21 +1,21 @@
 extern crate hoedown;
 
-use hoedown::Markdown;
-use hoedown::renderer::html;
+use hoedown::{Markdown, Render};
+use hoedown::renderer::html::{self, Html};
 
 #[test]
 fn test_render_inline() {
+    let mut html = Html::new(html::Flags::empty(), 0);
     let doc = Markdown::new("some _emphasis_ required");
-    let html = html::Html::new(html::Flags::empty(), 0);
 
-    let res = doc.render_inline(html);
+    let res = html.render_inline(&doc);
 
     assert_eq!(res.to_str().unwrap(), "some <em>emphasis</em> required");
 }
 
 #[test]
 fn test_render_toc() {
-    let toc = html::Html::toc(16);
+    let mut toc = html::Html::toc(16);
     let doc = Markdown::new(
 "# first
 
@@ -33,7 +33,7 @@ heh
 
 this");
 
-    let res = doc.render(toc);
+    let res = toc.render(&doc);
 
     assert_eq!(res.to_str().unwrap(),
 "<ul>

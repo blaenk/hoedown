@@ -33,6 +33,22 @@ impl Buffer {
         }
     }
 
+    /// Construct a markdown document from a given Reader
+    ///
+    /// By default it enables no Hoedown extensions and sets the maximum
+    /// block depth to parse at 16. This may be changed with the `with_extensions`
+    /// and `with_max_nesting` builder methods.
+    ///
+    /// Note that `Buffer` also implements `Reader`, so it can be used with this
+    /// method.
+    pub fn read_from<R>(mut reader: R) -> Buffer
+    where R: Read {
+        let mut contents = Vec::new();
+        reader.read_to_end(&mut contents).unwrap();
+
+        Buffer::from(&contents[..])
+    }
+
     /// Check if the buffer is empty
     pub fn is_empty(&self) -> bool {
         self.len() == 0
@@ -197,3 +213,4 @@ impl AsMut<hoedown_buffer> for Buffer {
         unsafe { self.buffer.get_mut() }
     }
 }
+

@@ -4,9 +4,12 @@ use wrappers;
 use buffer::Buffer;
 use ffi::hoedown_renderer;
 
+use markdown::Markdown;
+use document::Document;
+
 /// Represents render behavior
 ///
-/// Types that implement this trait can be used to render a `Markdown` document.
+/// Types that implement this trait can be used to render a `Buffer` document.
 ///
 /// All methods have default implementations which may be implemented by the
 /// implementing type as required, depending on which callbacks it's interested in.
@@ -28,8 +31,8 @@ use ffi::hoedown_renderer;
 /// into a vector that can then be inspected after rendering.
 ///
 ///``` rust
-///# use hoedown::{Markdown, Buffer};
-///# use hoedown::renderer::{Render, html};
+///# use hoedown::{Markdown, Buffer, Render};
+///# use hoedown::renderer::html;
 ///struct EmphCollector {
 ///    // html renderer to delegate to
 ///    html: html::Html,
@@ -65,7 +68,7 @@ use ffi::hoedown_renderer;
 ///let doc = Markdown::new("this _one_ that _two_ another _three_ pass it _around_");
 ///let mut collector = EmphCollector::new();
 ///
-///let output = doc.render(&mut collector);
+///let output = collector.render(&doc);
 ///
 ///assert_eq!(
 ///    collector.emphs,
@@ -82,6 +85,34 @@ use ffi::hoedown_renderer;
 
 #[allow(unused_variables)]
 pub trait Render: Sized {
+    /// Render the document to a buffer that is returned
+    fn render(&mut self, input: &Markdown) -> Buffer {
+        let mut output = Buffer::new(64);
+        self.render_to(input, &mut output);
+        output
+    }
+
+    /// Render the document into the given buffer
+    fn render_to(&mut self, input: &Markdown, output: &mut Buffer) {
+        let renderer = unsafe { self.to_hoedown() };
+        let doc = Document::new(&renderer, input.extensions.clone(), input.max_nesting);
+        doc.render(output, &input.contents);
+    }
+
+    /// Render the document as inline to a buffer that is returned
+    fn render_inline(&mut self, input: &Markdown) -> Buffer {
+        let mut output = Buffer::new(64);
+        self.render_inline_to(input, &mut output);
+        output
+    }
+
+    /// Render the document as inline into the given buffer
+    fn render_inline_to(&mut self, input: &Markdown, output: &mut Buffer) {
+        let renderer = unsafe { self.to_hoedown() };
+        let doc = Document::new(&renderer, input.extensions.clone(), input.max_nesting);
+        doc.render_inline(output, &input.contents);
+    }
+
     /// Converts the type into an underlying `hoedown_renderer` structure.
     ///
     /// The default implementation of this should suffice for the majority of implementations,

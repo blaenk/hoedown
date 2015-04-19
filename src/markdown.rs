@@ -1,16 +1,14 @@
 use std::io::Read;
 
 use buffer::Buffer;
-use renderer::Render;
-use document::Document;
 use extensions::Extension;
 
 /// Markdown document
 #[derive(Clone)]
 pub struct Markdown {
-    contents: Buffer,
-    extensions: Extension,
-    max_nesting: usize,
+    pub contents: Buffer,
+    pub extensions: Extension,
+    pub max_nesting: usize,
 }
 
 impl Markdown {
@@ -26,13 +24,10 @@ impl Markdown {
     ///
     /// Note that `Buffer` also implements `Reader`, so it can be used with this
     /// method.
-    pub fn read_from<R>(mut reader: R) -> Markdown
+    pub fn read_from<R>(reader: R) -> Markdown
     where R: Read {
-        let mut contents = Vec::new();
-        reader.read_to_end(&mut contents).unwrap();
-
         Markdown {
-            contents: Buffer::from(&contents[..]),
+            contents: Buffer::read_from(reader),
             extensions: Extension::empty(),
             max_nesting: 16,
         }
@@ -48,38 +43,6 @@ impl Markdown {
     pub fn max_nesting(mut self, max_nesting: usize) -> Markdown {
         self.max_nesting = max_nesting;
         self
-    }
-
-    /// Render the document into the given buffer
-    pub fn render_to<R>(&self, mut renderer: R, output: &mut Buffer)
-    where R: Render {
-        let renderer = unsafe { renderer.to_hoedown() };
-        let doc = Document::new(&renderer, self.extensions, self.max_nesting);
-        doc.render(output, self.contents.as_ref());
-    }
-
-    /// Render the document to a buffer that is returned
-    pub fn render<R>(&self, renderer: R) -> Buffer
-    where R: Render {
-        let mut output = Buffer::new(64);
-        self.render_to(renderer, &mut output);
-        output
-    }
-
-    /// Render the document as inline into the given buffer
-    pub fn render_inline_to<R>(&self, mut renderer: R, output: &mut Buffer)
-    where R: Render {
-        let renderer = unsafe { renderer.to_hoedown() };
-        let doc = Document::new(&renderer, self.extensions, self.max_nesting);
-        doc.render_inline(output, self.contents.as_ref());
-    }
-
-    /// Render the document as inline to a buffer that is returned
-    pub fn render_inline<R>(&self, renderer: R) -> Buffer
-    where R: Render {
-        let mut output = Buffer::new(64);
-        self.render_inline_to(renderer, &mut output);
-        output
     }
 }
 

@@ -6,13 +6,13 @@
 //![hoedown]: https://github.com/hoedown/hoedown
 //!
 //!``` rust
-//!# use hoedown::Markdown;
+//!# use hoedown::{Markdown, Render};
 //!# use hoedown::renderer::html::{self, Html};
 //!let doc = Markdown::new("some _emphasis_ required");
-//!let html = Html::new(html::Flags::empty(), 0);
+//!let mut html = Html::new(html::Flags::empty(), 0);
 //!
 //!assert_eq!(
-//!    doc.render(html).to_str().unwrap(),
+//!    html.render(&doc).to_str().unwrap(),
 //!    "<p>some <em>emphasis</em> required</p>\n");
 //!```
 
@@ -33,10 +33,10 @@ mod markdown;
 
 pub use extensions::*;
 
-pub use markdown::Markdown;
 pub use buffer::Buffer;
 
 pub use renderer::Render;
+pub use markdown::Markdown;
 pub use renderer::html::Html;
 pub use renderer::wrapper::Wrapper;
 pub use renderer::trace::Trace;

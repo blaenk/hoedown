@@ -1,14 +1,16 @@
 extern crate hoedown;
 
-use hoedown::Markdown;
+use hoedown::{Markdown, Render};
 use hoedown::renderer::html;
 
 macro_rules! extensions_test {
     ($extension:ident: $left:expr, $right:expr) => ({
-        let doc = Markdown::new($left).extensions(hoedown::$extension);
-        let renderer = html::Html::new(html::Flags::empty(), 0);
+        let mut renderer = html::Html::new(html::Flags::empty(), 0);
+        let doc =
+            Markdown::new($left)
+            .extensions(hoedown::$extension);
 
-        assert_eq!(doc.render(renderer).to_str().unwrap(), $right);
+        assert_eq!(renderer.render(&doc).to_str().unwrap(), $right);
     });
 }
 

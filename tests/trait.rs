@@ -278,7 +278,7 @@ macro_rules! renderer_test {
         let mut renderer = $renderer;
         let doc = Markdown::new($left).extensions($flags);
 
-        let output = doc.render(&mut renderer);
+        let output = renderer.render(&doc);
 
         assert_eq!(output.to_str().unwrap(), $right);
     })
@@ -288,11 +288,11 @@ macro_rules! renderer_test {
 fn test_html_wrapper() {
     let doc = Markdown::new(
 "something _EMPHASIZED_ **hehe**");
-    let html_renderer = HtmlWrapper {
+    let mut html_renderer = HtmlWrapper {
         html: Html::new(renderer::html::Flags::empty(), 0),
     };
 
-    let output = doc.render(html_renderer);
+    let output = html_renderer.render(&doc);
 
     assert_eq!(
         output.to_str().unwrap(),

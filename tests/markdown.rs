@@ -10,7 +10,7 @@ use std::path::PathBuf;
 
 use std::io::{Read, Write};
 
-use hoedown::Markdown;
+use hoedown::{Markdown, Render};
 use hoedown::renderer::html;
 
 fn tidy(input: &str) -> String {
@@ -39,14 +39,14 @@ fn test_markdown() {
         .chain(Some(PathBuf::from("libhoedown/test/Tests/Escape character.text")).into_iter())
         .chain(Some(PathBuf::from("tests/fixtures/unicode.txt")).into_iter()) {
         let doc = Markdown::read_from(File::open(&source).unwrap());
-        let html = html::Html::new(html::Flags::empty(), 0);
+        let mut html = html::Html::new(html::Flags::empty(), 0);
 
         let target = source.with_extension("html");
         let mut target_contents = String::new();
 
         File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
-        let output = doc.render(html);
+        let output = html.render(&doc);
 
         let rendered_tidy = tidy(output.to_str().unwrap());
         let target_tidy = tidy(&target_contents[..]);
@@ -58,15 +58,17 @@ fn test_markdown() {
 #[test]
 fn test_math() {
     let source = PathBuf::from("libhoedown/test/Tests/Math.text");
-    let doc = Markdown::read_from(File::open(&source).unwrap()).extensions(hoedown::MATH);
-    let html = html::Html::new(html::Flags::empty(), 0);
+    let doc =
+        Markdown::read_from(File::open(&source).unwrap())
+        .extensions(hoedown::MATH);
+    let mut html = html::Html::new(html::Flags::empty(), 0);
 
     let target = source.with_extension("html");
     let mut target_contents = String::new();
 
     File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
-    let output = doc.render(html);
+    let output = html.render(&doc);
 
     let rendered_tidy = tidy(output.to_str().unwrap());
     let target_tidy = tidy(&target_contents[..]);
@@ -78,14 +80,14 @@ fn test_math() {
 fn test_toc() {
     let source = PathBuf::from("libhoedown/test/Tests/Formatting in Table of Contents.text");
     let doc = Markdown::read_from(File::open(&source).unwrap());
-    let renderer = html::Html::toc(3);
+    let mut renderer = html::Html::toc(3);
 
     let target = source.with_extension("html");
     let mut target_contents = String::new();
 
     File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
-    let output = doc.render(renderer);
+    let output = renderer.render(&doc);
 
     let rendered_tidy = tidy(output.to_str().unwrap());
     let target_tidy = tidy(&target_contents);
