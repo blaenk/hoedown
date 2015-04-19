@@ -1,4 +1,4 @@
-use std::io::{self, Read, Write};
+use std::io::Read;
 
 use buffer::Buffer;
 use renderer::Render;
@@ -6,6 +6,7 @@ use document::Document;
 use extensions::Extension;
 
 /// Markdown document
+#[derive(Clone)]
 pub struct Markdown {
     contents: Buffer,
     extensions: Extension,
@@ -50,7 +51,7 @@ impl Markdown {
     }
 
     /// Render the document into the given buffer
-    pub fn render_into_buffer<R>(&self, mut renderer: R, output: &mut Buffer)
+    pub fn render_to<R>(&self, mut renderer: R, output: &mut Buffer)
     where R: Render {
         let renderer = unsafe { renderer.to_hoedown() };
         let doc = Document::new(&renderer, self.extensions, self.max_nesting);
@@ -58,22 +59,15 @@ impl Markdown {
     }
 
     /// Render the document to a buffer that is returned
-    pub fn render_to_buffer<R>(&self, renderer: R) -> Buffer
+    pub fn render<R>(&self, renderer: R) -> Buffer
     where R: Render {
         let mut output = Buffer::new(64);
-        self.render_into_buffer(renderer, &mut output);
+        self.render_to(renderer, &mut output);
         output
     }
 
-    /// Render the document to a given Write
-    pub fn render<R, W>(&self, renderer: R, writer: &mut W) -> io::Result<()>
-    where R: Render, W: Write {
-        let output = self.render_to_buffer(renderer);
-        writer.write_all(&output)
-    }
-
     /// Render the document as inline into the given buffer
-    pub fn render_inline_into_buffer<R>(&self, mut renderer: R, output: &mut Buffer)
+    pub fn render_inline_to<R>(&self, mut renderer: R, output: &mut Buffer)
     where R: Render {
         let renderer = unsafe { renderer.to_hoedown() };
         let doc = Document::new(&renderer, self.extensions, self.max_nesting);
@@ -81,18 +75,11 @@ impl Markdown {
     }
 
     /// Render the document as inline to a buffer that is returned
-    pub fn render_inline_to_buffer<R>(&self, renderer: R) -> Buffer
+    pub fn render_inline<R>(&self, renderer: R) -> Buffer
     where R: Render {
         let mut output = Buffer::new(64);
-        self.render_inline_into_buffer(renderer, &mut output);
+        self.render_inline_to(renderer, &mut output);
         output
-    }
-
-    /// Render the document as inline to a given Write
-    pub fn render_inline<R, W>(&self, renderer: R, writer: &mut W) -> io::Result<()>
-    where R: Render, W: Write {
-        let output = self.render_inline_to_buffer(renderer);
-        writer.write_all(&output)
     }
 }
 

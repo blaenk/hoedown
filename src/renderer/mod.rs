@@ -1,7 +1,5 @@
 //! Contains Render behavior and stock renderers
 
-use std::io::Write;
-
 use wrappers;
 use buffer::Buffer;
 use ffi::hoedown_renderer;
@@ -19,11 +17,11 @@ use ffi::hoedown_renderer;
 /// when creating a custom renderer, so the default implementations for block
 /// handlers is to output a message into the output buffer to make it clearer.
 ///
-///| Type  | Action                                       |
-///| :---- | :------                                      |
-///| block | write "MISSING <callback> HANDLER" to output |
-///| span  | pass through markdown to output              |
-///| rest  | pass through content to output               |
+///| Type  | Action                          |
+///| :---- | :------                         |
+///| block | ignore the block                |
+///| span  | pass through markdown to output |
+///| rest  | pass through content to output  |
 ///
 ///
 /// Below is an example of a custom renderer that collects emphasis elements
@@ -67,7 +65,7 @@ use ffi::hoedown_renderer;
 ///let doc = Markdown::new("this _one_ that _two_ another _three_ pass it _around_");
 ///let mut collector = EmphCollector::new();
 ///
-///let output = doc.render_to_buffer(&mut collector);
+///let output = doc.render(&mut collector);
 ///
 ///assert_eq!(
 ///    collector.emphs,
@@ -156,121 +154,91 @@ pub trait Render: Sized {
     /// The default implementation outputs an error string.
     ///
     /// Not run if the `DISABLE_INDENTED_CODE` extension is enabled.
-    fn code_block(&mut self, output: &mut Buffer, text: &Buffer, lang: &Buffer) {
-        output.write(b"MISSING CODE_BLOCK HANDLER\n").unwrap();
-    }
+    fn code_block(&mut self, output: &mut Buffer, text: &Buffer, lang: &Buffer) {}
 
     /// Runs when a block quote is encountered
     ///
     /// The default implementation outputs an error string.
-    fn quote_block(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write(b"MISSING QUOTE_BLOCK HANDLER\n").unwrap();
-    }
+    fn quote_block(&mut self, output: &mut Buffer, content: &Buffer) {}
 
     /// Runs when a header is encountered
     ///
     /// The default implementation outputs an error string.
-    fn header(&mut self, output: &mut Buffer, content: &Buffer, level: i32) {
-        output.write(b"MISSING HEADER HANDLER\n").unwrap();
-    }
+    fn header(&mut self, output: &mut Buffer, content: &Buffer, level: i32) {}
 
     /// Runs when a horizontal rule is encountered
     ///
     /// The default implementation outputs an error string.
-    fn horizontal_rule(&mut self, output: &mut Buffer) {
-        output.write(b"MISSING HORIZONTAL_RULE HANDLER\n").unwrap();
-    }
+    fn horizontal_rule(&mut self, output: &mut Buffer) {}
 
     /// Runs when a list is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn list(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
-        output.write(b"MISSING LIST HANDLER\n").unwrap();
-    }
+    fn list(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {}
 
     /// Runs when a list item is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn list_item(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {
-        output.write(b"MISSING LIST_ITEM HANDLER\n").unwrap();
-    }
+    fn list_item(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {}
 
     /// Runs when a paragraph is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn paragraph(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write(b"MISSING PARAGRAPH HANDLER\n").unwrap();
-    }
+    fn paragraph(&mut self, output: &mut Buffer, content: &Buffer) {}
 
     /// Runs when a table is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write(b"MISSING TABLE HANDLER\n").unwrap();
-    }
+    fn table(&mut self, output: &mut Buffer, content: &Buffer) {}
 
     /// Runs when a table header is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_header(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write(b"MISSING TABLE_HEADER HANDLER\n").unwrap();
-    }
+    fn table_header(&mut self, output: &mut Buffer, content: &Buffer) {}
 
     /// Runs when a table body is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_body(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write(b"MISSING TABLE_BODY HANDLER\n").unwrap();
-    }
+    fn table_body(&mut self, output: &mut Buffer, content: &Buffer) {}
 
     /// Runs when a table row is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_row(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write(b"MISSING TABLE_ROW HANDLER\n").unwrap();
-    }
+    fn table_row(&mut self, output: &mut Buffer, content: &Buffer) {}
 
     /// Runs when a table cell is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::Table) {
-        output.write(b"MISSING TABLE_CELL HANDLER\n").unwrap();
-    }
+    fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::Table) {}
 
     /// Runs when footnotes are encountered.
     ///
     /// Only runs if the `FOOTNOTES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn footnotes(&mut self, output: &mut Buffer, content: &Buffer) {
-        output.write(b"MISSING FOOTNOTES HANDLER\n").unwrap();
-    }
+    fn footnotes(&mut self, output: &mut Buffer, content: &Buffer) {}
 
     /// Runs when a footnote definition is encountered.
     ///
     /// Only runs if the `FOOTNOTES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn footnote_definition(&mut self, output: &mut Buffer, content: &Buffer, num: u32) {
-        output.write(b"MISSING FOOTNOTE_DEFINITION HANDLER\n").unwrap();
-    }
+    fn footnote_definition(&mut self, output: &mut Buffer, content: &Buffer, num: u32) {}
 
     /// Runs when a raw html block is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn html_block(&mut self, output: &mut Buffer, text: &Buffer) {
-        output.write(b"MISSING HTML_BLOCK HANDLER\n").unwrap();
-    }
+    fn html_block(&mut self, output: &mut Buffer, text: &Buffer) {}
 
     // span-level: not registered = pass-through
 
@@ -558,342 +526,6 @@ impl<'a, R> Render for &'a mut R where R: Render {
     }
 }
 
-pub trait Wrapper {
-    type Base: Render;
-
-    fn base(&mut self) -> &mut Self::Base;
-
-    #[inline(always)]
-    fn code_block(&mut self, output: &mut Buffer, code: &Buffer, lang: &Buffer) {
-        self.base().code_block(output, code, lang)
-    }
-
-    #[inline(always)]
-    fn quote_block(&mut self, ob: &mut Buffer, content: &Buffer) {
-        self.base().quote_block(ob, content);
-    }
-
-    #[inline(always)]
-    fn header(&mut self, ob: &mut Buffer, content: &Buffer, level: i32) {
-        self.base().header(ob, content, level);
-    }
-
-    #[inline(always)]
-    fn horizontal_rule(&mut self, ob: &mut Buffer) {
-        self.base().horizontal_rule(ob);
-    }
-
-    #[inline(always)]
-    fn list(&mut self, ob: &mut Buffer, content: &Buffer, flags: list::List) {
-        self.base().list(ob, content, flags);
-    }
-
-    #[inline(always)]
-    fn list_item(&mut self, ob: &mut Buffer, content: &Buffer, flags: list::List) {
-        self.base().list_item(ob, content, flags);
-    }
-
-    #[inline(always)]
-    fn paragraph(&mut self, ob: &mut Buffer, content: &Buffer) {
-        self.base().paragraph(ob, content);
-    }
-
-    #[inline(always)]
-    fn table(&mut self, ob: &mut Buffer, content: &Buffer) {
-        self.base().table(ob, content);
-    }
-
-    #[inline(always)]
-    fn table_header(&mut self, ob: &mut Buffer, content: &Buffer) {
-        self.base().table_header(ob, content);
-    }
-
-    #[inline(always)]
-    fn table_body(&mut self, ob: &mut Buffer, content: &Buffer) {
-        self.base().table_body(ob, content);
-    }
-
-    #[inline(always)]
-    fn table_row(&mut self, ob: &mut Buffer, content: &Buffer) {
-        self.base().table_row(ob, content);
-    }
-
-    #[inline(always)]
-    fn table_cell(&mut self, ob: &mut Buffer, content: &Buffer, flags: Table) {
-        self.base().table_cell(ob, content, flags);
-    }
-
-    #[inline(always)]
-    fn footnotes(&mut self, ob: &mut Buffer, content: &Buffer) {
-        self.base().footnotes(ob, content);
-    }
-
-    #[inline(always)]
-    fn footnote_definition(&mut self, ob: &mut Buffer, content: &Buffer, num: u32) {
-        self.base().footnote_definition(ob, content, num);
-    }
-
-    #[inline(always)]
-    fn html_block(&mut self, ob: &mut Buffer, text: &Buffer) {
-        self.base().html_block(ob, text);
-    }
-
-    #[inline(always)]
-    fn autolink(&mut self, ob: &mut Buffer, link: &Buffer, ty: AutoLink) -> bool {
-        self.base().autolink(ob, link, ty)
-    }
-
-    #[inline(always)]
-    fn code_span(&mut self, ob: &mut Buffer, text: &Buffer) -> bool {
-        self.base().code_span(ob, text)
-    }
-
-    #[inline(always)]
-    fn double_emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().double_emphasis(ob, content)
-    }
-
-    #[inline(always)]
-    fn emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().emphasis(ob, content)
-    }
-
-    #[inline(always)]
-    fn underline(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().underline(ob, content)
-    }
-
-    #[inline(always)]
-    fn highlight(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().highlight(ob, content)
-    }
-
-    #[inline(always)]
-    fn quote_span(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().quote_span(ob, content)
-    }
-
-    #[inline(always)]
-    fn image(&mut self, ob: &mut Buffer, link: &Buffer, title: &Buffer, alt: &Buffer) -> bool {
-        self.base().image(ob, link, title, alt)
-    }
-
-    #[inline(always)]
-    fn line_break(&mut self, ob: &mut Buffer) -> bool {
-        self.base().line_break(ob)
-    }
-
-    #[inline(always)]
-    fn link(&mut self, ob: &mut Buffer, content: &Buffer, link: &Buffer, title: &Buffer) -> bool {
-        self.base().link(ob, content, link, title)
-    }
-
-    #[inline(always)]
-    fn triple_emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().triple_emphasis(ob, content)
-    }
-
-    #[inline(always)]
-    fn strikethrough(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().strikethrough(ob, content)
-    }
-
-    #[inline(always)]
-    fn superscript(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
-        self.base().superscript(ob, content)
-    }
-
-    #[inline(always)]
-    fn footnote_reference(&mut self, ob: &mut Buffer, num: u32) -> bool {
-        self.base().footnote_reference(ob, num)
-    }
-
-    #[inline(always)]
-    fn math(&mut self, ob: &mut Buffer, text: &Buffer, displaymode: i32) -> bool {
-        self.base().math(ob, text, displaymode)
-    }
-
-    #[inline(always)]
-    fn html_span(&mut self, ob: &mut Buffer, text: &Buffer) -> bool {
-        self.base().html_span(ob, text)
-    }
-
-    #[inline(always)]
-    fn entity(&mut self, ob: &mut Buffer, text: &Buffer) {
-        self.base().entity(ob, text)
-    }
-
-    #[inline(always)]
-    fn normal_text(&mut self, ob: &mut Buffer, text: &Buffer) {
-        self.base().normal_text(ob, text)
-    }
-
-    #[inline(always)]
-    fn before_render(&mut self, output: &mut Buffer, inline_render: bool) {
-        self.base().before_render(output, inline_render)
-    }
-
-    #[inline(always)]
-    fn after_render(&mut self, output: &mut Buffer, inline_render: bool) {
-        self.base().after_render(output, inline_render)
-    }
-}
-
-#[macro_export]
-macro_rules! wrap {
-    ($name:ty) => {
-        impl $crate::renderer::Render for $name {
-            // block-level: not registered = skip the block
-            #[inline(always)]
-            fn code_block(&mut self, output: &mut $crate::Buffer, text: &$crate::Buffer, lang: &$crate::Buffer) {
-                $crate::renderer::Wrapper::code_block(self, output, text, lang)
-            }
-            #[inline(always)]
-            fn quote_block(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) {
-                $crate::renderer::Wrapper::quote_block(self, output, content)
-            }
-            #[inline(always)]
-            fn header(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer, level: i32) {
-                $crate::renderer::Wrapper::header(self, output, content, level)
-            }
-            #[inline(always)]
-            fn horizontal_rule(&mut self, output: &mut $crate::Buffer) {
-                $crate::renderer::Wrapper::horizontal_rule(self, output)
-            }
-            #[inline(always)]
-            fn list(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer, flags: $crate::renderer::list::List) {
-                $crate::renderer::Wrapper::list(self, output, content, flags)
-            }
-            #[inline(always)]
-            fn list_item(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer, flags: $crate::renderer::list::List) {
-                $crate::renderer::Wrapper::list_item(self, output, content, flags)
-            }
-            #[inline(always)]
-            fn paragraph(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) {
-                $crate::renderer::Wrapper::paragraph(self, output, content)
-            }
-            #[inline(always)]
-            fn table(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) {
-                $crate::renderer::Wrapper::table(self, output, content)
-            }
-            #[inline(always)]
-            fn table_header(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) {
-                $crate::renderer::Wrapper::table_header(self, output, content)
-            }
-            #[inline(always)]
-            fn table_body(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) {
-                $crate::renderer::Wrapper::table_body(self, output, content)
-            }
-            #[inline(always)]
-            fn table_row(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) {
-                $crate::renderer::Wrapper::table_row(self, output, content)
-            }
-            #[inline(always)]
-            fn table_cell(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer, flags: $crate::renderer::Table) {
-                $crate::renderer::Wrapper::table_cell(self, output, content, flags)
-            }
-            #[inline(always)]
-            fn footnotes(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) {
-                $crate::renderer::Wrapper::footnotes(self, output, content)
-            }
-            #[inline(always)]
-            fn footnote_definition(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer, num: u32) {
-                $crate::renderer::Wrapper::footnote_definition(self, output, content, num)
-            }
-            #[inline(always)]
-            fn html_block(&mut self, output: &mut $crate::Buffer, text: &$crate::Buffer) {
-                $crate::renderer::Wrapper::html_block(self, output, text)
-            }
-
-            // span-level: not registered = pass-through
-            #[inline(always)]
-            fn autolink(&mut self, output: &mut $crate::Buffer, link: &$crate::Buffer, link_type: $crate::renderer::AutoLink) -> bool {
-                $crate::renderer::Wrapper::autolink(self, output, link, link_type)
-            }
-            #[inline(always)]
-            fn code_span(&mut self, output: &mut $crate::Buffer, text: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::code_span(self, output, text)
-            }
-            #[inline(always)]
-            fn double_emphasis(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::double_emphasis(self, output, content)
-            }
-            #[inline(always)]
-            fn emphasis(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::emphasis(self, output, content)
-            }
-            #[inline(always)]
-            fn underline(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::underline(self, output, content)
-            }
-            #[inline(always)]
-            fn highlight(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::highlight(self, output, content)
-            }
-            #[inline(always)]
-            fn quote_span(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::quote_span(self, output, content)
-            }
-            #[inline(always)]
-            fn image(&mut self, output: &mut $crate::Buffer, link: &$crate::Buffer, title: &$crate::Buffer, alt: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::image(self, output, link, title, alt)
-            }
-            #[inline(always)]
-            fn line_break(&mut self, output: &mut $crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::line_break(self, output)
-            }
-            #[inline(always)]
-            fn link(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer, link: &$crate::Buffer, title: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::link(self, output, content, link, title)
-            }
-            #[inline(always)]
-            fn triple_emphasis(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::triple_emphasis(self, output, content)
-            }
-            #[inline(always)]
-            fn strikethrough(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::strikethrough(self, output, content)
-            }
-            #[inline(always)]
-            fn superscript(&mut self, output: &mut $crate::Buffer, content: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::superscript(self, output, content)
-            }
-            #[inline(always)]
-            fn footnote_reference(&mut self, output: &mut $crate::Buffer, num: u32) -> bool {
-                $crate::renderer::Wrapper::footnote_reference(self, output, num)
-            }
-            #[inline(always)]
-            fn math(&mut self, output: &mut $crate::Buffer, text: &$crate::Buffer, displaymode: i32) -> bool {
-                $crate::renderer::Wrapper::math(self, output, text, displaymode)
-            }
-            #[inline(always)]
-            fn html_span(&mut self, output: &mut $crate::Buffer, text: &$crate::Buffer) -> bool {
-                $crate::renderer::Wrapper::html_span(self, output, text)
-            }
-
-            // low-level: not registered = pass-through
-            #[inline(always)]
-            fn entity(&mut self, output: &mut $crate::Buffer, text: &$crate::Buffer) {
-                $crate::renderer::Wrapper::entity(self, output, text)
-            }
-            #[inline(always)]
-            fn normal_text(&mut self, output: &mut $crate::Buffer, text: &$crate::Buffer) {
-                $crate::renderer::Wrapper::normal_text(self, output, text)
-            }
-
-            // misc callbacks
-            #[inline(always)]
-            fn before_render(&mut self, output: &mut $crate::Buffer, inline_render: bool) {
-                $crate::renderer::Wrapper::before_render(self, output, inline_render)
-            }
-            #[inline(always)]
-            fn after_render(&mut self, output: &mut $crate::Buffer, inline_render: bool) {
-                $crate::renderer::Wrapper::after_render(self, output, inline_render)
-            }
-        }
-    };
-}
-
 /// Flags that describe a list or list item
 pub mod list {
     bitflags! {
@@ -925,6 +557,7 @@ pub enum AutoLink {
     Email,
 }
 
+pub mod wrapper;
 pub mod html;
-pub mod closures;
+pub mod trace;
 

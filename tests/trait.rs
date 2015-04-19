@@ -1,22 +1,22 @@
 #[macro_use]
 extern crate hoedown;
 
-use hoedown::{Markdown, Buffer};
-use hoedown::renderer::{self, Render, Wrapper};
+use hoedown::{Markdown, Buffer, Render, Wrapper, Html};
+use hoedown::renderer;
 
 use std::io::Write;
 
 pub struct HtmlWrapper {
-    html: renderer::html::Html,
+    html: Html,
 }
 
 wrap!(HtmlWrapper);
 
 impl Wrapper for HtmlWrapper {
-    type Base = renderer::html::Html;
+    type Base = Html;
 
     #[inline(always)]
-    fn base(&mut self) -> &mut renderer::html::Html {
+    fn base(&mut self) -> &mut Html {
         &mut self.html
     }
 
@@ -278,7 +278,7 @@ macro_rules! renderer_test {
         let mut renderer = $renderer;
         let doc = Markdown::new($left).extensions($flags);
 
-        let output = doc.render_to_buffer(&mut renderer);
+        let output = doc.render(&mut renderer);
 
         assert_eq!(output.to_str().unwrap(), $right);
     })
@@ -289,10 +289,10 @@ fn test_html_wrapper() {
     let doc = Markdown::new(
 "something _EMPHASIZED_ **hehe**");
     let html_renderer = HtmlWrapper {
-        html: renderer::html::Html::new(renderer::html::Flags::empty(), 0),
+        html: Html::new(renderer::html::Flags::empty(), 0),
     };
 
-    let output = doc.render_to_buffer(html_renderer);
+    let output = doc.render(html_renderer);
 
     assert_eq!(
         output.to_str().unwrap(),

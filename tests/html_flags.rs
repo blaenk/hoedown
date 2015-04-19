@@ -8,7 +8,7 @@ macro_rules! html_test {
         let doc = Markdown::new($left);
         let html_renderer = html::Html::new(html::$flag, 0);
 
-        let output = doc.render_to_buffer(html_renderer);
+        let output = doc.render(html_renderer);
 
         assert_eq!(output.to_str().unwrap(), $right);
     });

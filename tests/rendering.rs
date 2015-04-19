@@ -8,7 +8,7 @@ fn test_render_inline() {
     let doc = Markdown::new("some _emphasis_ required");
     let html = html::Html::new(html::Flags::empty(), 0);
 
-    let res = doc.render_inline_to_buffer(html);
+    let res = doc.render_inline(html);
 
     assert_eq!(res.to_str().unwrap(), "some <em>emphasis</em> required");
 }
@@ -33,7 +33,7 @@ heh
 
 this");
 
-    let res = doc.render_to_buffer(toc);
+    let res = doc.render(toc);
 
     assert_eq!(res.to_str().unwrap(),
 "<ul>

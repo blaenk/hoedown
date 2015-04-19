@@ -12,7 +12,7 @@
 //!let html = Html::new(html::Flags::empty(), 0);
 //!
 //!assert_eq!(
-//!    doc.render_to_buffer(html).to_str().unwrap(),
+//!    doc.render(html).to_str().unwrap(),
 //!    "<p>some <em>emphasis</em> required</p>\n");
 //!```
 
@@ -31,8 +31,13 @@ mod document;
 mod wrappers;
 mod markdown;
 
+pub use extensions::*;
+
 pub use markdown::Markdown;
 pub use buffer::Buffer;
+
 pub use renderer::Render;
-pub use extensions::*;
+pub use renderer::html::Html;
+pub use renderer::wrapper::Wrapper;
+pub use renderer::trace::Trace;
 

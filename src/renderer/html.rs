@@ -107,6 +107,7 @@ impl Html {
         }
     }
 
+    // TODO: replace with AsRef/AsMut
     /// Get a reference to the underlying hoedown renderer
     pub fn get(&self) -> &hoedown_renderer {
         unsafe { self.renderer.get() }

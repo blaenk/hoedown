@@ -46,7 +46,7 @@ fn test_markdown() {
 
         File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
-        let output = doc.render_to_buffer(html);
+        let output = doc.render(html);
 
         let rendered_tidy = tidy(output.to_str().unwrap());
         let target_tidy = tidy(&target_contents[..]);
@@ -66,7 +66,7 @@ fn test_math() {
 
     File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
-    let output = doc.render_to_buffer(html);
+    let output = doc.render(html);
 
     let rendered_tidy = tidy(output.to_str().unwrap());
     let target_tidy = tidy(&target_contents[..]);
@@ -85,7 +85,7 @@ fn test_toc() {
 
     File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
-    let output = doc.render_to_buffer(renderer);
+    let output = doc.render(renderer);
 
     let rendered_tidy = tidy(output.to_str().unwrap());
     let target_tidy = tidy(&target_contents);
