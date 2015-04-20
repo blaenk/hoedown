@@ -96,7 +96,7 @@ pub trait Render: Sized {
     fn render_to(&mut self, input: &Markdown, output: &mut Buffer) {
         let renderer = unsafe { self.to_hoedown() };
         let doc = Document::new(&renderer, input.extensions.clone(), input.max_nesting);
-        doc.render(output, &input.contents);
+        doc.render(&input.contents, output);
     }
 
     /// Render the document as inline to a buffer that is returned
@@ -110,7 +110,7 @@ pub trait Render: Sized {
     fn render_inline_to(&mut self, input: &Markdown, output: &mut Buffer) {
         let renderer = unsafe { self.to_hoedown() };
         let doc = Document::new(&renderer, input.extensions.clone(), input.max_nesting);
-        doc.render_inline(output, &input.contents);
+        doc.render_inline(&input.contents, output);
     }
 
     /// Converts the type into an underlying `hoedown_renderer` structure.

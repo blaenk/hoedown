@@ -36,7 +36,7 @@ impl Document {
     }
 
     /// Render a byte slice input into a provided output buffer.
-    pub fn render(&self, output: &mut Buffer, input: &[u8]) {
+    pub fn render(&self, input: &[u8], output: &mut Buffer) {
         unsafe {
             hoedown_document_render(
                 *self.document,
@@ -48,7 +48,7 @@ impl Document {
     }
 
     /// Render a byte slice input into a provided output buffer as an inline.
-    pub fn render_inline(&self, output: &mut Buffer, input: &[u8]) {
+    pub fn render_inline(&self, input: &[u8], output: &mut Buffer) {
         unsafe {
             hoedown_document_render_inline(
                 *self.document,

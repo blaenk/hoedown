@@ -17,7 +17,7 @@ use super::Render;
 /// Performs "smartypants" processing of the provided buffer.
 ///
 /// This turns, for example, straight quotes `"test"` into curly quotes `“test”`
-pub fn smartypants(output: &mut Buffer, content: &Buffer) {
+pub fn smartypants(content: &Buffer, output: &mut Buffer) {
     let content: &hoedown_buffer = content.as_ref();
 
     unsafe {

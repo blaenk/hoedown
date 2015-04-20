@@ -8,7 +8,7 @@ macro_rules! smartypants_test {
         let input = Buffer::from($left);
         let mut output = Buffer::new(64);
 
-        html::smartypants(&mut output, &input);
+        html::smartypants(&input, &mut output);
 
         assert_eq!(output.to_str().unwrap(), $right);
     });
