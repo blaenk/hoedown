@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Closures","A renderer whose behavior is defined by closures."]]});

@@ -42,8 +42,8 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>hoedown</a>::<wbr><a class='struct' href=''>Buffer</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-1796' class='srclink' href='../src/hoedown/buffer.rs.html#19-22'>[src]</a></span></h1>
+            <a id="toggle-all-docs" href="#" title="collapse all docs">[-]</a>
+        </span><a id='src-1796' class='srclink' href='../src/hoedown/buffer.rs.html#19-22' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Buffer {
     // some fields omitted
 }</pre><div class='docblock'><p>Buffer for holding markdown contents</p>
@@ -52,6 +52,15 @@
 
 <p>The unit allocation size is the amount by which buffers will
 grow as more space is required.</p>
+</div><h4 id='method.read_from' class='method'><code>fn <a href='#method.read_from' class='fnname'>read_from</a>&lt;R&gt;(reader: R) -&gt; <a class='struct' href='../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a> <span class='where'>where R: <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a></span></code></h4>
+<div class='docblock'><p>Construct a markdown document from a given Reader</p>
+
+<p>By default it enables no Hoedown extensions and sets the maximum
+block depth to parse at 16. This may be changed with the <code>with_extensions</code>
+and <code>with_max_nesting</code> builder methods.</p>
+
+<p>Note that <code>Buffer</code> also implements <code>Reader</code>, so it can be used with this
+method.</p>
 </div><h4 id='method.is_empty' class='method'><code>fn <a href='#method.is_empty' class='fnname'>is_empty</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
 <div class='docblock'><p>Check if the buffer is empty</p>
 </div><h4 id='method.len' class='method'><code>fn <a href='#method.len' class='fnname'>len</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a></code></h4>

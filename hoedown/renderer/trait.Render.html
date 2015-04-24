@@ -42,9 +42,13 @@
 
     <section id='main' class="content trait">
 <h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>hoedown</a>::<wbr><a href='index.html'>renderer</a>::<wbr><a class='trait' href=''>Render</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-2317' class='srclink' href='../../src/hoedown/renderer/mod.rs.html#86-440'>[src]</a></span></h1>
+            <a id="toggle-all-docs" href="#" title="collapse all docs">[-]</a>
+        </span><a id='src-2345' class='srclink' href='../../src/hoedown/renderer/mod.rs.html#87-439' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Render: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
+    fn <a href='#method.render' class='fnname'>render</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a> { ... }
+    fn <a href='#method.render_to' class='fnname'>render_to</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
+    fn <a href='#method.render_inline' class='fnname'>render_inline</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a> { ... }
+    fn <a href='#method.render_inline_to' class='fnname'>render_inline_to</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; <a class='struct' href='../../hoedown/ffi/struct.hoedown_renderer.html' title='hoedown::ffi::hoedown_renderer'>hoedown_renderer</a> { ... }
     fn <a href='#method.code_block' class='fnname'>code_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, lang: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.quote_block' class='fnname'>quote_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
@@ -83,7 +87,7 @@
     fn <a href='#method.after_render' class='fnname'>after_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) { ... }
 }</pre><div class='docblock'><p>Represents render behavior</p>
 
-<p>Types that implement this trait can be used to render a <code>Markdown</code> document.</p>
+<p>Types that implement this trait can be used to render a <code>Buffer</code> document.</p>
 
 <p>All methods have default implementations which may be implemented by the
  implementing type as required, depending on which callbacks it&#39;s interested in.</p>
@@ -102,7 +106,7 @@
 </thead><tbody>
 <tr>
 <td style="text-align: left">block</td>
-<td style="text-align: left">write &quot;MISSING <callback> HANDLER&quot; to output</td>
+<td style="text-align: left">ignore the block</td>
 </tr>
 <tr>
 <td style="text-align: left">span</td>
@@ -142,7 +146,7 @@
 
     <span class='kw'>fn</span> <span class='ident'>emphasis</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>ob</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='comment'>// collect the emphasis element</span>
-        <span class='self'>self</span>.<span class='ident'>emphs</span>.<span class='ident'>push</span>(<span class='ident'>content</span>.<span class='ident'>to_str</span>().<span class='ident'>unwrap</span>().<span class='ident'>to_string</span>());
+        <span class='self'>self</span>.<span class='ident'>emphs</span>.<span class='ident'>push</span>(<span class='ident'>String</span>::<span class='ident'>from</span>(<span class='ident'>content</span>.<span class='ident'>to_str</span>().<span class='ident'>unwrap</span>()));
 
         <span class='comment'>// delegate rendering the emphasis element to the html renderer</span>
         <span class='self'>self</span>.<span class='ident'>html</span>.<span class='ident'>emphasis</span>(<span class='ident'>ob</span>, <span class='ident'>content</span>)
@@ -152,15 +156,15 @@
 <span class='kw'>let</span> <span class='ident'>doc</span> <span class='op'>=</span> <span class='ident'>Markdown</span>::<span class='ident'>new</span>(<span class='string'>&quot;this _one_ that _two_ another _three_ pass it _around_&quot;</span>);
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>collector</span> <span class='op'>=</span> <span class='ident'>EmphCollector</span>::<span class='ident'>new</span>();
 
-<span class='kw'>let</span> <span class='ident'>output</span> <span class='op'>=</span> <span class='ident'>doc</span>.<span class='ident'>render_to_buffer</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>collector</span>);
+<span class='kw'>let</span> <span class='ident'>output</span> <span class='op'>=</span> <span class='ident'>collector</span>.<span class='ident'>render</span>(<span class='kw-2'>&amp;</span><span class='ident'>doc</span>);
 
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(
     <span class='ident'>collector</span>.<span class='ident'>emphs</span>,
     <span class='macro'>vec</span><span class='macro'>!</span>[
-        <span class='string'>&quot;one&quot;</span>.<span class='ident'>to_string</span>(),
-        <span class='string'>&quot;two&quot;</span>.<span class='ident'>to_string</span>(),
-        <span class='string'>&quot;three&quot;</span>.<span class='ident'>to_string</span>(),
-        <span class='string'>&quot;around&quot;</span>.<span class='ident'>to_string</span>()]);
+        <span class='ident'>String</span>::<span class='ident'>from</span>(<span class='string'>&quot;one&quot;</span>),
+        <span class='ident'>String</span>::<span class='ident'>from</span>(<span class='string'>&quot;two&quot;</span>),
+        <span class='ident'>String</span>::<span class='ident'>from</span>(<span class='string'>&quot;three&quot;</span>),
+        <span class='ident'>String</span>::<span class='ident'>from</span>(<span class='string'>&quot;around&quot;</span>)]);
 
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(
     <span class='string'>&quot;this &lt;em&gt;one&lt;/em&gt; that &lt;em&gt;two&lt;/em&gt; another &lt;em&gt;three&lt;/em&gt; pass it &lt;em&gt;around&lt;/em&gt;&quot;</span>,
@@ -169,7 +173,11 @@
 </div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
-        <h3 id='method.to_hoedown' class='method stab '><code>unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; <a class='struct' href='../../hoedown/ffi/struct.hoedown_renderer.html' title='hoedown::ffi::hoedown_renderer'>hoedown_renderer</a></code></h3><div class='docblock'><p>Converts the type into an underlying <code>hoedown_renderer</code> structure.</p>
+        <h3 id='method.render' class='method stab '><code>fn <a href='#method.render' class='fnname'>render</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a></code></h3><div class='docblock'><p>Render the document to a buffer that is returned</p>
+</div><h3 id='method.render_to' class='method stab '><code>fn <a href='#method.render_to' class='fnname'>render_to</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h3><div class='docblock'><p>Render the document into the given buffer</p>
+</div><h3 id='method.render_inline' class='method stab '><code>fn <a href='#method.render_inline' class='fnname'>render_inline</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a></code></h3><div class='docblock'><p>Render the document as inline to a buffer that is returned</p>
+</div><h3 id='method.render_inline_to' class='method stab '><code>fn <a href='#method.render_inline_to' class='fnname'>render_inline_to</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h3><div class='docblock'><p>Render the document as inline into the given buffer</p>
+</div><h3 id='method.to_hoedown' class='method stab '><code>unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; <a class='struct' href='../../hoedown/ffi/struct.hoedown_renderer.html' title='hoedown::ffi::hoedown_renderer'>hoedown_renderer</a></code></h3><div class='docblock'><p>Converts the type into an underlying <code>hoedown_renderer</code> structure.</p>
 
 <p>The default implementation of this should suffice for the majority of implementations,
 unless you know what you&#39;re doing.</p>
@@ -333,7 +341,7 @@ or if no language was specified in a fenced codeblock.</p>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
     <li><code>impl <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for <a class='struct' href='../../hoedown/renderer/html/struct.Html.html' title='hoedown::renderer::html::Html'>Html</a></code></li>
-<li><code>impl&lt;'a, R&gt; <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for <a class='struct' href='../../hoedown/renderer/closures/struct.Closures.html' title='hoedown::renderer::closures::Closures'>Closures</a>&lt;'a, R&gt; <span class='where'>where R: <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></li>
+<li><code>impl <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for <a class='struct' href='../../hoedown/renderer/trace/struct.Trace.html' title='hoedown::renderer::trace::Trace'>Trace</a></code></li>
 <li><code>impl&lt;'a, R&gt; <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a> for &amp;'a mut R <span class='where'>where R: <a class='trait' href='../../hoedown/renderer/trait.Render.html' title='hoedown::renderer::Render'>Render</a></span></code></li>
 </ul><script type="text/javascript" async
                               src="../../implementors/hoedown/renderer/trait.Render.js">

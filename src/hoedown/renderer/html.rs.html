@@ -484,6 +484,7 @@
 <span id="442">442</span>
 <span id="443">443</span>
 <span id="444">444</span>
+<span id="445">445</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Contains the html renderer and utilities</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ptr</span>::<span class='ident'>Unique</span>;
@@ -504,7 +505,7 @@
 <span class='doccomment'>/// Performs &quot;smartypants&quot; processing of the provided buffer.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// This turns, for example, straight quotes `&quot;test&quot;` into curly quotes `“test”`</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>smartypants</span>(<span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>) {
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>smartypants</span>(<span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>Buffer</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>) {
     <span class='kw'>let</span> <span class='ident'>content</span>: <span class='kw-2'>&amp;</span><span class='ident'>hoedown_buffer</span> <span class='op'>=</span> <span class='ident'>content</span>.<span class='ident'>as_ref</span>();
 
     <span class='kw'>unsafe</span> {
@@ -594,6 +595,7 @@
         }
     }
 
+    <span class='comment'>// TODO: replace with AsRef/AsMut</span>
     <span class='doccomment'>/// Get a reference to the underlying hoedown renderer</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>hoedown_renderer</span> {
         <span class='kw'>unsafe</span> { <span class='self'>self</span>.<span class='ident'>renderer</span>.<span class='ident'>get</span>() }

@@ -78,6 +78,11 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! This crate provides bindings for the [hoedown] markdown processing library.</span>
 <span class='doccomment'>//! It has a `Markdown` type which stores markdown text in a `Buffer`. The</span>
@@ -87,13 +92,13 @@
 <span class='doccomment'>//![hoedown]: https://github.com/hoedown/hoedown</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//!``` rust</span>
-<span class='doccomment'>//!# use hoedown::Markdown;</span>
+<span class='doccomment'>//!# use hoedown::{Markdown, Render};</span>
 <span class='doccomment'>//!# use hoedown::renderer::html::{self, Html};</span>
 <span class='doccomment'>//!let doc = Markdown::new(&quot;some _emphasis_ required&quot;);</span>
-<span class='doccomment'>//!let html = Html::new(html::Flags::empty(), 0);</span>
+<span class='doccomment'>//!let mut html = Html::new(html::Flags::empty(), 0);</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//!assert_eq!(</span>
-<span class='doccomment'>//!    doc.render_to_buffer(html).to_str().unwrap(),</span>
+<span class='doccomment'>//!    html.render(&amp;doc).to_str().unwrap(),</span>
 <span class='doccomment'>//!    &quot;&lt;p&gt;some &lt;em&gt;emphasis&lt;/em&gt; required&lt;/p&gt;\n&quot;);</span>
 <span class='doccomment'>//!```</span>
 
@@ -112,10 +117,15 @@
 <span class='kw'>mod</span> <span class='ident'>wrappers</span>;
 <span class='kw'>mod</span> <span class='ident'>markdown</span>;
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>markdown</span>::<span class='ident'>Markdown</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>renderer</span>::<span class='ident'>Render</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>extensions</span>::<span class='op'>*</span>;
+
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>buffer</span>::<span class='ident'>Buffer</span>;
+
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>renderer</span>::<span class='ident'>Render</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>markdown</span>::<span class='ident'>Markdown</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>renderer</span>::<span class='ident'>html</span>::<span class='ident'>Html</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>renderer</span>::<span class='ident'>wrapper</span>::<span class='ident'>Wrapper</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>renderer</span>::<span class='ident'>trace</span>::<span class='ident'>Trace</span>;
 
 </pre>
 </section>

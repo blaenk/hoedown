@@ -42,8 +42,8 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>hoedown</a>::<wbr><a href='../index.html'>renderer</a>::<wbr><a href='index.html'>html</a>::<wbr><a class='struct' href=''>Html</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-6315' class='srclink' href='../../../src/hoedown/renderer/html.rs.html#67-69'>[src]</a></span></h1>
+            <a id="toggle-all-docs" href="#" title="collapse all docs">[-]</a>
+        </span><a id='src-6404' class='srclink' href='../../../src/hoedown/renderer/html.rs.html#67-69' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Html {
     // some fields omitted
 }</pre><div class='docblock'><p>HTML renderer</p>
@@ -121,6 +121,10 @@ same value for the <code>nesting_level</code> parameter.</p>
 <h4 id='method.normal_text' class='method'><code>fn <a href='../../../hoedown/renderer/trait.Render.html#method.normal_text' class='fnname'>normal_text</a>(&amp;mut self, ob: &amp;mut <a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h4>
 <h4 id='method.before_render' class='method'><code>fn <a href='../../../hoedown/renderer/trait.Render.html#method.before_render' class='fnname'>before_render</a>(&amp;mut self, ob: &amp;mut <a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
 <h4 id='method.after_render' class='method'><code>fn <a href='../../../hoedown/renderer/trait.Render.html#method.after_render' class='fnname'>after_render</a>(&amp;mut self, ob: &amp;mut <a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h4>
+<h4 id='method.render' class='method'><code>fn <a href='../../../hoedown/renderer/trait.Render.html#method.render' class='fnname'>render</a>(&amp;mut self, input: &amp;<a class='struct' href='../../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a></code></h4>
+<h4 id='method.render_to' class='method'><code>fn <a href='../../../hoedown/renderer/trait.Render.html#method.render_to' class='fnname'>render_to</a>(&amp;mut self, input: &amp;<a class='struct' href='../../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>, output: &amp;mut <a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h4>
+<h4 id='method.render_inline' class='method'><code>fn <a href='../../../hoedown/renderer/trait.Render.html#method.render_inline' class='fnname'>render_inline</a>(&amp;mut self, input: &amp;<a class='struct' href='../../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a></code></h4>
+<h4 id='method.render_inline_to' class='method'><code>fn <a href='../../../hoedown/renderer/trait.Render.html#method.render_inline_to' class='fnname'>render_inline_to</a>(&amp;mut self, input: &amp;<a class='struct' href='../../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>, output: &amp;mut <a class='struct' href='../../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h4>
 </div><h3 class='impl'><code>impl <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../../../hoedown/renderer/html/struct.Html.html' title='hoedown::renderer::html::Html'>Html</a></code></h3><div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#method.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
 </div></section>
     <section id='search' class="content hidden"></section>
