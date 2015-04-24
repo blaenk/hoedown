@@ -58,7 +58,7 @@ use document::Document;
 ///
 ///    fn emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
 ///        // collect the emphasis element
-///        self.emphs.push(content.to_str().unwrap().to_string());
+///        self.emphs.push(String::from(content.to_str().unwrap()));
 ///
 ///        // delegate rendering the emphasis element to the html renderer
 ///        self.html.emphasis(ob, content)
@@ -73,10 +73,10 @@ use document::Document;
 ///assert_eq!(
 ///    collector.emphs,
 ///    vec![
-///        "one".to_string(),
-///        "two".to_string(),
-///        "three".to_string(),
-///        "around".to_string()]);
+///        String::from("one"),
+///        String::from("two"),
+///        String::from("three"),
+///        String::from("around")]);
 ///
 ///assert_eq!(
 ///    "this <em>one</em> that <em>two</em> another <em>three</em> pass it <em>around</em>",
