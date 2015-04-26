@@ -15,7 +15,3 @@ libc = "*"
 
 [dev-dependencies]
 glob = "*"
-
-[build-dependencies]
-regex = "*"
-regex_macros = "*"
