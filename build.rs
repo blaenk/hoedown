@@ -1,11 +1,5 @@
-#![feature(plugin)]
-
 #![allow(unused_must_use)]
 #![allow(dead_code)]
-
-#![plugin(regex_macros)]
-
-extern crate regex;
 
 use std::process::Command;
 use std::path::Path;
