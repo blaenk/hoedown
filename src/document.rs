@@ -1,5 +1,4 @@
 use libc::size_t;
-use std::ptr::Unique;
 
 use extensions::Extension;
 use buffer::Buffer;
@@ -14,7 +13,7 @@ use ffi::{
 
 /// Document parser
 pub struct Document {
-    document: Unique<hoedown_document>
+    document: *mut hoedown_document
 }
 
 impl Document {
@@ -31,7 +30,7 @@ impl Document {
         };
 
         Document {
-            document: unsafe { Unique::new(doc) },
+            document: doc,
         }
     }
 
@@ -39,7 +38,7 @@ impl Document {
     pub fn render(&self, input: &[u8], output: &mut Buffer) {
         unsafe {
             hoedown_document_render(
-                *self.document,
+                self.document,
                 output.as_mut(),
                 input.as_ptr(),
                 input.len() as size_t
@@ -51,7 +50,7 @@ impl Document {
     pub fn render_inline(&self, input: &[u8], output: &mut Buffer) {
         unsafe {
             hoedown_document_render_inline(
-                *self.document,
+                self.document,
                 output.as_mut(),
                 input.as_ptr(),
                 input.len() as size_t
@@ -62,7 +61,7 @@ impl Document {
 
 impl Drop for Document {
     fn drop(&mut self) {
-        unsafe { hoedown_document_free(*self.document); }
+        unsafe { hoedown_document_free(self.document); }
     }
 }
 

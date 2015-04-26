@@ -4,7 +4,6 @@ use libc::size_t;
 use std::str;
 use std::slice;
 use std::mem;
-use std::ptr::Unique;
 use std::io::{self, Read, Write};
 use std::ops::{Deref, DerefMut};
 
@@ -17,7 +16,7 @@ use ffi::{
 
 /// Buffer for holding markdown contents
 pub struct Buffer {
-    buffer: Unique<hoedown_buffer>,
+    buffer: *mut hoedown_buffer,
     is_owned: bool,
 }
 
@@ -28,7 +27,7 @@ impl Buffer {
     /// grow as more space is required.
     pub fn new(size: usize) -> Buffer {
         Buffer {
-            buffer: unsafe { Unique::new(hoedown_buffer_new(size as size_t)) },
+            buffer: unsafe { hoedown_buffer_new(size as size_t) },
             is_owned: true,
         }
     }
@@ -56,18 +55,18 @@ impl Buffer {
 
     /// The length of the contents inside the buffer
     pub fn len(&self) -> u64 {
-        unsafe { self.buffer.get().size }
+        unsafe { (*self.buffer).size }
     }
 
     /// Get a raw constant pointer to the buffer data
     pub fn as_ptr(&self) -> *const u8 {
-        unsafe { self.buffer.get().data }
+        unsafe { (*self.buffer).data }
     }
 
     /// Pipe another buffer's contents into this one
     pub fn pipe(&mut self, input: &Buffer) {
         unsafe {
-            hoedown_buffer_put(*self.buffer, input.as_ptr(), input.len());
+            hoedown_buffer_put(self.buffer, input.as_ptr(), input.len());
         }
     }
 
@@ -82,8 +81,8 @@ impl Drop for Buffer {
         assert!(!self.buffer.is_null());
 
         unsafe {
-            if self.is_owned && self.buffer.get().unit != 0 {
-                hoedown_buffer_free(*self.buffer);
+            if self.is_owned && (*self.buffer).unit != 0 {
+                hoedown_buffer_free(self.buffer);
             }
         }
     }
@@ -95,7 +94,7 @@ unsafe impl Send for Buffer {}
 impl Clone for Buffer {
     fn clone(&self) -> Buffer {
         // create a buffer with the same unit size
-        let unit = unsafe { self.buffer.get().unit };
+        let unit = unsafe { (*self.buffer).unit };
         let mut buffer = Buffer::new(unit as usize);
         // pipe this one's contents into it
         buffer.pipe(self);
@@ -113,7 +112,7 @@ impl Read for Buffer {
 impl Write for Buffer {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         unsafe {
-            hoedown_buffer_put(*self.buffer, buf.as_ptr(), buf.len() as size_t);
+            hoedown_buffer_put(self.buffer, buf.as_ptr(), buf.len() as size_t);
         }
         Ok(buf.len())
     }
@@ -152,7 +151,7 @@ impl From<*mut hoedown_buffer> for Buffer {
             Buffer::new(0)
         } else{
             Buffer {
-                buffer: unsafe { Unique::new(buffer) },
+                buffer: buffer,
                 is_owned: false,
             }
         }
@@ -180,8 +179,8 @@ impl AsRef<[u8]> for Buffer {
     /// Get a slice of the buffer's contents
     fn as_ref<'a>(&'a self) -> &'a [u8] {
         unsafe {
-            let data = self.buffer.get().data;
-            let size = self.buffer.get().size as usize;
+            let data = (*self.buffer).data;
+            let size = (*self.buffer).size as usize;
 
             mem::transmute(slice::from_raw_parts(data, size))
         }
@@ -192,8 +191,8 @@ impl AsMut<[u8]> for Buffer {
     /// Get a mutable slice of the buffer's contents
     fn as_mut<'a>(&'a mut self) -> &'a mut [u8] {
         unsafe {
-            let data = self.buffer.get().data;
-            let size = self.buffer.get().size as usize;
+            let data = (*self.buffer).data;
+            let size = (*self.buffer).size as usize;
 
             slice::from_raw_parts_mut(data, size)
         }
@@ -203,14 +202,14 @@ impl AsMut<[u8]> for Buffer {
 impl AsRef<hoedown_buffer> for Buffer {
     /// Get a reference to the underlying buffer
     fn as_ref<'a>(&'a self) -> &'a hoedown_buffer {
-        unsafe { self.buffer.get() }
+        unsafe { &*self.buffer }
     }
 }
 
 impl AsMut<hoedown_buffer> for Buffer {
     /// Get a mutable reference to the underlying buffer
     fn as_mut<'a>(&'a mut self) -> &'a mut hoedown_buffer {
-        unsafe { self.buffer.get_mut() }
+        unsafe { &mut *self.buffer }
     }
 }
 

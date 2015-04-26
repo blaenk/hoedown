@@ -16,7 +16,6 @@
 //!    "<p>some <em>emphasis</em> required</p>\n");
 //!```
 
-#![feature(unique)]
 
 extern crate libc;
 
