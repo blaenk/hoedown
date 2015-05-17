@@ -54,7 +54,7 @@ impl Buffer {
     }
 
     /// The length of the contents inside the buffer
-    pub fn len(&self) -> u64 {
+    pub fn len(&self) -> size_t {
         unsafe { (*self.buffer).size }
     }
 
