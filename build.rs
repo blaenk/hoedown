@@ -1,28 +1,20 @@
 #![allow(unused_must_use)]
 #![allow(dead_code)]
 
-use std::process::Command;
-use std::path::Path;
-use std::env;
-use std::fs;
+extern crate gcc;
+
+const LIBHOEDOWN_SRC: &'static [&'static str] = &[
+  "libhoedown/src/autolink.c",
+  "libhoedown/src/buffer.c",
+  "libhoedown/src/document.c",
+  "libhoedown/src/escape.c",
+  "libhoedown/src/html.c",
+  "libhoedown/src/html_blocks.c",
+  "libhoedown/src/html_smartypants.c",
+  "libhoedown/src/stack.c",
+  "libhoedown/src/version.c",
+];
 
 fn main() {
-  let manifest = env::var("CARGO_MANIFEST_DIR").unwrap();
-  let root_dir = Path::new(&manifest);
-
-  let out = env::var("OUT_DIR").unwrap();
-  let out_dir = Path::new(&out);
-
-  Command::new("make")
-    .arg("-C").arg("libhoedown")
-    .arg("libhoedown.a")
-    .status().unwrap();
-
-  let lib_path = root_dir.join("libhoedown/libhoedown.a");
-  let target = out_dir.join("libhoedown.a");
-
-  fs::rename(&lib_path, &target).unwrap();
-
-  println!("cargo:rustc-flags=-L native={} -l static=hoedown", out_dir.to_str().unwrap());
+  gcc::compile_library("libhoedown.a", LIBHOEDOWN_SRC);
 }
-
