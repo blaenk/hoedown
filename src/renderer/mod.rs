@@ -561,6 +561,7 @@ impl<'a, R> Render for &'a mut R where R: Render {
 pub mod list {
     bitflags! {
         #[doc="Flags that describe a list or list item"]
+        #[repr(C)]
         flags List: u32 {
             #[doc="An ordered list or list item"]
             const ORDERED = 1 << 0,
@@ -573,6 +574,7 @@ pub mod list {
 
 /// The table alignment or position
 #[derive(Debug, Copy, Clone)]
+#[repr(C)]
 pub enum Table {
     Left = 1,
     Right,
@@ -583,6 +585,7 @@ pub enum Table {
 
 /// The type of an autolink candidate
 #[derive(Debug, Copy, Clone)]
+#[repr(C)]
 pub enum AutoLink {
     Normal = 1,
     Email,
