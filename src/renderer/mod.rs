@@ -562,7 +562,7 @@ pub mod list {
     bitflags! {
         #[doc="Flags that describe a list or list item"]
         #[repr(C)]
-        flags List: u32 {
+        pub flags List: u32 {
             #[doc="An ordered list or list item"]
             const ORDERED = 1 << 0,
 

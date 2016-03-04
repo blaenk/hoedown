@@ -1,6 +1,6 @@
 bitflags! {
     #[doc="Constants for the various Hoedown extensions"]
-    flags Extension: u32 {
+    pub flags Extension: u32 {
         // block-level
 
         #[doc="Process table syntax"]

@@ -30,7 +30,7 @@ pub fn smartypants(content: &Buffer, output: &mut Buffer) {
 /// Flags to control the behavior of the html renderer
 bitflags! {
     #[doc="Information about a list item"]
-    flags Flags: u32 {
+    pub flags Flags: u32 {
         #[doc="Ignore raw html"]
         const SKIP_HTML = 1 << 0,
 
