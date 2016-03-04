@@ -9,6 +9,7 @@
 
     <title>hoedown::renderer::Render - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
 
     
@@ -24,17 +25,17 @@
 
     
 
-    <section class="sidebar">
+    <nav class="sidebar">
         
         <p class='location'><a href='../index.html'>hoedown</a>::<wbr><a href='index.html'>renderer</a></p><script>window.sidebarCurrent = {name: 'Render', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
-    </section>
+    </nav>
 
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
                 <input class="search-input" name="search"
                        autocomplete="off"
-                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
                        type="search">
             </div>
         </form>
@@ -45,8 +46,8 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-3331' class='srclink' href='../../src/hoedown/renderer/mod.rs.html#87-439' title='goto source code'>[src]</a></span></h1>
-<pre class='rust trait'>pub trait Render: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
+        </span><a id='src-642' class='srclink' href='../../src/hoedown/renderer/mod.rs.html#87-439' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait Render: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.render' class='fnname'>render</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a> { ... }
     fn <a href='#method.render_to' class='fnname'>render_to</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.render_inline' class='fnname'>render_inline</a>(&amp;mut self, input: &amp;<a class='struct' href='../../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a>) -&gt; <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a> { ... }
@@ -54,7 +55,7 @@
     unsafe fn <a href='#method.to_hoedown' class='fnname'>to_hoedown</a>(&amp;mut self) -&gt; <a class='struct' href='../../hoedown/ffi/struct.hoedown_renderer.html' title='hoedown::ffi::hoedown_renderer'>hoedown_renderer</a> { ... }
     fn <a href='#method.code_block' class='fnname'>code_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, lang: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.quote_block' class='fnname'>quote_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
-    fn <a href='#method.header' class='fnname'>header</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, level: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) { ... }
+    fn <a href='#method.header' class='fnname'>header</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, level: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) { ... }
     fn <a href='#method.horizontal_rule' class='fnname'>horizontal_rule</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.list' class='fnname'>list</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, flags: <a class='struct' href='../../hoedown/renderer/list/struct.List.html' title='hoedown::renderer::list::List'>List</a>) { ... }
     fn <a href='#method.list_item' class='fnname'>list_item</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, flags: <a class='struct' href='../../hoedown/renderer/list/struct.List.html' title='hoedown::renderer::list::List'>List</a>) { ... }
@@ -65,28 +66,28 @@
     fn <a href='#method.table_row' class='fnname'>table_row</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.table_cell' class='fnname'>table_cell</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, flags: <a class='enum' href='../../hoedown/renderer/enum.Table.html' title='hoedown::renderer::Table'>Table</a>) { ... }
     fn <a href='#method.footnotes' class='fnname'>footnotes</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
-    fn <a href='#method.footnote_definition' class='fnname'>footnote_definition</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a href='http://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) { ... }
+    fn <a href='#method.footnote_definition' class='fnname'>footnote_definition</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) { ... }
     fn <a href='#method.html_block' class='fnname'>html_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
-    fn <a href='#method.autolink' class='fnname'>autolink</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link_type: <a class='enum' href='../../hoedown/renderer/enum.AutoLink.html' title='hoedown::renderer::AutoLink'>AutoLink</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.code_span' class='fnname'>code_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.double_emphasis' class='fnname'>double_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.emphasis' class='fnname'>emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.underline' class='fnname'>underline</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.highlight' class='fnname'>highlight</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.quote_span' class='fnname'>quote_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.image' class='fnname'>image</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, alt: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.line_break' class='fnname'>line_break</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.link' class='fnname'>link</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.triple_emphasis' class='fnname'>triple_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.strikethrough' class='fnname'>strikethrough</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.superscript' class='fnname'>superscript</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.footnote_reference' class='fnname'>footnote_reference</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a href='http://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.math' class='fnname'>math</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, displaymode: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
-    fn <a href='#method.html_span' class='fnname'>html_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.autolink' class='fnname'>autolink</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link_type: <a class='enum' href='../../hoedown/renderer/enum.AutoLink.html' title='hoedown::renderer::AutoLink'>AutoLink</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.code_span' class='fnname'>code_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.double_emphasis' class='fnname'>double_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.emphasis' class='fnname'>emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.underline' class='fnname'>underline</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.highlight' class='fnname'>highlight</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.quote_span' class='fnname'>quote_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.image' class='fnname'>image</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, alt: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.line_break' class='fnname'>line_break</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.link' class='fnname'>link</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.triple_emphasis' class='fnname'>triple_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.strikethrough' class='fnname'>strikethrough</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.superscript' class='fnname'>superscript</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.footnote_reference' class='fnname'>footnote_reference</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.math' class='fnname'>math</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, displaymode: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.html_span' class='fnname'>html_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
     fn <a href='#method.entity' class='fnname'>entity</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
     fn <a href='#method.normal_text' class='fnname'>normal_text</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) { ... }
-    fn <a href='#method.before_render' class='fnname'>before_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) { ... }
-    fn <a href='#method.after_render' class='fnname'>after_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) { ... }
+    fn <a href='#method.before_render' class='fnname'>before_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) { ... }
+    fn <a href='#method.after_render' class='fnname'>after_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) { ... }
 }</pre><div class='docblock'><p>Represents render behavior</p>
 
 <p>Types that implement this trait can be used to render a <code>Buffer</code> document.</p>
@@ -100,12 +101,15 @@
  when creating a custom renderer, so the default implementations for block
  handlers is to output a message into the output buffer to make it clearer.</p>
 
-<table><thead>
+<table>
+<thead>
 <tr>
 <th style="text-align: left">Type</th>
 <th style="text-align: left">Action</th>
 </tr>
-</thead><tbody>
+</thead>
+
+<tbody>
 <tr>
 <td style="text-align: left">block</td>
 <td style="text-align: left">ignore the block</td>
@@ -118,7 +122,8 @@
 <td style="text-align: left">rest</td>
 <td style="text-align: left">pass through content to output</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 
 <p>Below is an example of a custom renderer that collects emphasis elements
  into a vector that can then be inspected after rendering.</p>
@@ -170,8 +175,7 @@
 
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(
     <span class='string'>&quot;this &lt;em&gt;one&lt;/em&gt; that &lt;em&gt;two&lt;/em&gt; another &lt;em&gt;three&lt;/em&gt; pass it &lt;em&gt;around&lt;/em&gt;&quot;</span>,
-    <span class='ident'>output</span>.<span class='ident'>to_str</span>().<span class='ident'>unwrap</span>());
-</pre>
+    <span class='ident'>output</span>.<span class='ident'>to_str</span>().<span class='ident'>unwrap</span>());</pre>
 </div>
             <h2 id='provided-methods'>Provided Methods</h2>
             <div class='methods'>
@@ -202,7 +206,7 @@ or if no language was specified in a fenced codeblock.</p>
 </div><h3 id='method.quote_block' class='method stab '><code>fn <a href='#method.quote_block' class='fnname'>quote_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h3><div class='docblock'><p>Runs when a block quote is encountered</p>
 
 <p>The default implementation outputs an error string.</p>
-</div><h3 id='method.header' class='method stab '><code>fn <a href='#method.header' class='fnname'>header</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, level: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>)</code></h3><div class='docblock'><p>Runs when a header is encountered</p>
+</div><h3 id='method.header' class='method stab '><code>fn <a href='#method.header' class='fnname'>header</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, level: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>)</code></h3><div class='docblock'><p>Runs when a header is encountered</p>
 
 <p>The default implementation outputs an error string.</p>
 </div><h3 id='method.horizontal_rule' class='method stab '><code>fn <a href='#method.horizontal_rule' class='fnname'>horizontal_rule</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h3><div class='docblock'><p>Runs when a horizontal rule is encountered</p>
@@ -247,7 +251,7 @@ or if no language was specified in a fenced codeblock.</p>
 <p>Only runs if the <code>FOOTNOTES</code> extension is enabled.</p>
 
 <p>The default implementation outputs an error string.</p>
-</div><h3 id='method.footnote_definition' class='method stab '><code>fn <a href='#method.footnote_definition' class='fnname'>footnote_definition</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a href='http://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>)</code></h3><div class='docblock'><p>Runs when a footnote definition is encountered.</p>
+</div><h3 id='method.footnote_definition' class='method stab '><code>fn <a href='#method.footnote_definition' class='fnname'>footnote_definition</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>)</code></h3><div class='docblock'><p>Runs when a footnote definition is encountered.</p>
 
 <p>Only runs if the <code>FOOTNOTES</code> extension is enabled.</p>
 
@@ -255,76 +259,76 @@ or if no language was specified in a fenced codeblock.</p>
 </div><h3 id='method.html_block' class='method stab '><code>fn <a href='#method.html_block' class='fnname'>html_block</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h3><div class='docblock'><p>Runs when a raw html block is encountered.</p>
 
 <p>The default implementation outputs an error string.</p>
-</div><h3 id='method.autolink' class='method stab '><code>fn <a href='#method.autolink' class='fnname'>autolink</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link_type: <a class='enum' href='../../hoedown/renderer/enum.AutoLink.html' title='hoedown::renderer::AutoLink'>AutoLink</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when an autolink candidate is encountered.</p>
+</div><h3 id='method.autolink' class='method stab '><code>fn <a href='#method.autolink' class='fnname'>autolink</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link_type: <a class='enum' href='../../hoedown/renderer/enum.AutoLink.html' title='hoedown::renderer::AutoLink'>AutoLink</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when an autolink candidate is encountered.</p>
 
 <p>Only runs if the <code>AUTOLINK</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.code_span' class='method stab '><code>fn <a href='#method.code_span' class='fnname'>code_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a code span is encountered.</p>
+</div><h3 id='method.code_span' class='method stab '><code>fn <a href='#method.code_span' class='fnname'>code_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a code span is encountered.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.double_emphasis' class='method stab '><code>fn <a href='#method.double_emphasis' class='fnname'>double_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when double emphasis is encountered.</p>
+</div><h3 id='method.double_emphasis' class='method stab '><code>fn <a href='#method.double_emphasis' class='fnname'>double_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when double emphasis is encountered.</p>
 
 <p>e.g. <code>**double emphasis**</code></p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.emphasis' class='method stab '><code>fn <a href='#method.emphasis' class='fnname'>emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when emphasis is encountered.</p>
+</div><h3 id='method.emphasis' class='method stab '><code>fn <a href='#method.emphasis' class='fnname'>emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when emphasis is encountered.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.underline' class='method stab '><code>fn <a href='#method.underline' class='fnname'>underline</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when underline is encountered.</p>
+</div><h3 id='method.underline' class='method stab '><code>fn <a href='#method.underline' class='fnname'>underline</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when underline is encountered.</p>
 
 <p>Only runs if the <code>UNDERLINE</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.highlight' class='method stab '><code>fn <a href='#method.highlight' class='fnname'>highlight</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when highlight is encountered.</p>
+</div><h3 id='method.highlight' class='method stab '><code>fn <a href='#method.highlight' class='fnname'>highlight</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when highlight is encountered.</p>
 
 <p>Only runs if the <code>HIGHLIGHT</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.quote_span' class='method stab '><code>fn <a href='#method.quote_span' class='fnname'>quote_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a quote is encountered.</p>
+</div><h3 id='method.quote_span' class='method stab '><code>fn <a href='#method.quote_span' class='fnname'>quote_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a quote is encountered.</p>
 
 <p>Only runs if the <code>QUOTE</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.image' class='method stab '><code>fn <a href='#method.image' class='fnname'>image</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, alt: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when an image is encountered.</p>
+</div><h3 id='method.image' class='method stab '><code>fn <a href='#method.image' class='fnname'>image</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, alt: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when an image is encountered.</p>
 
 <p>e.g. <code>![alt](link title)</code></p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.line_break' class='method stab '><code>fn <a href='#method.line_break' class='fnname'>line_break</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a line break is encountered.</p>
+</div><h3 id='method.line_break' class='method stab '><code>fn <a href='#method.line_break' class='fnname'>line_break</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a line break is encountered.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.link' class='method stab '><code>fn <a href='#method.link' class='fnname'>link</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a link is encountered.</p>
+</div><h3 id='method.link' class='method stab '><code>fn <a href='#method.link' class='fnname'>link</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, link: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, title: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a link is encountered.</p>
 
 <p>e.g. <code>[content](link title)</code></p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.triple_emphasis' class='method stab '><code>fn <a href='#method.triple_emphasis' class='fnname'>triple_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when triple emphasis is encountered.</p>
+</div><h3 id='method.triple_emphasis' class='method stab '><code>fn <a href='#method.triple_emphasis' class='fnname'>triple_emphasis</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when triple emphasis is encountered.</p>
 
 <p>e.g. <code>***strongly emphasized***</code></p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.strikethrough' class='method stab '><code>fn <a href='#method.strikethrough' class='fnname'>strikethrough</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when strikethrough is encountered.</p>
+</div><h3 id='method.strikethrough' class='method stab '><code>fn <a href='#method.strikethrough' class='fnname'>strikethrough</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when strikethrough is encountered.</p>
 
 <p>Only runs if the <code>STRIKETHROUGH</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.superscript' class='method stab '><code>fn <a href='#method.superscript' class='fnname'>superscript</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when superscript is encountered.</p>
+</div><h3 id='method.superscript' class='method stab '><code>fn <a href='#method.superscript' class='fnname'>superscript</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, content: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when superscript is encountered.</p>
 
 <p>Only runs if the <code>SUPERSCRIPT</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.footnote_reference' class='method stab '><code>fn <a href='#method.footnote_reference' class='fnname'>footnote_reference</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a href='http://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a footnote reference is encountered.</p>
+</div><h3 id='method.footnote_reference' class='method stab '><code>fn <a href='#method.footnote_reference' class='fnname'>footnote_reference</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, num: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when a footnote reference is encountered.</p>
 
 <p>Only runs if the <code>FOOTNOTES</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.math' class='method stab '><code>fn <a href='#method.math' class='fnname'>math</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, displaymode: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when math is encountered.</p>
+</div><h3 id='method.math' class='method stab '><code>fn <a href='#method.math' class='fnname'>math</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, displaymode: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when math is encountered.</p>
 
 <p>Only runs if the <code>MATH</code> extension is enabled.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
-</div><h3 id='method.html_span' class='method stab '><code>fn <a href='#method.html_span' class='fnname'>html_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when raw html span is encountered.</p>
+</div><h3 id='method.html_span' class='method stab '><code>fn <a href='#method.html_span' class='fnname'>html_span</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><div class='docblock'><p>Runs when raw html span is encountered.</p>
 
 <p>The default implementation passes the context markdown to the buffer verbatim.</p>
 </div><h3 id='method.entity' class='method stab '><code>fn <a href='#method.entity' class='fnname'>entity</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h3><div class='docblock'><p>Runs when an html entity is encountered.</p>
@@ -333,10 +337,10 @@ or if no language was specified in a fenced codeblock.</p>
 </div><h3 id='method.normal_text' class='method stab '><code>fn <a href='#method.normal_text' class='fnname'>normal_text</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, text: &amp;<a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>)</code></h3><div class='docblock'><p>Runs when plain text is encountered.</p>
 
 <p>The default implementation passes the entity to the output buffer verbatim.</p>
-</div><h3 id='method.before_render' class='method stab '><code>fn <a href='#method.before_render' class='fnname'>before_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h3><div class='docblock'><p>Runs before the document is processed.</p>
+</div><h3 id='method.before_render' class='method stab '><code>fn <a href='#method.before_render' class='fnname'>before_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h3><div class='docblock'><p>Runs before the document is processed.</p>
 
 <p>The default implementation does nothing.</p>
-</div><h3 id='method.after_render' class='method stab '><code>fn <a href='#method.after_render' class='fnname'>after_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h3><div class='docblock'><p>Runs after the document has been processed.</p>
+</div><h3 id='method.after_render' class='method stab '><code>fn <a href='#method.after_render' class='fnname'>after_render</a>(&amp;mut self, output: &amp;mut <a class='struct' href='../../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>, inline_render: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>)</code></h3><div class='docblock'><p>Runs after the document has been processed.</p>
 
 <p>The default implementation does nothing.</p>
 </div></div>
@@ -352,40 +356,49 @@ or if no language was specified in a fenced codeblock.</p>
 
     <section class="footer"></section>
 
-    <div id="help" class="hidden">
-        <div class="shortcuts">
-            <h1>Keyboard shortcuts</h1>
-            <dl>
-                <dt>?</dt>
-                <dd>Show this help dialog</dd>
-                <dt>S</dt>
-                <dd>Focus the search field</dd>
-                <dt>&larrb;</dt>
-                <dd>Move up in search results</dd>
-                <dt>&rarrb;</dt>
-                <dd>Move down in search results</dd>
-                <dt>&#9166;</dt>
-                <dd>Go to active search result</dd>
-            </dl>
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
         </div>
-        <div class="infos">
-            <h1>Search tricks</h1>
-            <p>
-                Prefix searches with a type followed by a colon (e.g.
-                <code>fn:</code>) to restrict the search to a given type.
-            </p>
-            <p>
-                Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code>, <code>enum</code>,
-                <code>trait</code>, <code>typedef</code> (or
-                <code>tdef</code>).
-            </p>
-            <p>
-                Search functions by type signature (e.g.
-                <code>vec -> usize</code>)
-            </p>
-        </div>
-    </div>
+    </aside>
 
     
 
@@ -397,6 +410,6 @@ or if no language was specified in a fenced codeblock.</p>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
     
-    <script async src="../../search-index.js"></script>
+    <script defer src="../../search-index.js"></script>
 </body>
 </html>
