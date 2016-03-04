@@ -46,7 +46,6 @@ mod callbacks {
         extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, *mut c_void);
 }
 
-#[allow(raw_pointer_derive)]
 #[repr(C)]
 pub struct hoedown_renderer {
     pub opaque: *mut c_void,
@@ -112,7 +111,6 @@ struct html_toc_data {
     nesting_level: c_int,
 }
 
-#[allow(raw_pointer_derive)]
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct hoedown_buffer {
