@@ -517,18 +517,18 @@
 
 <span class='doccomment'>/// Flags to control the behavior of the html renderer</span>
 <span class='macro'>bitflags</span><span class='macro'>!</span> {
-    <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Information about a list item&quot;</span>]</span>
+    <span class='doccomment'>/// Information about a list item</span>
     <span class='kw'>pub</span> <span class='ident'>flags</span> <span class='ident'>Flags</span>: <span class='ident'>u32</span> {
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Ignore raw html&quot;</span>]</span>
+        <span class='doccomment'>/// Ignore raw html</span>
         <span class='kw'>const</span> <span class='ident'>SKIP_HTML</span> <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>0</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Ignore raw html blocks and escape html spans&quot;</span>]</span>
+        <span class='doccomment'>/// Ignore raw html blocks and escape html spans</span>
         <span class='kw'>const</span> <span class='ident'>ESCAPE</span>    <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>1</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Insert breaks inside paragraphs for every newline&quot;</span>]</span>
+        <span class='doccomment'>/// Insert breaks inside paragraphs for every newline</span>
         <span class='kw'>const</span> <span class='ident'>HARD_WRAP</span> <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>2</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Output XHTML&quot;</span>]</span>
+        <span class='doccomment'>/// Output XHTML</span>
         <span class='kw'>const</span> <span class='ident'>USE_XHTML</span> <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>3</span>,
     }
 }

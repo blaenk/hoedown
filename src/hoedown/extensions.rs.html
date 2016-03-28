@@ -95,65 +95,61 @@
 <span id="52">52</span>
 <span id="53">53</span>
 <span id="54">54</span>
-<span id="55">55</span>
-<span id="56">56</span>
 </pre><pre class='rust '>
 <span class='macro'>bitflags</span><span class='macro'>!</span> {
-    <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Constants for the various Hoedown extensions&quot;</span>]</span>
+    <span class='doccomment'>/// Constants for the various Hoedown extensions</span>
     <span class='kw'>pub</span> <span class='ident'>flags</span> <span class='ident'>Extension</span>: <span class='ident'>u32</span> {
         <span class='comment'>// block-level</span>
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process table syntax&quot;</span>]</span>
+        <span class='doccomment'>/// Process table syntax</span>
         <span class='kw'>const</span> <span class='ident'>TABLES</span>                <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>0</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process fenced code&quot;</span>]</span>
+        <span class='doccomment'>/// Process fenced code</span>
         <span class='kw'>const</span> <span class='ident'>FENCED_CODE</span>           <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>1</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process footnotes&quot;</span>]</span>
+        <span class='doccomment'>/// Process footnotes</span>
         <span class='kw'>const</span> <span class='ident'>FOOTNOTES</span>             <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>2</span>,
 
         <span class='comment'>// span-level</span>
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Automatically link URLs and emails&quot;</span>]</span>
+        <span class='doccomment'>/// Automatically link URLs and emails</span>
         <span class='kw'>const</span> <span class='ident'>AUTOLINK</span>              <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>3</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Enable strikethrough syntax, e.g. `~~strike one~~`&quot;</span>]</span>
+        <span class='doccomment'>/// Enable strikethrough syntax, e.g. `~~strike one~~`</span>
         <span class='kw'>const</span> <span class='ident'>STRIKETHROUGH</span>         <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>4</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Perform an underline instead of emphasis&quot;</span>]</span>
+        <span class='doccomment'>/// Perform an underline instead of emphasis</span>
         <span class='kw'>const</span> <span class='ident'>UNDERLINE</span>             <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>5</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process highlight syntax, e.g. `==highlight me==`&quot;</span>]</span>
+        <span class='doccomment'>/// Process highlight syntax, e.g. `==highlight me==`</span>
         <span class='kw'>const</span> <span class='ident'>HIGHLIGHT</span>             <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>6</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Render quotes differently, e.g. the html renderer may use the `&lt;q&gt;` tag&quot;</span>]</span>
+        <span class='doccomment'>/// Render quotes differently, e.g. the html renderer may use the `&lt;q&gt;` tag</span>
         <span class='kw'>const</span> <span class='ident'>QUOTE</span>                 <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>7</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process superscript syntax, e.g. `2^3 = 8`&quot;</span>]</span>
+        <span class='doccomment'>/// Process superscript syntax, e.g. `2^3 = 8`</span>
         <span class='kw'>const</span> <span class='ident'>SUPERSCRIPT</span>           <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>8</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process math syntax, e.g. `$$x + y = z$$`&quot;</span>]</span>
+        <span class='doccomment'>/// Process math syntax, e.g. `$$x + y = z$$`</span>
         <span class='kw'>const</span> <span class='ident'>MATH</span>                  <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>9</span>,
 
         <span class='comment'>// other flags</span>
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Don&#39;t parse emphasis inside of words, e.g. `foo_bar_baz` won&#39;t emphasize the &#39;bar&#39;&quot;</span>]</span>
+        <span class='doccomment'>/// Don&#39;t parse emphasis inside of words, e.g. `foo_bar_baz` won&#39;t emphasize the &#39;bar&#39;</span>
         <span class='kw'>const</span> <span class='ident'>NO_INTRA_EMPHASIS</span>     <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>11</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process ATX header syntax, e.g. `# Topic`&quot;</span>]</span>
+        <span class='doccomment'>/// Process ATX header syntax, e.g. `# Topic`</span>
         <span class='kw'>const</span> <span class='ident'>SPACE_HEADERS</span>         <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>12</span>,
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Process the single dollar math syntax, e.g. `$x + y = 3$`&quot;</span>]</span>
+        <span class='doccomment'>/// Process the single dollar math syntax, e.g. `$x + y = 3$`</span>
         <span class='kw'>const</span> <span class='ident'>MATH_EXPLICIT</span>         <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>13</span>,
 
         <span class='comment'>// negative flags</span>
 
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Ignore indented code blocks&quot;</span>]</span>
+        <span class='doccomment'>/// Ignore indented code blocks</span>
         <span class='kw'>const</span> <span class='ident'>DISABLE_INDENTED_CODE</span> <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>14</span>,
     }
 }
-
-
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

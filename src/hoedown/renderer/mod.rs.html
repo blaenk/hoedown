@@ -1201,13 +1201,13 @@
 <span class='doccomment'>/// Flags that describe a list or list item</span>
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>list</span> {
     <span class='macro'>bitflags</span><span class='macro'>!</span> {
-        <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;Flags that describe a list or list item&quot;</span>]</span>
+        <span class='doccomment'>/// Flags that describe a list or list item</span>
         <span class='attribute'>#[<span class='ident'>repr</span>(<span class='ident'>C</span>)]</span>
         <span class='kw'>pub</span> <span class='ident'>flags</span> <span class='ident'>List</span>: <span class='ident'>u32</span> {
-            <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;An ordered list or list item&quot;</span>]</span>
+            <span class='doccomment'>/// An ordered list or list item</span>
             <span class='kw'>const</span> <span class='ident'>ORDERED</span> <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>0</span>,
 
-            <span class='attribute'>#[<span class='ident'>doc</span><span class='op'>=</span><span class='string'>&quot;A list item that contains a block&quot;</span>]</span>
+            <span class='doccomment'>/// A list item that contains a block</span>
             <span class='kw'>const</span> <span class='ident'>BLOCK</span>   <span class='op'>=</span> <span class='number'>1</span> <span class='op'>&lt;&lt;</span> <span class='number'>1</span>,
         }
     }
