@@ -29,18 +29,18 @@ pub fn smartypants(content: &Buffer, output: &mut Buffer) {
 
 /// Flags to control the behavior of the html renderer
 bitflags! {
-    #[doc="Information about a list item"]
+    /// Information about a list item
     pub flags Flags: u32 {
-        #[doc="Ignore raw html"]
+        /// Ignore raw html
         const SKIP_HTML = 1 << 0,
 
-        #[doc="Ignore raw html blocks and escape html spans"]
+        /// Ignore raw html blocks and escape html spans
         const ESCAPE    = 1 << 1,
 
-        #[doc="Insert breaks inside paragraphs for every newline"]
+        /// Insert breaks inside paragraphs for every newline
         const HARD_WRAP = 1 << 2,
 
-        #[doc="Output XHTML"]
+        /// Output XHTML
         const USE_XHTML = 1 << 3,
     }
 }

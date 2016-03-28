@@ -560,13 +560,13 @@ impl<'a, R> Render for &'a mut R where R: Render {
 /// Flags that describe a list or list item
 pub mod list {
     bitflags! {
-        #[doc="Flags that describe a list or list item"]
+        /// Flags that describe a list or list item
         #[repr(C)]
         pub flags List: u32 {
-            #[doc="An ordered list or list item"]
+            /// An ordered list or list item
             const ORDERED = 1 << 0,
 
-            #[doc="A list item that contains a block"]
+            /// A list item that contains a block
             const BLOCK   = 1 << 1,
         }
     }
