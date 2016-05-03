@@ -52,13 +52,15 @@ use document::Document;
 ///
 ///impl Render for EmphCollector {
 ///    // pass the content straight to the output buffer
-///    fn paragraph(&mut self, ob: &mut Buffer, content: &Buffer) {
-///        ob.pipe(content);
+///    fn paragraph(&mut self, ob: &mut Buffer, content: Option<&Buffer>) {
+///        content.map(|c| ob.pipe(c));
 ///    }
 ///
-///    fn emphasis(&mut self, ob: &mut Buffer, content: &Buffer) -> bool {
+///    fn emphasis(&mut self, ob: &mut Buffer, content: Option<&Buffer>) -> bool {
 ///        // collect the emphasis element
-///        self.emphs.push(String::from(content.to_str().unwrap()));
+///        content
+///            .and_then(|c| c.to_str().ok())
+///            .map(|s| self.emphs.push(String::from(s)));
 ///
 ///        // delegate rendering the emphasis element to the html renderer
 ///        self.html.emphasis(ob, content)
@@ -185,17 +187,17 @@ pub trait Render: Sized {
     /// The default implementation outputs an error string.
     ///
     /// Not run if the `DISABLE_INDENTED_CODE` extension is enabled.
-    fn code_block(&mut self, output: &mut Buffer, text: &Buffer, lang: &Buffer) {}
+    fn code_block(&mut self, output: &mut Buffer, text: Option<&Buffer>, lang: Option<&Buffer>) {}
 
     /// Runs when a block quote is encountered
     ///
     /// The default implementation outputs an error string.
-    fn quote_block(&mut self, output: &mut Buffer, content: &Buffer) {}
+    fn quote_block(&mut self, output: &mut Buffer, content: Option<&Buffer>) {}
 
     /// Runs when a header is encountered
     ///
     /// The default implementation outputs an error string.
-    fn header(&mut self, output: &mut Buffer, content: &Buffer, level: i32) {}
+    fn header(&mut self, output: &mut Buffer, content: Option<&Buffer>, level: i32) {}
 
     /// Runs when a horizontal rule is encountered
     ///
@@ -205,71 +207,71 @@ pub trait Render: Sized {
     /// Runs when a list is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn list(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {}
+    fn list(&mut self, output: &mut Buffer, content: Option<&Buffer>, flags: ::renderer::list::List) {}
 
     /// Runs when a list item is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn list_item(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::list::List) {}
+    fn list_item(&mut self, output: &mut Buffer, content: Option<&Buffer>, flags: ::renderer::list::List) {}
 
     /// Runs when a paragraph is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn paragraph(&mut self, output: &mut Buffer, content: &Buffer) {}
+    fn paragraph(&mut self, output: &mut Buffer, content: Option<&Buffer>) {}
 
     /// Runs when a table is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table(&mut self, output: &mut Buffer, content: &Buffer) {}
+    fn table(&mut self, output: &mut Buffer, content: Option<&Buffer>) {}
 
     /// Runs when a table header is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_header(&mut self, output: &mut Buffer, content: &Buffer) {}
+    fn table_header(&mut self, output: &mut Buffer, content: Option<&Buffer>) {}
 
     /// Runs when a table body is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_body(&mut self, output: &mut Buffer, content: &Buffer) {}
+    fn table_body(&mut self, output: &mut Buffer, content: Option<&Buffer>) {}
 
     /// Runs when a table row is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_row(&mut self, output: &mut Buffer, content: &Buffer) {}
+    fn table_row(&mut self, output: &mut Buffer, content: Option<&Buffer>) {}
 
     /// Runs when a table cell is encountered.
     ///
     /// Only runs if the `TABLES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, flags: ::renderer::Table) {}
+    fn table_cell(&mut self, output: &mut Buffer, content: Option<&Buffer>, flags: ::renderer::Table) {}
 
     /// Runs when footnotes are encountered.
     ///
     /// Only runs if the `FOOTNOTES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn footnotes(&mut self, output: &mut Buffer, content: &Buffer) {}
+    fn footnotes(&mut self, output: &mut Buffer, content: Option<&Buffer>) {}
 
     /// Runs when a footnote definition is encountered.
     ///
     /// Only runs if the `FOOTNOTES` extension is enabled.
     ///
     /// The default implementation outputs an error string.
-    fn footnote_definition(&mut self, output: &mut Buffer, content: &Buffer, num: u32) {}
+    fn footnote_definition(&mut self, output: &mut Buffer, content: Option<&Buffer>, num: u32) {}
 
     /// Runs when a raw html block is encountered.
     ///
     /// The default implementation outputs an error string.
-    fn html_block(&mut self, output: &mut Buffer, text: &Buffer) {}
+    fn html_block(&mut self, output: &mut Buffer, text: Option<&Buffer>) {}
 
     // span-level: not registered = pass-through
 
@@ -278,14 +280,14 @@ pub trait Render: Sized {
     /// Only runs if the `AUTOLINK` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn autolink(&mut self, output: &mut Buffer, link: &Buffer, link_type: AutoLink) -> bool {
+    fn autolink(&mut self, output: &mut Buffer, link: Option<&Buffer>, link_type: AutoLink) -> bool {
         false
     }
 
     /// Runs when a code span is encountered.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn code_span(&mut self, output: &mut Buffer, text: &Buffer) -> bool {
+    fn code_span(&mut self, output: &mut Buffer, text: Option<&Buffer>) -> bool {
         false
     }
 
@@ -294,14 +296,14 @@ pub trait Render: Sized {
     /// e.g. `**double emphasis**`
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn double_emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn double_emphasis(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
     /// Runs when emphasis is encountered.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn emphasis(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
@@ -310,7 +312,7 @@ pub trait Render: Sized {
     /// Only runs if the `UNDERLINE` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn underline(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn underline(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
@@ -319,7 +321,7 @@ pub trait Render: Sized {
     /// Only runs if the `HIGHLIGHT` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn highlight(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn highlight(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
@@ -328,7 +330,7 @@ pub trait Render: Sized {
     /// Only runs if the `QUOTE` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn quote_span(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn quote_span(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
@@ -337,7 +339,7 @@ pub trait Render: Sized {
     /// e.g. `![alt](link title)`
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn image(&mut self, output: &mut Buffer, link: &Buffer, title: &Buffer, alt: &Buffer) -> bool {
+    fn image(&mut self, output: &mut Buffer, link: Option<&Buffer>, title: Option<&Buffer>, alt: Option<&Buffer>) -> bool {
         false
     }
 
@@ -353,7 +355,7 @@ pub trait Render: Sized {
     /// e.g. `[content](link title)`
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn link(&mut self, output: &mut Buffer, content: &Buffer, link: &Buffer, title: &Buffer) -> bool {
+    fn link(&mut self, output: &mut Buffer, content: Option<&Buffer>, link: Option<&Buffer>, title: Option<&Buffer>) -> bool {
         false
     }
 
@@ -362,7 +364,7 @@ pub trait Render: Sized {
     /// e.g. `***strongly emphasized***`
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn triple_emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn triple_emphasis(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
@@ -371,7 +373,7 @@ pub trait Render: Sized {
     /// Only runs if the `STRIKETHROUGH` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn strikethrough(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn strikethrough(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
@@ -380,7 +382,7 @@ pub trait Render: Sized {
     /// Only runs if the `SUPERSCRIPT` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn superscript(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn superscript(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         false
     }
 
@@ -398,14 +400,14 @@ pub trait Render: Sized {
     /// Only runs if the `MATH` extension is enabled.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn math(&mut self, output: &mut Buffer, text: &Buffer, displaymode: i32) -> bool {
+    fn math(&mut self, output: &mut Buffer, text: Option<&Buffer>, displaymode: i32) -> bool {
         false
     }
 
     /// Runs when raw html span is encountered.
     ///
     /// The default implementation passes the context markdown to the buffer verbatim.
-    fn html_span(&mut self, output: &mut Buffer, text: &Buffer) -> bool {
+    fn html_span(&mut self, output: &mut Buffer, text: Option<&Buffer>) -> bool {
         false
     }
 
@@ -414,15 +416,15 @@ pub trait Render: Sized {
     /// Runs when an html entity is encountered.
     ///
     /// The default implementation passes the entity to the output buffer verbatim.
-    fn entity(&mut self, output: &mut Buffer, text: &Buffer) {
-        output.pipe(text);
+    fn entity(&mut self, output: &mut Buffer, text: Option<&Buffer>) {
+        text.map(|t| output.pipe(t));
     }
 
     /// Runs when plain text is encountered.
     ///
     /// The default implementation passes the entity to the output buffer verbatim.
-    fn normal_text(&mut self, output: &mut Buffer, text: &Buffer) {
-        output.pipe(text);
+    fn normal_text(&mut self, output: &mut Buffer, text: Option<&Buffer>) {
+        text.map(|t| output.pipe(t));
     }
 
     // misc callbacks
@@ -444,107 +446,107 @@ impl<'a, R> Render for &'a mut R where R: Render {
     }
 
     // block-level: not registered = skip the block
-    fn code_block(&mut self, output: &mut Buffer, text: &Buffer, lang: &Buffer) {
+    fn code_block(&mut self, output: &mut Buffer, text: Option<&Buffer>, lang: Option<&Buffer>) {
         (**self).code_block(output, text, lang)
     }
-    fn quote_block(&mut self, output: &mut Buffer, content: &Buffer) {
+    fn quote_block(&mut self, output: &mut Buffer, content: Option<&Buffer>) {
         (**self).quote_block(output, content)
     }
-    fn header(&mut self, output: &mut Buffer, content: &Buffer, level: i32) {
+    fn header(&mut self, output: &mut Buffer, content: Option<&Buffer>, level: i32) {
         (**self).header(output, content, level)
     }
     fn horizontal_rule(&mut self, output: &mut Buffer) {
         (**self).horizontal_rule(output)
     }
-    fn list(&mut self, output: &mut Buffer, content: &Buffer, flags: list::List) {
+    fn list(&mut self, output: &mut Buffer, content: Option<&Buffer>, flags: list::List) {
         (**self).list(output, content, flags)
     }
-    fn list_item(&mut self, output: &mut Buffer, content: &Buffer, flags: list::List) {
+    fn list_item(&mut self, output: &mut Buffer, content: Option<&Buffer>, flags: list::List) {
         (**self).list_item(output, content, flags)
     }
-    fn paragraph(&mut self, output: &mut Buffer, content: &Buffer) {
+    fn paragraph(&mut self, output: &mut Buffer, content: Option<&Buffer>) {
         (**self).paragraph(output, content)
     }
-    fn table(&mut self, output: &mut Buffer, content: &Buffer) {
+    fn table(&mut self, output: &mut Buffer, content: Option<&Buffer>) {
         (**self).table(output, content)
     }
-    fn table_header(&mut self, output: &mut Buffer, content: &Buffer) {
+    fn table_header(&mut self, output: &mut Buffer, content: Option<&Buffer>) {
         (**self).table_header(output, content)
     }
-    fn table_body(&mut self, output: &mut Buffer, content: &Buffer) {
+    fn table_body(&mut self, output: &mut Buffer, content: Option<&Buffer>) {
         (**self).table_body(output, content)
     }
-    fn table_row(&mut self, output: &mut Buffer, content: &Buffer) {
+    fn table_row(&mut self, output: &mut Buffer, content: Option<&Buffer>) {
         (**self).table_row(output, content)
     }
-    fn table_cell(&mut self, output: &mut Buffer, content: &Buffer, flags: Table) {
+    fn table_cell(&mut self, output: &mut Buffer, content: Option<&Buffer>, flags: Table) {
         (**self).table_cell(output, content, flags)
     }
-    fn footnotes(&mut self, output: &mut Buffer, content: &Buffer) {
+    fn footnotes(&mut self, output: &mut Buffer, content: Option<&Buffer>) {
         (**self).footnotes(output, content)
     }
-    fn footnote_definition(&mut self, output: &mut Buffer, content: &Buffer, num: u32) {
+    fn footnote_definition(&mut self, output: &mut Buffer, content: Option<&Buffer>, num: u32) {
         (**self).footnote_definition(output, content, num)
     }
-    fn html_block(&mut self, output: &mut Buffer, text: &Buffer) {
+    fn html_block(&mut self, output: &mut Buffer, text: Option<&Buffer>) {
         (**self).html_block(output, text)
     }
 
     // span-level: not registered = pass-through
-    fn autolink(&mut self, output: &mut Buffer, link: &Buffer, link_type: AutoLink) -> bool {
+    fn autolink(&mut self, output: &mut Buffer, link: Option<&Buffer>, link_type: AutoLink) -> bool {
         (**self).autolink(output, link, link_type)
     }
-    fn code_span(&mut self, output: &mut Buffer, text: &Buffer) -> bool {
+    fn code_span(&mut self, output: &mut Buffer, text: Option<&Buffer>) -> bool {
         (**self).code_span(output, text)
     }
-    fn double_emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn double_emphasis(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).double_emphasis(output, content)
     }
-    fn emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn emphasis(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).emphasis(output, content)
     }
-    fn underline(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn underline(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).underline(output, content)
     }
-    fn highlight(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn highlight(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).highlight(output, content)
     }
-    fn quote_span(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn quote_span(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).quote_span(output, content)
     }
-    fn image(&mut self, output: &mut Buffer, link: &Buffer, title: &Buffer, alt: &Buffer) -> bool {
+    fn image(&mut self, output: &mut Buffer, link: Option<&Buffer>, title: Option<&Buffer>, alt: Option<&Buffer>) -> bool {
         (**self).image(output, link, title, alt)
     }
     fn line_break(&mut self, output: &mut Buffer) -> bool {
         (**self).line_break(output)
     }
-    fn link(&mut self, output: &mut Buffer, content: &Buffer, link: &Buffer, title: &Buffer) -> bool {
+    fn link(&mut self, output: &mut Buffer, content: Option<&Buffer>, link: Option<&Buffer>, title: Option<&Buffer>) -> bool {
         (**self).link(output, content, link, title)
     }
-    fn triple_emphasis(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn triple_emphasis(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).triple_emphasis(output, content)
     }
-    fn strikethrough(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn strikethrough(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).strikethrough(output, content)
     }
-    fn superscript(&mut self, output: &mut Buffer, content: &Buffer) -> bool {
+    fn superscript(&mut self, output: &mut Buffer, content: Option<&Buffer>) -> bool {
         (**self).superscript(output, content)
     }
     fn footnote_reference(&mut self, output: &mut Buffer, num: u32) -> bool {
         (**self).footnote_reference(output, num)
     }
-    fn math(&mut self, output: &mut Buffer, text: &Buffer, displaymode: i32) -> bool {
+    fn math(&mut self, output: &mut Buffer, text: Option<&Buffer>, displaymode: i32) -> bool {
         (**self).math(output, text, displaymode)
     }
-    fn html_span(&mut self, output: &mut Buffer, text: &Buffer) -> bool {
+    fn html_span(&mut self, output: &mut Buffer, text: Option<&Buffer>) -> bool {
         (**self).html_span(output, text)
     }
 
     // low-level: not registered = pass-through
-    fn entity(&mut self, output: &mut Buffer, text: &Buffer) {
+    fn entity(&mut self, output: &mut Buffer, text: Option<&Buffer>) {
         (**self).entity(output, text)
     }
-    fn normal_text(&mut self, output: &mut Buffer, text: &Buffer) {
+    fn normal_text(&mut self, output: &mut Buffer, text: Option<&Buffer>) {
         (**self).normal_text(output, text)
     }
 
