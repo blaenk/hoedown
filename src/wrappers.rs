@@ -22,130 +22,349 @@ fn get_renderer<'a, R>(data: &'a *mut c_void) -> &'a mut R {
     }
 }
 
-macro_rules! buffers {
-    ($out:ident, $($inp:ident),*) => ({
-        let out = Buffer::from($out);
-
-        $(
-            let $inp = Buffer::from($inp as *mut _);
-        )*
-
-        (out, $($inp),*)
-    })
+pub extern "C" fn blockcode<R>(ob: *mut hoedown_buffer,
+                               text: *const hoedown_buffer,
+                               lang: *const hoedown_buffer,
+                               data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let text = Buffer::from(text);
+    let lang = Buffer::from(lang);
+    renderer.code_block(&mut out, &text, &lang);
 }
 
-macro_rules! wrapper {
-    ($func:ident) => (
-        wrapper!($func => $func: () AND ());
-    );
-
-    ($rust:ident => $ffi:ident) => (
-        wrapper!($rust => $ffi: () AND ());
-    );
-
-    ($func:ident: ($($name:ident),*)) => (
-        wrapper!($func => $func: ($($name),*) AND ());
-    );
-
-    ($func:ident: ($($name:ident),*) AND ($($other_name:ident: $other_typ:ty),*)) => (
-        wrapper!($func => $func: ($($name),*) AND ($($other_name: $other_typ),*));
-    );
-
-    ($rust:ident => $ffi:ident: ($($name:ident),*)) => (
-        wrapper!($rust => $ffi: ($($name),*) AND ());
-    );
-
-    ($rust:ident => $ffi:ident:
-     ($($name:ident),*)
-     AND ($($other_name:ident: $other_typ:ty),*)) => (
-        pub extern "C" fn $ffi<R>(
-            out: *mut hoedown_buffer,
-            $($name: *const hoedown_buffer,)*
-            $($other_name: $other_typ,)*
-            data: *mut c_void
-        ) where R: Render {
-            let renderer = get_renderer::<R>(&data);
-            let (mut out, $($name),*) = buffers!(out, $($name),*);
-            renderer.$rust(&mut out, $(&$name,)* $($other_name),*);
-        }
-    );
+pub extern "C" fn blockquote<R>(ob: *mut hoedown_buffer,
+                                content: *const hoedown_buffer,
+                                data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.quote_block(&mut out, &content);
 }
 
-macro_rules! span {
-    ($func:ident) => (
-        span!($func => $func: () AND ());
-    );
-
-    ($rust:ident => $ffi:ident) => (
-        span!($rust => $ffi: () AND ());
-    );
-
-    ($func:ident: ($($name:ident),*)) => (
-        span!($func => $func: ($($name),*) AND ());
-    );
-
-    ($func:ident: ($($name:ident),*) AND ($($other_name:ident: $other_typ:ty),*)) => (
-        span!($func => $func: ($($name),*) AND ($($other_name: $other_typ),*));
-    );
-
-    ($rust:ident => $ffi:ident: ($($name:ident),*)) => (
-        span!($rust => $ffi: ($($name),*) AND ());
-    );
-
-    ($rust:ident => $ffi:ident:
-     ($($name:ident),*)
-     AND ($($other_name:ident: $other_typ:ty),*)) => (
-        pub extern "C" fn $ffi<R>(
-            out: *mut hoedown_buffer,
-            $($name: *const hoedown_buffer,)*
-            $($other_name: $other_typ,)*
-            data: *mut c_void
-        ) -> i32
-        where R: Render {
-            let renderer = get_renderer::<R>(&data);
-            let (mut out, $($name),*) = buffers!(out, $($name),*);
-            renderer.$rust(&mut out, $(&$name,)* $($other_name),*) as i32
-        }
-    );
+pub extern "C" fn header<R>(ob: *mut hoedown_buffer,
+                            content: *const hoedown_buffer,
+                            level: c_int,
+                            data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.header(&mut out, &content, level as i32);
 }
 
-wrapper!(code_block => blockcode: (text, lang));
-wrapper!(quote_block => blockquote: (content));
-wrapper!(header: (content) AND (level: c_int));
-wrapper!(horizontal_rule => hrule);
-wrapper!(list: (content) AND (flags: ::renderer::list::List));
-wrapper!(list_item => listitem: (content) AND (flags: ::renderer::list::List));
-wrapper!(paragraph: (content));
-wrapper!(table: (content));
-wrapper!(table_header: (content));
-wrapper!(table_body: (content));
-wrapper!(table_row: (content));
-wrapper!(table_cell: (content) AND (flags: ::renderer::Table));
-wrapper!(footnotes: (content));
-wrapper!(footnote_definition => footnote_def: (content) AND (num: c_uint));
-wrapper!(html_block => blockhtml: (content));
+pub extern "C" fn hrule<R>(ob: *mut hoedown_buffer,
+                           data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    renderer.horizontal_rule(&mut out);
+}
+
+pub extern "C" fn list<R>(ob: *mut hoedown_buffer,
+                          content: *const hoedown_buffer,
+                          flags: u32,
+                          data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.list(&mut out, &content, ::renderer::list::List::from_arbitrary_bits(flags));
+}
+
+pub extern "C" fn listitem<R>(ob: *mut hoedown_buffer,
+                              content: *const hoedown_buffer,
+                              flags: u32,
+                              data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.list_item(&mut out, &content, ::renderer::list::List::from_arbitrary_bits(flags));
+}
+
+pub extern "C" fn paragraph<R>(ob: *mut hoedown_buffer,
+                               content: *const hoedown_buffer,
+                               data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.paragraph(&mut out, &content);
+}
+
+pub extern "C" fn table<R>(ob: *mut hoedown_buffer,
+                           content: *const hoedown_buffer,
+                           data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.table(&mut out, &content);
+}
+
+pub extern "C" fn table_header<R>(ob: *mut hoedown_buffer,
+                                  content: *const hoedown_buffer,
+                                  data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.table_header(&mut out, &content);
+}
+
+pub extern "C" fn table_body<R>(ob: *mut hoedown_buffer,
+                                content: *const hoedown_buffer,
+                                data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.table_body(&mut out, &content);
+}
+
+pub extern "C" fn table_row<R>(ob: *mut hoedown_buffer,
+                               content: *const hoedown_buffer,
+                               data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.table_row(&mut out, &content);
+}
+
+pub extern "C" fn table_cell<R>(ob: *mut hoedown_buffer,
+                                content: *const hoedown_buffer,
+                                flags: ::renderer::Table,
+                                data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.table_cell(&mut out, &content, flags);
+}
+
+pub extern "C" fn footnotes<R>(ob: *mut hoedown_buffer,
+                               content: *const hoedown_buffer,
+                               data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.footnotes(&mut out, &content);
+}
+
+pub extern "C" fn footnote_def<R>(ob: *mut hoedown_buffer,
+                                  content: *const hoedown_buffer,
+                                  num: c_uint,
+                                  data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.footnote_definition(&mut out, &content, num);
+}
+
+pub extern "C" fn blockhtml<R>(ob: *mut hoedown_buffer,
+                               content: *const hoedown_buffer,
+                               data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.html_block(&mut out, &content);
+}
 
 // span
-span!(autolink: (link) AND (ty: ::renderer::AutoLink));
-span!(code_span => codespan: (text));
-span!(double_emphasis: (content));
-span!(emphasis: (content));
-span!(underline: (content));
-span!(highlight: (content));
-span!(quote_span => quote: (content));
-span!(image: (link, title, alt));
-span!(line_break => linebreak);
-span!(link: (content, link, title));
-span!(triple_emphasis: (content));
-span!(strikethrough: (content));
-span!(superscript: (content));
-span!(footnote_reference => footnote_ref: () AND (num: c_uint));
-span!(math: (text) AND (displaymode: c_int));
-span!(html_span => raw_html: (text));
+pub extern "C" fn autolink<R>(ob: *mut hoedown_buffer,
+                              link: *const hoedown_buffer,
+                              link_type: ::renderer::AutoLink,
+                              data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let link = Buffer::from(link);
+    renderer.autolink(&mut out, &link, link_type) as i32
+}
+
+pub extern "C" fn codespan<R>(ob: *mut hoedown_buffer,
+                              text: *const hoedown_buffer,
+                              data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let text = Buffer::from(text);
+    renderer.code_span(&mut out, &text) as i32
+}
+
+pub extern "C" fn double_emphasis<R>(ob: *mut hoedown_buffer,
+                                     content: *const hoedown_buffer,
+                                     data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.double_emphasis(&mut out, &content) as i32
+}
+
+pub extern "C" fn emphasis<R>(ob: *mut hoedown_buffer,
+                              content: *const hoedown_buffer,
+                              data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.emphasis(&mut out, &content) as i32
+}
+
+pub extern "C" fn underline<R>(ob: *mut hoedown_buffer,
+                               content: *const hoedown_buffer,
+                               data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.underline(&mut out, &content) as i32
+}
+
+pub extern "C" fn highlight<R>(ob: *mut hoedown_buffer,
+                               content: *const hoedown_buffer,
+                               data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.highlight(&mut out, &content) as i32
+}
+
+pub extern "C" fn quote<R>(ob: *mut hoedown_buffer,
+                           content: *const hoedown_buffer,
+                           data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.quote_span(&mut out, &content) as i32
+}
+
+pub extern "C" fn image<R>(ob: *mut hoedown_buffer,
+                           link: *const hoedown_buffer,
+                           title: *const hoedown_buffer,
+                           alt: *const hoedown_buffer,
+                           data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let link = Buffer::from(link);
+    let title = Buffer::from(title);
+    let alt = Buffer::from(alt);
+    renderer.image(&mut out, &link, &title, &alt) as i32
+}
+
+pub extern "C" fn linebreak<R>(ob: *mut hoedown_buffer,
+                               data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    renderer.line_break(&mut out) as i32
+}
+
+pub extern "C" fn link<R>(ob: *mut hoedown_buffer,
+                          content: *const hoedown_buffer,
+                          link: *const hoedown_buffer,
+                          title: *const hoedown_buffer,
+                          data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    let link = Buffer::from(link);
+    let title = Buffer::from(title);
+    renderer.link(&mut out, &content, &link, &title) as i32
+}
+
+pub extern "C" fn triple_emphasis<R>(ob: *mut hoedown_buffer,
+                                     content: *const hoedown_buffer,
+                                     data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.triple_emphasis(&mut out, &content) as i32
+}
+
+pub extern "C" fn strikethrough<R>(ob: *mut hoedown_buffer,
+                                   content: *const hoedown_buffer,
+                                   data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.strikethrough(&mut out, &content) as i32
+}
+
+pub extern "C" fn superscript<R>(ob: *mut hoedown_buffer,
+                                 content: *const hoedown_buffer,
+                                 data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let content = Buffer::from(content);
+    renderer.superscript(&mut out, &content) as i32
+}
+
+pub extern "C" fn footnote_ref<R>(ob: *mut hoedown_buffer,
+                                  num: c_uint,
+                                  data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    renderer.footnote_reference(&mut out, num) as i32
+}
+
+pub extern "C" fn math<R>(ob: *mut hoedown_buffer,
+                          text: *const hoedown_buffer,
+                          displaymode: c_int,
+                          data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let text = Buffer::from(text);
+    renderer.math(&mut out, &text, displaymode) as i32
+}
+
+pub extern "C" fn raw_html<R>(ob: *mut hoedown_buffer,
+                              text: *const hoedown_buffer,
+                              data: *mut c_void) -> i32
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let text = Buffer::from(text);
+    renderer.html_span(&mut out, &text) as i32
+}
 
 // low-level
-wrapper!(entity: (text));
-wrapper!(normal_text: (text));
+pub extern "C" fn entity<R>(ob: *mut hoedown_buffer,
+                            text: *const hoedown_buffer,
+                            data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let text = Buffer::from(text);
+    renderer.entity(&mut out, &text)
+}
+
+pub extern "C" fn normal_text<R>(ob: *mut hoedown_buffer,
+                                 text: *const hoedown_buffer,
+                                 data: *mut c_void)
+where R: Render {
+    let renderer = get_renderer::<R>(&data);
+    let mut out = Buffer::from(ob);
+    let text = Buffer::from(text);
+    renderer.normal_text(&mut out, &text)
+}
 
 // misc
 pub extern "C" fn doc_header<R>(ob: *mut hoedown_buffer, inline_render: c_int, data: *mut c_void)
@@ -161,4 +380,3 @@ where R: Render {
     let mut out = Buffer::from(ob);
     renderer.after_render(&mut out, inline_render != 0);
 }
-
