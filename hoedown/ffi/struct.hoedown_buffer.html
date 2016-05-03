@@ -46,9 +46,9 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-493' class='srclink' href='../../src/hoedown/ffi.rs.html#116-121' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-493' class='srclink' href='../../src/hoedown/src/ffi.rs.html#116-121' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct hoedown_buffer {
-    pub data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></a>,
+    pub data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut </a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>,
     pub size: <a class='type' href='../../libc/type.size_t.html' title='libc::size_t'>size_t</a>,
     pub asize: <a class='type' href='../../libc/type.size_t.html' title='libc::size_t'>size_t</a>,
     pub unit: <a class='type' href='../../libc/type.size_t.html' title='libc::size_t'>size_t</a>,
@@ -58,7 +58,7 @@
                                   <td id='structfield.size'><code>size</code></td><td></td></tr><tr class='stab '>
                                   <td id='structfield.asize'><code>asize</code></td><td></td></tr><tr class='stab '>
                                   <td id='structfield.unit'><code>unit</code></td><td></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../../hoedown/ffi/struct.hoedown_buffer.html' title='hoedown::ffi::hoedown_buffer'>hoedown_buffer</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../../hoedown/ffi/struct.hoedown_buffer.html' title='hoedown::ffi::hoedown_buffer'>hoedown_buffer</a></code></h4>
-<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+<h4 id='method.clone_from' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
 </div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='struct' href='../../hoedown/ffi/struct.hoedown_buffer.html' title='hoedown::ffi::hoedown_buffer'>hoedown_buffer</a></code></h3><div class='impl-items'></div></section>
     <section id='search' class="content hidden"></section>
 
@@ -102,7 +102,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
