@@ -1,6 +1,6 @@
 [package]
 name = "hoedown"
-version = "3.0.5"
+version = "4.0.0"
 authors = ["Jorge Israel Peña <jorge.israel.p@gmail.com>"]
 description = "bindings for the Hoedown markdown processor"
 repository = "https://github.com/blaenk/hoedown"
