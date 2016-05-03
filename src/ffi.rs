@@ -9,8 +9,8 @@ mod callbacks {
     pub type blockquote = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, *mut c_void) -> ();
     pub type header = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, c_int, *mut c_void) -> ();
     pub type hrule = extern "C" fn(*mut hoedown_buffer, *mut c_void) -> ();
-    pub type list = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, ::renderer::list::List, *mut c_void) -> ();
-    pub type listitem = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, ::renderer::list::List, *mut c_void) -> ();
+    pub type list = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, u32, *mut c_void) -> ();
+    pub type listitem = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, u32, *mut c_void) -> ();
     pub type paragraph = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, *mut c_void) -> ();
     pub type table = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, *mut c_void) -> ();
     pub type table_header = extern "C" fn(*mut hoedown_buffer, *const hoedown_buffer, *mut c_void) -> ();

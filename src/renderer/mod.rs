@@ -563,11 +563,19 @@ pub mod list {
         /// Flags that describe a list or list item
         #[repr(C)]
         pub flags List: u32 {
+            const UNSPECIFIED = 0,
+
             /// An ordered list or list item
             const ORDERED = 1 << 0,
 
             /// A list item that contains a block
             const BLOCK   = 1 << 1,
+        }
+    }
+
+    impl List {
+        pub fn from_arbitrary_bits(bits: u32) -> List {
+            List { bits: bits }
         }
     }
 }

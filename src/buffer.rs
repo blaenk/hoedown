@@ -3,7 +3,7 @@
 use libc::size_t;
 use std::str;
 use std::slice;
-use std::mem;
+use std::{mem, ptr};
 use std::io::{self, Read, Write};
 use std::ops::{Deref, DerefMut};
 
@@ -18,6 +18,7 @@ use ffi::{
 pub struct Buffer {
     buffer: *mut hoedown_buffer,
     is_owned: bool,
+    is_null: bool,
 }
 
 impl Buffer {
@@ -29,6 +30,7 @@ impl Buffer {
         Buffer {
             buffer: unsafe { hoedown_buffer_new(size as size_t) },
             is_owned: true,
+            is_null: false,
         }
     }
 
@@ -59,14 +61,22 @@ impl Buffer {
     }
 
     /// Get a raw constant pointer to the buffer data
-    pub fn as_ptr(&self) -> *const u8 {
+    pub fn data_ptr(&self) -> *const u8 {
         unsafe { (*self.buffer).data }
+    }
+
+    pub fn as_raw_ptr(&self) -> *const hoedown_buffer {
+        if self.is_null {
+            ptr::null()
+        } else {
+            self.buffer
+        }
     }
 
     /// Pipe another buffer's contents into this one
     pub fn pipe(&mut self, input: &Buffer) {
         unsafe {
-            hoedown_buffer_put(self.buffer, input.as_ptr(), input.len());
+            hoedown_buffer_put(self.buffer, input.data_ptr(), input.len());
         }
     }
 
@@ -138,22 +148,41 @@ impl<'a> From<&'a str> for Buffer {
     }
 }
 
+impl From<*const hoedown_buffer> for Buffer {
+    /// Create a 'read-only' buffer from the given `hoedown_buffer`
+    ///
+    /// The returned buffer won't take ownership of the passed `hoedown_buffer`,
+    /// that is, the returned buffer won't free the underlying buffer
+    fn from(buffer: *const hoedown_buffer) -> Buffer {
+        // this is a simple workaround for hoedown using
+        // NULL as an 'empty buffer', we just make an empty
+        // buffer and return that
+        if buffer.is_null() {
+            let mut b = Buffer::new(0);
+            b.is_null = true;
+            b
+        } else {
+            Buffer {
+                buffer: buffer as *mut hoedown_buffer,
+                is_owned: false,
+                is_null: false,
+            }
+        }
+    }
+}
+
 impl From<*mut hoedown_buffer> for Buffer {
     /// Create a 'read-only' buffer from the given `hoedown_buffer`
     ///
     /// The returned buffer won't take ownership of the passed `hoedown_buffer`,
     /// that is, the returned buffer won't free the underlying buffer
     fn from(buffer: *mut hoedown_buffer) -> Buffer {
-        // this is a simple workaround for hoedown using
-        // NULL as an 'empty buffer', we just make an empty
-        // buffer and return that
-        if buffer.is_null() {
-            Buffer::new(0)
-        } else{
-            Buffer {
-                buffer: buffer,
-                is_owned: false,
-            }
+        assert!(!buffer.is_null());
+
+        Buffer {
+            buffer: buffer,
+            is_owned: false,
+            is_null: false,
         }
     }
 }
@@ -212,4 +241,3 @@ impl AsMut<hoedown_buffer> for Buffer {
         unsafe { &mut *self.buffer }
     }
 }
-

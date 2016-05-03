@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate hoedown;
 extern crate glob;
 
@@ -10,7 +11,7 @@ use std::path::PathBuf;
 
 use std::io::{Read, Write};
 
-use hoedown::{Markdown, Render};
+use hoedown::{Markdown, Render, Wrapper};
 use hoedown::renderer::html;
 
 fn tidy(input: &str) -> String {
@@ -47,6 +48,45 @@ fn test_markdown() {
         File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
 
         let output = html.render(&doc);
+
+        let rendered_tidy = tidy(output.to_str().unwrap());
+        let target_tidy = tidy(&target_contents[..]);
+
+        assert_eq!(rendered_tidy, target_tidy);
+    }
+}
+
+#[test]
+fn test_wrapper() {
+    struct HtmlWrapper {
+        html: html::Html,
+    }
+
+    wrap!(HtmlWrapper);
+
+    impl Wrapper for HtmlWrapper {
+        type Base = html::Html;
+
+        #[inline(always)]
+        fn base(&mut self) -> &mut html::Html {
+            &mut self.html
+        }
+    }
+
+    for source in
+        glob("libhoedown/test/MarkdownTest_1.0.3/Tests/*.text").unwrap()
+        .filter_map(Result::ok)
+        .chain(Some(PathBuf::from("libhoedown/test/Tests/Escape character.text")).into_iter())
+        .chain(Some(PathBuf::from("tests/fixtures/unicode.txt")).into_iter()) {
+        let doc = Markdown::read_from(File::open(&source).unwrap());
+        let mut wrapper = HtmlWrapper { html: html::Html::new(html::Flags::empty(), 0) };
+
+        let target = source.with_extension("html");
+        let mut target_contents = String::new();
+
+        File::open(&target).unwrap().read_to_string(&mut target_contents).unwrap();
+
+        let output = wrapper.render(&doc);
 
         let rendered_tidy = tidy(output.to_str().unwrap());
         let target_tidy = tidy(&target_contents[..]);

@@ -39,4 +39,3 @@ pub use markdown::Markdown;
 pub use renderer::html::Html;
 pub use renderer::wrapper::Wrapper;
 pub use renderer::trace::Trace;
-

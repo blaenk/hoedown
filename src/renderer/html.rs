@@ -127,7 +127,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).blockcode } {
-            func(ob.as_mut(), text.as_ref(), lang.as_ref(), data)
+            func(ob.as_mut(), text.as_raw_ptr(), lang.as_raw_ptr(), data)
         }
     }
 
@@ -135,7 +135,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).blockquote } {
-            func(ob.as_mut(), content.as_ref(), data)
+            func(ob.as_mut(), content.as_raw_ptr(), data)
         }
     }
 
@@ -143,7 +143,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).header } {
-            func(ob.as_mut(), content.as_ref(), level, data)
+            func(ob.as_mut(), content.as_raw_ptr(), level, data)
         }
     }
 
@@ -159,7 +159,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).list } {
-            func(ob.as_mut(), content.as_ref(), flags, data)
+            func(ob.as_mut(), content.as_raw_ptr(), flags.bits(), data)
         }
     }
 
@@ -167,7 +167,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).listitem } {
-            func(ob.as_mut(), content.as_ref(), flags, data)
+            func(ob.as_mut(), content.as_raw_ptr(), flags.bits(), data)
         }
     }
 
@@ -175,7 +175,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).paragraph } {
-            func(ob.as_mut(), content.as_ref(), data)
+            func(ob.as_mut(), content.as_raw_ptr(), data)
         }
     }
 
@@ -183,7 +183,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).table } {
-            func(ob.as_mut(), content.as_ref(), data)
+            func(ob.as_mut(), content.as_raw_ptr(), data)
         }
     }
 
@@ -191,7 +191,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).table_header } {
-            func(ob.as_mut(), content.as_ref(), data)
+            func(ob.as_mut(), content.as_raw_ptr(), data)
         }
     }
 
@@ -199,7 +199,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).table_body } {
-            func(ob.as_mut(), content.as_ref(), data)
+            func(ob.as_mut(), content.as_raw_ptr(), data)
         }
     }
 
@@ -207,7 +207,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).table_row } {
-            func(ob.as_mut(), content.as_ref(), data)
+            func(ob.as_mut(), content.as_raw_ptr(), data)
         }
     }
 
@@ -215,7 +215,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).table_cell } {
-            func(ob.as_mut(), content.as_ref(), flags, data)
+            func(ob.as_mut(), content.as_raw_ptr(), flags, data)
         }
     }
 
@@ -223,7 +223,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).footnotes } {
-            func(ob.as_mut(), content.as_ref(), data)
+            func(ob.as_mut(), content.as_raw_ptr(), data)
         }
     }
 
@@ -231,7 +231,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).footnote_def } {
-            func(ob.as_mut(), content.as_ref(), num, data)
+            func(ob.as_mut(), content.as_raw_ptr(), num, data)
         }
     }
 
@@ -239,7 +239,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).blockhtml } {
-            func(ob.as_mut(), text.as_ref(), data)
+            func(ob.as_mut(), text.as_raw_ptr(), data)
         }
     }
 
@@ -247,7 +247,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).autolink } {
-            func(ob.as_mut(), link.as_ref(), ty, data) != 0
+            func(ob.as_mut(), link.as_raw_ptr(), ty, data) != 0
         } else {
             false
         }
@@ -257,7 +257,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).codespan } {
-            func(ob.as_mut(), text.as_ref(), data) != 0
+            func(ob.as_mut(), text.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -267,7 +267,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).double_emphasis } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -277,7 +277,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).emphasis } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -287,7 +287,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).underline } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -297,7 +297,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).highlight } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -307,7 +307,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).quote } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -317,7 +317,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).image } {
-            func(ob.as_mut(), link.as_ref(), title.as_ref(), alt.as_ref(), data) != 0
+            func(ob.as_mut(), link.as_raw_ptr(), title.as_raw_ptr(), alt.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -337,7 +337,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).link } {
-            func(ob.as_mut(), content.as_ref(), link.as_ref(), title.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), link.as_raw_ptr(), title.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -347,7 +347,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).triple_emphasis } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -357,7 +357,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).strikethrough } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -367,7 +367,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).superscript } {
-            func(ob.as_mut(), content.as_ref(), data) != 0
+            func(ob.as_mut(), content.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -387,7 +387,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).math } {
-            func(ob.as_mut(), text.as_ref(), displaymode, data) != 0
+            func(ob.as_mut(), text.as_raw_ptr(), displaymode, data) != 0
         } else {
             false
         }
@@ -397,7 +397,7 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).raw_html } {
-            func(ob.as_mut(), text.as_ref(), data) != 0
+            func(ob.as_mut(), text.as_raw_ptr(), data) != 0
         } else {
             false
         }
@@ -407,7 +407,9 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).entity } {
-            func(ob.as_mut(), text.as_ref(), data)
+            func(ob.as_mut(), text.as_raw_ptr(), data)
+        } else {
+            ob.pipe(text)
         }
     }
 
@@ -415,7 +417,9 @@ impl Render for Html {
         let data = self.renderer as *mut c_void;
 
         if let Some(func) = unsafe { (*self.renderer).normal_text } {
-            func(ob.as_mut(), text.as_ref(), data)
+            func(ob.as_mut(), text.as_raw_ptr(), data)
+        } else {
+            ob.pipe(text)
         }
     }
 
