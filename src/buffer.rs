@@ -128,13 +128,6 @@ impl Clone for Buffer {
     }
 }
 
-impl Read for Buffer {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        let mut buffer: &[u8] = self.as_ref();
-        Read::read(&mut buffer, buf)
-    }
-}
-
 impl Write for Buffer {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         unsafe {
