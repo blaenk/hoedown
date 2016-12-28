@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
 
     
     
@@ -785,44 +786,44 @@
             <span class='ident'>opaque</span>: <span class='self'>self</span> <span class='kw'>as</span> <span class='op'>*</span><span class='kw-2'>mut</span> _ <span class='kw'>as</span> <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>c_void</span>,
 
             <span class='comment'>// block-level handlers are unconditionally registered</span>
-            <span class='ident'>blockcode</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>blockcode</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>blockquote</span>: <span class='prelude-val'>Some</span>(::<span class='ident'>wrappers</span>::<span class='ident'>blockquote</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>header</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>header</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>hrule</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>hrule</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>list</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>list</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>listitem</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>listitem</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>paragraph</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>paragraph</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>table</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>table_header</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_header</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>table_body</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_body</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>table_row</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_row</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>table_cell</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_cell</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>footnotes</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>footnotes</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>footnote_def</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>footnote_def</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>blockhtml</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>blockhtml</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>blockcode</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>blockcode</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>blockquote</span>: <span class='prelude-val'>Some</span>(::<span class='ident'>wrappers</span>::<span class='ident'>blockquote</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>header</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>header</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>hrule</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>hrule</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>list</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>list</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>listitem</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>listitem</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>paragraph</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>paragraph</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>table</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>table_header</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_header</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>table_body</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_body</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>table_row</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_row</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>table_cell</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>table_cell</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>footnotes</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>footnotes</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>footnote_def</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>footnote_def</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>blockhtml</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>blockhtml</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
 
-            <span class='ident'>autolink</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>autolink</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>codespan</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>codespan</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>double_emphasis</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>double_emphasis</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>emphasis</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>emphasis</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>underline</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>underline</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>highlight</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>highlight</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>quote</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>quote</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>image</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>image</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>linebreak</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>linebreak</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>link</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>link</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>triple_emphasis</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>triple_emphasis</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>strikethrough</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>strikethrough</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>superscript</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>superscript</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>footnote_ref</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>footnote_ref</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>math</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>math</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>raw_html</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>raw_html</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>autolink</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>autolink</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>codespan</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>codespan</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>double_emphasis</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>double_emphasis</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>emphasis</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>emphasis</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>underline</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>underline</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>highlight</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>highlight</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>quote</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>quote</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>image</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>image</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>linebreak</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>linebreak</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>link</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>link</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>triple_emphasis</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>triple_emphasis</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>strikethrough</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>strikethrough</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>superscript</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>superscript</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>footnote_ref</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>footnote_ref</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>math</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>math</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>raw_html</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>raw_html</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
 
-            <span class='ident'>entity</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>entity</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>normal_text</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>normal_text</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>entity</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>entity</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>normal_text</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>normal_text</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
 
-            <span class='ident'>doc_header</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>doc_header</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
-            <span class='ident'>doc_footer</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>doc_footer</span>::<span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>doc_header</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>doc_header</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
+            <span class='ident'>doc_footer</span>: <span class='prelude-val'>Some</span>(<span class='ident'>wrappers</span>::<span class='ident'>doc_footer</span>::<span class='op'>&lt;</span><span class='self'>Self</span><span class='op'>&gt;</span>),
         };
 
         <span class='kw'>return</span> <span class='ident'>renderer</span>;
@@ -932,14 +933,14 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>autolink</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>link</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>, <span class='ident'>link_type</span>: <span class='ident'>AutoLink</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when a code span is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>code_span</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>text</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when double emphasis is encountered.</span>
@@ -948,14 +949,14 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>double_emphasis</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when emphasis is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>emphasis</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when underline is encountered.</span>
@@ -964,7 +965,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>underline</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when highlight is encountered.</span>
@@ -973,7 +974,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>highlight</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when a quote is encountered.</span>
@@ -982,7 +983,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>quote_span</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when an image is encountered.</span>
@@ -991,14 +992,14 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>image</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>link</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>, <span class='ident'>title</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>, <span class='ident'>alt</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when a line break is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>line_break</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when a link is encountered.</span>
@@ -1007,7 +1008,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>link</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>, <span class='ident'>link</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>, <span class='ident'>title</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when triple emphasis is encountered.</span>
@@ -1016,7 +1017,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>triple_emphasis</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when strikethrough is encountered.</span>
@@ -1025,7 +1026,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>strikethrough</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when superscript is encountered.</span>
@@ -1034,7 +1035,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>superscript</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>content</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when a footnote reference is encountered.</span>
@@ -1043,7 +1044,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>footnote_reference</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>num</span>: <span class='ident'>u32</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when math is encountered.</span>
@@ -1052,14 +1053,14 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>math</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>text</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>, <span class='ident'>displaymode</span>: <span class='ident'>i32</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='doccomment'>/// Runs when raw html span is encountered.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The default implementation passes the context markdown to the buffer verbatim.</span>
     <span class='kw'>fn</span> <span class='ident'>html_span</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>output</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Buffer</span>, <span class='ident'>text</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Buffer</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 
     <span class='comment'>// low-level: not registered = pass-through</span>
@@ -1280,6 +1281,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -1311,11 +1314,9 @@
     <script>
         window.rootPath = "../../../../";
         window.currentCrate = "hoedown";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../../jquery.js"></script>
     <script src="../../../../main.js"></script>
-    
     <script defer src="../../../../search-index.js"></script>
 </body>
 </html>

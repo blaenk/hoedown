@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,21 +44,27 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>hoedown</a>::<wbr><a class='struct' href=''>Markdown</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-2296' class='srclink' href='../src/hoedown/src/markdown.rs.html#8-12' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-2280' class='srclink' href='../src/hoedown/src/markdown.rs.html#8-12' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Markdown {
     pub contents: <a class='struct' href='../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>,
     pub extensions: <a class='struct' href='../hoedown/struct.Extension.html' title='hoedown::Extension'>Extension</a>,
     pub max_nesting: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>,
 }</pre><div class='docblock'><p>Markdown document</p>
-</div><h2 class='fields'>Fields</h2>
-<table><tr class='stab '>
-                                  <td id='structfield.contents'><code>contents</code></td><td></td></tr><tr class='stab '>
-                                  <td id='structfield.extensions'><code>extensions</code></td><td></td></tr><tr class='stab '>
-                                  <td id='structfield.max_nesting'><code>max_nesting</code></td><td></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(body: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
-<h4 id='method.read_from' class='method'><code>fn <a href='#method.read_from' class='fnname'>read_from</a>&lt;R&gt;(reader: R) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a> <span class='where'>where R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a></span></code></h4>
+</div><h2 class='fields'>Fields</h2><span id='structfield.contents' class='structfield'>
+                           <span id='contents.v' class='invisible'>
+                           <code>contents: <a class='struct' href='../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a></code>
+                           </span></span><span class='stab '></span><span id='structfield.extensions' class='structfield'>
+                           <span id='extensions.v' class='invisible'>
+                           <code>extensions: <a class='struct' href='../hoedown/struct.Extension.html' title='hoedown::Extension'>Extension</a></code>
+                           </span></span><span class='stab '></span><span id='structfield.max_nesting' class='structfield'>
+                           <span id='max_nesting.v' class='invisible'>
+                           <code>max_nesting: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code>
+                           </span></span><span class='stab '></span><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1566' class='srclink' href='../src/hoedown/src/markdown.rs.html#14-47' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>(body: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span></h4>
+<h4 id='method.read_from' class='method'><span id='read_from.v' class='invisible'><code>fn <a href='#method.read_from' class='fnname'>read_from</a>&lt;R&gt;(reader: R) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a> <span class='where'>where R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a></span></code></span></h4>
 <div class='docblock'><p>Construct a markdown document from a given Reader</p>
 
 <p>By default it enables no Hoedown extensions and sets the maximum
@@ -66,15 +73,22 @@ and <code>with_max_nesting</code> builder methods.</p>
 
 <p>Note that <code>Buffer</code> also implements <code>Reader</code>, so it can be used with this
 method.</p>
-</div><h4 id='method.extensions' class='method'><code>fn <a href='#method.extensions' class='fnname'>extensions</a>(self, extensions: <a class='struct' href='../hoedown/struct.Extension.html' title='hoedown::Extension'>Extension</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
+</div><h4 id='method.extensions' class='method'><span id='extensions.v-1' class='invisible'><code>fn <a href='#method.extensions' class='fnname'>extensions</a>(self, extensions: <a class='struct' href='../hoedown/struct.Extension.html' title='hoedown::Extension'>Extension</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span></h4>
 <div class='docblock'><p>Builder method to specify Hoedown extensions</p>
-</div><h4 id='method.max_nesting' class='method'><code>fn <a href='#method.max_nesting' class='fnname'>max_nesting</a>(self, max_nesting: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
+</div><h4 id='method.max_nesting' class='method'><span id='max_nesting.v-1' class='invisible'><code>fn <a href='#method.max_nesting' class='fnname'>max_nesting</a>(self, max_nesting: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span></h4>
 <div class='docblock'><p>Builder method to specify the maximum block depth to parse</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='struct' href='../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>&gt; for <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h3><div class='impl-items'><h4 id='method.from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(buffer: <a class='struct' href='../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
-</div><h3 class='impl'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'a [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt; for <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h3><div class='impl-items'><h4 id='method.from-1' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(bytes: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
-</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></h4>
-<h4 id='method.clone_from' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
-</div></section>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-2284' class='srclink' href='../src/hoedown/src/markdown.rs.html#7' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class='method'><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class='method'><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='struct' href='../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>&gt; for <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1578' class='srclink' href='../src/hoedown/src/markdown.rs.html#49-57' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from' class='method'><span id='from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(buffer: <a class='struct' href='../hoedown/struct.Buffer.html' title='hoedown::Buffer'>Buffer</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'a [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt; for <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1581' class='srclink' href='../src/hoedown/src/markdown.rs.html#59-69' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from-1' class='method'><span id='from.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(bytes: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='struct' href='../hoedown/struct.Markdown.html' title='hoedown::Markdown'>Markdown</a></code></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -97,6 +111,8 @@ method.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -128,11 +144,9 @@ method.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "hoedown";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

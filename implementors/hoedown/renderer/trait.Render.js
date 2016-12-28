@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors['hoedown'] = [];
+implementors["hoedown"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);
