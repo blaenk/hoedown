@@ -2,5 +2,7 @@
 
 These are bindings for [hoedown](https://github.com/hoedown/hoedown), the C library for markdown processing, with the intention of being as idiomatic as possible.
 
+I created this because I needed a fully-featured Markdown library (for [diecast](https://github.com/diecast/diecast)) when the nascent Rust ecosystem lacked one.
+
 * [documentation](http://www.blaenkdenum.com/hoedown).
 
